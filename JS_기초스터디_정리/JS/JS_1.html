@@ -98,7 +98,7 @@
 
 
         // 원본값이 변하지 말아야 하는 경우에는 원본값을 클론을 한다. 
-        // 원본은 유지, 클론갑슬 사용 
+        // 원본은 유지, 클론값을 사용 
     </script>
     <script>
         // 문자열 연산(+)
@@ -134,6 +134,50 @@
         console.dir(foo);
         console.log(Object.prototype);
 
+    </script>
+    
+    <!-- 여기서는 그냥 연습용 -->
+    <script>
+        var obj1 = {};
+        obj1.name = 'lee';
+
+        var obj2 = new Object();
+        obj2.name = 'song';
+
+        function F() {};
+        var obj3 = new F();
+        obj3.name = 'kim';
+
+        console.log(obj1.name, obj2.name, obj3.name)
+    </script>
+    <script>
+        var statement = 'I am an immutable value'; 
+        var otherStr = statement.slice(8, 17); 
+        
+        console.log(otherStr); // 'immutable'
+
+        otherStr = otherStr.slice(2, 6); 
+        console.log(otherStr);
+
+        console.log(statement); // 'I am an immutable value'
+    </script>
+    <script>
+        var user = {
+            name : 'lee',
+            address : {
+                city : 'Seoul'
+            }
+        };
+
+        var myName = user.name; // 불변한 값 'lee'를 참조.
+        console.log(typeof user.name); // string
+
+        user.name = 'song'; // 변경한다한들 
+        console.log(user.name); // ('song'으로 변경되었다.)
+        console.log(myName); // myName이 참조하는 것은 'lee'.
+
+        myName = user.name; // 재할당.
+        console.log(myName); // song
     </script>
 </body>
 </html>
