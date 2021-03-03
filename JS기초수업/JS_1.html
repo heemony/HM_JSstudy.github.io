@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS_1</title>
+</head>
+<body>
+    <p>
+        1. ES5 기준 + 제이쿼리 기준으로 수업 진행 
+            - JQuery > 크로스브라우징 대처에 용이하다는 장점.
+            
+            - DOM : 묻서 객체 모델
+                    html 요소에 접근하는 방법(selector)을 정의한 브라우저 API
+                    구조화된 표현 제공
+                    문서 표현 = 구조화된 nodes + object(prop + methods)
+                    
+            - 변수키워드 
+                var : 변수의 범위를 명확하게 하기 위해서 var를 사용한다.
+                    특정 함수 안에서 var를 통해 선언하면 지역변수로 인식.
+                    사용하지 않으면 전역변수로 인식됨. 
+                (es6)
+                let 
+                const
+
+            - 데이터타입
+                primitive type 원시타입 : 하나의 값만 가진다. 
+                    number
+                    string
+                    boolean
+                    undefined
+                    null
+
+                refernce type 참조타입 : 모든 연산이 실제값이 아닌 참조값으로 처리된다.
+                    object 객체 : 여러개의 프로퍼티를 포함할 수 있다.
+                        array
+                        function
+                        정규식
+                    
+                        [?] 객체 
+                        { 이름(key) : 값(value) } 형태로 저장된다. 
+                        - 원시타입을 데이터로 갖는다.
+                        - 객체타입을 데이터로 갖는다.
+
+            - 연산자
+                문자열 연산자 : +
+                대입 연산자 : =, 변수 등에 값을 할당
+                    좌변에는 항상 1개 이상의 변수가 있어야 함.
+                    동시에 여러 변수에 할당 가능 
+                        ex. 
+                            var a, b, c = 5
+                기타 연산자 
+
+            - 프로토타입 
+                모든 객체는 자신의 부모 역할을 하는 객체와 연결되어 있다.
+                -> 객체지향의 상속 개념과 같이 부모 객체의 프로퍼티를 자신의 것처럼 쓸 수 있다는 특징.
+
+                자신의 부모역할을 하는 프로토타입 객체의 프로퍼티를 차례대로 검색하는 것 : '프로토타입 체이닝'
+                -> 체이닝의 종점 : Object.prototype 객채이다.
+    </p>
+    <p>
+        [첫 번째 과제]
+        - 선택자만들기.
+            1. VJS
+            2. JQuery
+        - 어떻게, 언제 사용하는 것인지 정리해오기.
+    </p>
+    <script>
+        var intNum = 34;
+        console.log(typeof intNum); // [*] 데이터타입을 이런식으로 타입을 확인할 수 있다. 매우 중요
+        var singleStr = 'Volvo';
+        console.log(typeof singleStr);
+        var booVar = true;
+        var emptyVar;
+        var nullVar = null;
+
+        var objType = {
+            name : '홍길동',
+            gender : 'male',
+            age : 17
+        }; 
+        var arrType = [];
+        var funcType = function() {};
+        var patt = /w3school/; // 정규식 : 문자 패턴
+    </script>
+    <script>
+        // [ 참조타입 : 모든 연산이 실제값이 아닌 참조값으로 처리된다. ]
+        // 참조되는 애가 바뀌면 원본값도 바뀌게 된다. 
+
+        var objA = {
+            val : 40
+        };
+        var objB = objA;
+
+        objB.val = 50;
+        console.log(objA.val); // 50
+        console.log(objB.val); // 50
+
+
+        // 원본값이 변하지 말아야 하는 경우에는 원본값을 클론을 한다. 
+        // 원본은 유지, 클론갑슬 사용 
+    </script>
+    <script>
+        // 문자열 연산(+)
+        var str1 = 'good' + 'time';
+        var str2 = 'good' + 3
+        console.log(str1); // goodtime
+        console.log(str2); // good3
+        console.log(3+str1+9); // 3goodtime9
+        //  앞, 뒤에 문자가 있다면 연결해주는 용도로 쓰이게 된다. 
+        
+        /* -- */
+        if (10 != 8) {}
+
+        /* -- */
+        // 기타 연산자
+        var time = 0;
+        time++;
+        console.log(time);
+
+        /* -- */
+        // 삼항 연산자
+        var varia = (3<9) ? true : false;
+        console.log(varia);
+    </script>
+    <script>
+        // 프로토타입
+        var foo = {
+            name : 'foo',
+            age : 40
+        };
+        console.log(foo.toString());
+        // 왜 toString이 찍힐까? 프로토타입 객체이기 떄문에 사용할 수 있다. 
+        console.dir(foo);
+        console.log(Object.prototype);
+
+    </script>
+</body>
+</html>
