@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>exam</title>
+<title>exam2</title>
 <link rel="stylesheet" href="common.css" />
 </head>
 <body>
@@ -19,13 +19,82 @@
 		<div class="exam_wrap">
 			<h1>Q. <strong class="point">태그 순서가 첫번째인 모든 Elements</strong>를 선택</h1>
 			<div class="exam_q"><!-- 부모 -->
-				<div>1<em>em</em></div>
+				<div>1<em>em</em></div> <!-- div:first-child -->
 				<div>2<em>em</em></div>
-				<div>3<em>em</em></div>
+				<div>3<em>em</em></div> <!-- div:last-child -->
 			</div>
 			<button type="button">view</button>
 			<p>Tip) :first / .first()</p>
 		</div>
+		<script>
+			window.onload = function() {
+				// [노션에정리하기]
+				// firstChild vs firstElementChild (last...)
+				// children vs childNodes
+
+				// DOM tree 순회
+					// firstElementChild
+					// lastElementChild
+					// nextElementChild/nextElementSibling
+					// previousElementChild/previousElementSibling
+					// childNodes
+					// childElementCount
+
+
+				// 1번 문제)
+				var examObj = document.getElementsByClassName('exam_wrap')[0];
+				examObj.getElementsByTagName('button')[0].onclick = function() {
+					var examChild = examObj.getElementsByClassName('exam_q')[0].querySelector('div:first-child');		
+					// var examChild = examObj.getElementsByClassName('exam_q')[0].firstElementChild;
+
+					examChild.style.backgroundColor = 'yellow';
+				};
+
+				// 2번 문제)
+				var examObj2 = document.getElementsByClassName('exam_wrap')[1];
+				examObj2.getElementsByTagName('button')[0].onclick = function() {
+					var examChild = examObj2.getElementsByClassName('exam_q')[0].querySelector('div:last-child');
+					// var examChild = examObj2.getElementsByClassName('exam_q')[0].lastElementChild;
+
+					examChild.style.backgroundColor = 'yellow';
+				};
+
+				// 3번 문제)
+				var examObj3 = document.getElementsByClassName('exam_wrap')[2];
+				examObj3.getElementsByTagName('button')[0].onclick = function() {
+					// var examChild = examObj3.getElementsByClassName('exam_q')[0].querySelector('div > em');
+					// var examChild = examObj3.getElementsByClassName('exam_q')[0].querySelector('div:first-child').children[0];
+					// var examChild = examObj3.getElementsByClassName('exam_q')[0].firstElementChild.children[0];
+					var examChild = examObj3.getElementsByClassName('exam_q')[0].firstElementChild.childNodes[1];
+
+					examChild.style.backgroundColor = 'yellow';
+				}
+
+				// 4번 문제)
+				var examObj4 = document.getElementsByClassName('exam_wrap')[3];
+				examObj4.getElementsByTagName('button')[0].onclick = function() {
+					var examChild = examObj4.getElementsByClassName('exam_q')[0].lastElementChild.childNodes.item(1); // NodeList(2) - item(index)
+					// var examChild = examObj4.getElementsByClassName('exam_q')[0].querySelector('div:last-child').children[0];
+
+					examChild.style.backgroundColor = 'yellow';
+				}
+
+				// 5번 문제)
+				var examObj5 = document.getElementsByClassName('exam_wrap')[4];
+				examObj5.getElementsByTagName('button')[0].onclick = function() {
+					// var examChild = examObj5.getElementsByClassName('exam_q')[0].querySelector('div:nth-child(2)');
+					var examChild = examObj5.getElementsByClassName('exam_q')[0].querySelectorAll('div:nth-child(2)')[0].children[0];
+					console.log(examChild);
+					examChild.style.backgroundColor = 'yellow';
+
+				}
+
+
+				// 6번 문제)
+				// 7번 문제)
+				// 8번 문제)
+			};
+		</script>
 		<div class="exam_wrap">
 			<h1>Q. <strong class="point">태그 순서가 마지막인 모든 Elements</strong>를 선택</h1>
 			<div class="exam_q"><!-- 부모 -->
