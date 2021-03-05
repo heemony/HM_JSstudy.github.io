@@ -73,7 +73,7 @@
 				// 4번 문제)
 				var examObj4 = document.getElementsByClassName('exam_wrap')[3];
 				examObj4.getElementsByTagName('button')[0].onclick = function() {
-					var examChild = examObj4.getElementsByClassName('exam_q')[0].lastElementChild.childNodes.item(1); // NodeList(2) - item(index)
+					var examChild = examObj4.getElementsByClassName('exam_q')[0].lastElementChild.childNodes.item(1); // NodeList(2) item(index)
 					// var examChild = examObj4.getElementsByClassName('exam_q')[0].querySelector('div:last-child').children[0];
 
 					examChild.style.backgroundColor = 'yellow';
@@ -82,17 +82,75 @@
 				// 5번 문제)
 				var examObj5 = document.getElementsByClassName('exam_wrap')[4];
 				examObj5.getElementsByTagName('button')[0].onclick = function() {
-					// var examChild = examObj5.getElementsByClassName('exam_q')[0].querySelector('div:nth-child(2)');
+					// [노드]
+					// DOM에 대한 기본 데이터 유형.
+
+					// [node의 종류] 
+					//	ㄴ element <- 구조로만 봐도 노드는 엘리먼트의 상위 개념인 것을 알 수 있다. 
+					//  ㄴ text
+					//  ㄴ attribute
+
+					// [NodeList]
+					// : general lists of nodes
+
+					// [HTML Collection]
+					// : only Element
+
+					// var test = examObj5.getElementsByClassName('exam_q')[0].querySelectorAll('div:nth-child(2)')[0].children;
+						// - children은 HTMLColletion [div]
+					var test = examObj5.getElementsByClassName('exam_q')[0].querySelectorAll('div:nth-child(2)')[0].childNodes;
+						// - childNodes는 NodeList(2) [text, div]
+					
+					for(var i = 0; i<test.length; i++) {
+						console.dir(test[i]);
+					}
+				
+
+
 					var examChild = examObj5.getElementsByClassName('exam_q')[0].querySelectorAll('div:nth-child(2)')[0].children[0];
+					examChild.style.backgroundColor = 'yellow';
+
+				}
+
+				// 6번 문제)
+				var examObj6 = document.getElementsByClassName('exam_wrap')[5];
+				examObj6.getElementsByTagName('button')[0].onclick = function() {
+
+					var test = examObj6.getElementsByClassName('exam_q')[0].querySelectorAll('div');
+					console.log(test);
+
+					var test2 = examObj6.getElementsByClassName('exam_q')[0].getElementsByTagName('div');
+					console.log(test2);
+
+					var examChild = examObj6.getElementsByClassName('exam_q')[0].querySelectorAll('div:nth-child(3)')[0];
 					console.log(examChild);
 					examChild.style.backgroundColor = 'yellow';
 
 				}
 
 
-				// 6번 문제)
 				// 7번 문제)
+				var examObj7 = document.getElementsByClassName('exam_wrap')[6];
+				examObj7.getElementsByTagName('button')[0].onclick = function() {
+					var examChild = examObj7.getElementsByClassName('exam_q')[0].querySelectorAll('div');
+					console.dir(examChild);
+					for(var i = 2; i < examChild.length; i++) {
+						examChild[i].style.backgroundColor = 'yellow';
+					}
+					// examChild.style.backgroundColor = 'yellow';
+
+				}
+
 				// 8번 문제)
+				var examObj8 = document.getElementsByClassName('exam_wrap')[7];
+				examObj8.getElementsByTagName('button')[0].onclick = function() {
+					var examChild = examObj8.getElementsByClassName('exam_q')[0].querySelectorAll('div');
+					for( var i = 2; i > -1; i-- ) {
+						console.log(i)
+						examChild[i].style.backgroundColor = 'yellow';
+					}
+				}
+
 			};
 		</script>
 		<div class="exam_wrap">

@@ -218,7 +218,13 @@
 		// 7번 문제)
 		var examObj7 = document.getElementsByClassName('exam_wrap')[6];
 		examObj7.getElementsByTagName('button')[0].onclick = function() {
-			var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].querySelectorAll('.active');
+			// var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].querySelectorAll('.active'); 
+			// static collection으로 반환
+
+			var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].getElementsByClassName('active'); 
+			// live collection으로 반환 -> 클래스 이름같은거 변경할 때에는 바로바로 업데이트되기 때문에 for문으로 제어하면 원하는대로 안 된다고 함.(참고)
+
+			console.log(classActiveElems)
 			for(let i = 0; i < classActiveElems.length; i++) {
 				classActiveElems[i].style.backgroundColor = "yellow";
 			}
@@ -227,6 +233,9 @@
 		// 8번 문제)
 		var examObj8 = document.getElementsByClassName('exam_wrap')[7];
 		examObj8.getElementsByTagName('button')[0].onclick = function() {
+			// var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].getElementById('#active');
+			// 위의 코드가 에러가 나는 이유
+			// Document(or Element).getElementsByClassName과는 다르게 getElementById는 document.getElementById으로만 쓸 수 있다. Dom객체이기 때문.
 			var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].querySelector('#active');
 			idActiveElem.style.backgroundColor = "yellow";
 		};
