@@ -142,7 +142,7 @@
 		// document에서 classname이 'exam_wrap'인 모든 요소들을 유사배열 형태(HTMLCollection-LiveCollection)로 가지고 온다.
 			// HTML Collection 은 오직 *element만을 담는다. 
 				// *element (one specific type of node): div, body, window..같은 특정 타입.
-			// NodeList는 general lists of nodes.
+			// NodeList는 general lists of nodes. (element는 node의 하위 개념)
 		// [!] get~으로 가져오는 것과 query셀렉터의 차이는 몬가요.
 			// get~ HTMLCollection으로 리턴함. (Live Collection형태 -> 실시간으로 업데이트 된다.)
 			// querySelectorAll은 NodeList로 리턴함. (Static Collection형태 -> 실시간으로 업데이트 되지 않는다.), [*] 참고 대게 노드 리스트는 Live Colletion이다. 
@@ -156,10 +156,8 @@
 		examObj1.getElementsByTagName('button')[0].onclick = function(){
 			var examChild = examObj1.getElementsByClassName('exam_q')[0].querySelectorAll('*');
 			for(var i = 0; i < examChild.length; i++){
-				console.log(i);
 				examChild[i].style.backgroundColor = 'yellow';
 			}
-			console.log(i)
 		};
 	
 		// 2번 문제)
@@ -234,8 +232,9 @@
 		var examObj8 = document.getElementsByClassName('exam_wrap')[7];
 		examObj8.getElementsByTagName('button')[0].onclick = function() {
 			// var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].getElementById('#active');
-			// 위의 코드가 에러가 나는 이유
-			// Document(or Element).getElementsByClassName과는 다르게 getElementById는 document.getElementById으로만 쓸 수 있다. Dom객체이기 때문.
+				// 위의 코드가 에러가 나는 이유
+				// Document(or Element).getElementsByClassName과는 다르게 getElementById는 document.getElementById으로만 쓸 수 있다. DOM객체이기 때문.
+					// 
 			var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].querySelector('#active');
 			idActiveElem.style.backgroundColor = "yellow";
 		};
