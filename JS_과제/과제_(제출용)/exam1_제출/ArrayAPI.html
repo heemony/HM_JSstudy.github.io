@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array API 함수 용례 정리</title>
+    <style>
+        body {padding: 0; margin: 0 10px;}
+        .title {font-size: 16px; color: gray;}
+        .title2 {font-size: 14px; background-color: gray; color: beige; display: inline-block;}
+        .desc {font-size: 14px; color: black;}
+    </style>
+</head>
+<body>
+    <h1>Array</h1>
+    <p>
+        <a href="https://medium.com/@hongkevin/js-4-array-%EB%A9%94%EC%84%9C%EB%93%9C%EB%93%A4-concat-join-indexof-slice-sort-push-4eec70d564e7">3.9 보기</a>
+    </p>
+    <div>
+        <p class="title">Array?</p>
+        <p class="desc">: 배열을 생성할 때 사용하는 리스트 형태의 객체이다.</p>
+    </div>
+    <p>1. Array에서 String으로 전환하는 join("구분자").</p>
+    <script>
+        // var avengers = ["Iron man", "Hulk", "Thor", "Black widow"];
+        // console.log(avengers.join(" ")); // Iron man Hulk Thor Black widow
+        // console.log(avengers.join(", ")); //Iron man, Hulk, Thor, Black widow
+        // console.log(avengers.join(" - ")); // Iron man - Hulk - Thor - Black widow
+        // console.log(avengers.join(" 와(과) ")); // Iron man 와(과) Hulk 와(과) Thor 와(과) Black widow
+
+        /*
+            join을 통해 구분자를 넣어주면 Array가 String으로 전환된다. 
+        */
+    </script>
+    <script>
+        // 1, 배열 만들기
+        let fruits = ["사과", "바나나"];
+        console.log(fruits.length); 
+        // 2
+
+
+        // 2. 인덱스로 배열의 항목에 접근하기
+        let first = fruits[0]; // 사과
+        let last = fruits[fruits.length - 1]; 
+        // 바나나
+
+
+        // 3. 배열의 항목들을 순환하며 처리하기
+        fruits.forEach(function (fruit, index) {
+            console.log(fruit, index);
+        })
+        // 사과 0
+        // 바나나 1
+
+
+        // 4. 배열 끝에 항목 추가하기 push()
+        let newEndLength = fruits.push("오렌지");
+        console.log(newEndLength); // 3
+        console.log(fruits); // ["사과", "바나나", "오렌지"]
+
+        
+        // 5. 배열 끝에서부터 항목 제거하기 pop()
+        let lastPop = fruits.pop(); // 끝에 있던 '오렌지'를 제거한다.
+        console.log(lastPop); // 오렌지
+        console.log(fruits); // ["사과", "바나나"]
+
+
+        // 6. 배열 앞에서부터 항목 제거하기 shift()
+        let firstShift = fruits.shift(); // 제일 앞의 '사과'를 제거한다.
+        console.log(firstShift); // 사과
+        console.log(fruits); // ["바나나"]
+
+        
+        // 7. 배열 앞에 항목 추가하기 unshift()
+        let newFirstLength = fruits.unshift("딸기"); // 제일 앞에 추가한다.
+        console.log(newFirstLength); // 2 -> length를 돌려주는건가?
+        console.log(fruits) // ["딸기", "바나나"]
+
+
+        // 8. 배열 안 항목의 인덱스 찾기 indexOf()
+        fruits.push("망고")
+        console.log(fruits); // ["딸기", "바나나", "망고"]
+        
+        let 바나나는몇번째일까요 = fruits.indexOf("바나나");
+        console.log(바나나는몇번째일까요); // 1 (index)
+        
+
+        // 9. 인덱스 위치에 있는 항목 제거하기 splice()
+        // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+        // https://velog.io/@godlife/Javascript-%EC%9C%A0%EC%9A%A9%ED%95%9C-Array-API-10%EA%B0%80%EC%A7%80
+        // https://joshua1988.github.io/vue-camp/js/array.html#%EB%B0%B0%EC%97%B4-%EC%A1%B0%EC%9E%91%ED%95%98%EA%B8%B0
+        // 배열의 기존 요소를 삭제 또는 교체하거나 새로운 요소를 추가하여 배열의 내용을 변경한다.
+        // 반환 값
+        // - 제거한 요소를 담은 배열. 아무 값도 제거하지 않았으면 빈 배열 반환.
+        
+        // 9-1. 요소 삭제
+        // 9-2. 요소 교체
+        // 9-3. 요소 추가
+        let 항목제거 = fruits.splice(바나나는몇번째일까요, 1);
+        console.log(항목제거); // ["바나나"]
+        console.log(fruits); // ["딸기", "망고"]
+
+        // 10. 인덱스 위치에서부터 여러개의 항목 제거하기
+        let cart = ["고기", "두부", "버섯", "양파", "소금", "아스파라거스"];
+        console.log(cart)
+
+        let 시작index = 1;
+        let n개 = 3;
+
+        let removedItmes = cart.splice(시작index, n개);
+        // 배열 cart 에서 항목을 제거하는 방법이다.
+        // 시작index에 해당하는 인덱스부터 n개의 행목을 제거한다.
+
+        console.log(cart); // [!] 원 배열 cart의 값이 변하게 된다. 
+        // ["고기", "소금", "아스파라거스"]
+        console.log(removedItmes);
+        // ["두부", "버섯", "양파"] 
+
+
+        // 11. 배열 복사하기 slice()
+        // 어떤 배열의 '처음' 부터 '끝'까지(끝은 미포함)에 대한 얕은 복사본을 새로운 배열 객체로 반환.
+        // 원본 배열은 변하지 않는다.
+        let music = ["hiphop", "jazz", "rock", "classic", "rnb", "funk", "pop"]
+        console.log(music.slice()); 
+        // ["hiphop", "jazz", "rock", "classic", "rnb", "funk", "pop"]
+        console.log(music.slice(3, 6)); // index 3, 4, 5
+        // ["classic", "rnb", "funk"]
+        console.log(music.slice(1, 3)); // index 1, 2 
+        // [jazz", "rock"]
+        
+
+
+        
+        // 12. Array.prototype.reverse()
+        // 반환 값
+        // - 정렬한 배열. 원본 배열이 변경됨. 복사본이 아님.
+        const array1 = ["one", "two", "three"];
+        const reversed = array1.reverse();
+        console.log(reversed); // ["three", "two", "one"]
+        console.log(array1); // ["three", "two", "one"] 원본 배열도 변경된다.
+
+        // 13. sort()  
+        // 기본 정렬 순서 : 문자열의 유니코드 코드 포인트를 따른다.
+        // 구문 
+        // - arr.sort( [compareFucntion] )
+        // 매개변수 : compareFunction 
+        // - 정렬 순서를 정의하는 함수이다. 생략하면 배열은 각 요소의 문자열 변환에 따라 각 문자의 뉴이 코드 포인트 값에 따라 정렬된다. 
+        // 반환 값 
+        // - 정렬한 배열. 원 배열이 정렬된다. 복사본이 아님.
+
+        const months = ["March", "Jan", "Feb", "Dec"];
+        months.sort();
+        console.log(months); // ["Dec", "Feb", "Jan", "March"]
+
+        var numbers = [4, 20, 52, 512, 1, 32];
+        console.log(numbers.sort()); // [1, 20, 32, 4, 512, 52]
+        // 매개변수가 되는 compareFunction이 제공되지 않으면 요소를 문자열로 변환하고 유니코드 순으로 배열됨. 원하는 결과값이 나오지 않을 수 있음.
+        
+        // sort 메소드는 클로저와 함께 사용할 수 있다.
+        numbers.sort(function(a, b) {
+            return a - b; // 오름차순으로 정렬된다.
+        });
+        console.log(numbers);
+        // [1, 4, 20, 32, 52, 512]
+
+        // [참고]
+        // 매개변수로 오는 비교 함수의 형식은 아래와 같다.
+        // function compare(a, b) {
+        //     if( a가 b보다 작을 경우 ) {
+        //         return -1; // a가 먼저 온다.
+        //     }
+        //     if( a가 b보다 클 경우 ) {
+        //         return 1; // b가 먼저 온다.
+        //     }
+        //     // a must be equal to b
+        //     return 0; // a와 b를 서로에 대해 변경하지 않는다.
+        // }
+
+        // map을 사용하여 정리하기도 한다. 
+        // compareFunction이 여러번 호출되는 경우 높은 오버헤드가 발생할 수 있기 때문.
+
+        // 14. concat()  
+        // 기존의 원본 배열을 변경되지 않는다.
+        // 매개변수
+        // - 배열 또는 값, 인자를 생략할 경우 기존배열의 얕은 복사본을 반환.
+        // 반환값 
+        // - 추가된 새로운 배열을 반환한다.
+        
+        const array2 = ["가", "나", "다"];
+        const array3 = ["라", "마", "바"];
+        const array4 = ["사", "아", "자"];
+        const concatArray = array2.concat(array3, array4);
+        
+        console.log(array2); // 원본은 손상되지 않는다.
+        console.log(concatArray);
+        // ["가", "나", "다", "라", "마", "바"]
+
+        // 15. toString()
+        // 반환값
+        // - 배열을 문자열로 반환한다.
+        var array5 = ["가", "나", "다", "라"];
+        var myVar = array5.toString();
+        console.log(myVar); // 가, 나, 다, 라
+
+
+
+                // // 객체 shallow copy
+                // var originArray = [
+                //     {name : 'a'},
+                //     {name : 'b'},
+                //     {name : 'c'}
+                // ];
+                
+                // var shallow = Array.prototype.slice.call(originArray); 
+                // // shallow라는 껍데기만 새로 만든 것. 
+                // // 내부 객체들은 참조관계로 이어져 있다. 
+                
+                // shallow[0].name = '변경'; // originArray에도 변경 됨.
+                // // 내부 객체에 직접 접근하여 변경해야 한다.
+                
+                // shallow[1] = '변경안됨'; // originArray에서 변경 안 됨.
+                // // 바깥 껍데기를 변경하려는 것과 같다.
+                
+                // console.log(shallow); // 위 코드가 모두 적용됨.
+                // console.log(originArray); // [{name: "변경"}, {name: "b"}, {name: "c"}]
+
+
+                // // 객체 deep copy
+                // function copyObj(obj) {
+                //     var copy = {}; // 카피할 빈객체를 만든다.
+                //     if( Array.isArray(obj)) { // obj가 배열일 때
+                //         copy = obj.slice().map( (v) => {
+                //             return copyObj(v);
+                //         });
+                //     } else if ( typeof obj === 'object' && obj !== null ){ // obj가 객체(object)이고, null이 아닐 때
+                //         for( var attr in obj ) {
+                //             if ( obj.hasOwnProperty(attr) ) {
+                //                 copy[attr] = copyObj(obj[attr]);
+                //             }
+                //         }
+                //     } else { // 그 외
+                //         copy = obj;
+                //     }
+                //     return copy;
+                // }
+                // var obj = { a:1, b:2, c:[{d:null, e:'f'}]};
+                // var obj2 = copyObj(obj);
+                // obj2.a = 3;
+                // obj2.c[0].d = true;
+                // console.log(obj.a);
+                // console.log(obj.c[0].d);
+
+    </script>
+
+
+
+
+
+
+</body>
+</html>

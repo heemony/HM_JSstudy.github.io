@@ -117,10 +117,6 @@
 </body>
 <script>
 	window.onload = function() {
-		// [노션에정리하기]
-		// firstChild vs firstElementChild (last...)
-		// children vs childNodes
-
 		// DOM tree 순회
 			// firstElementChild
 			// lastElementChild
@@ -185,6 +181,9 @@
 			// var examChild = examObj4.getElementsByClassName('exam_q')[0].querySelector('div:last-child').children[0];
 
 			examChild.style.backgroundColor = 'yellow';
+
+			// console.log(examObj4.getElementsByClassName('exam_q')[0].lastElementChild.childNodes[1].nodeName);
+			// EM 
 		}
 
 		// 5번 문제)

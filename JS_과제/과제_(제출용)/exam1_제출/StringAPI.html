@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String API</title>
+</head>
+<body>
+    
+    <h2>String</h2>
+    <p>1. String에서 Array로 전환하는 split("구분자", limit)</p>
+    <p>split() 메서드는 String객체를 지정한 구분자를 이용하여 여러 개의 문자열로 나눈다.</p>
+    <script>
+        var avengers = "Iron man, Hulk, Thor, Black widow";
+        var result = avengers.split(",", 2); 
+        console.log(result); // ["Iron man", "Hulk"] - Array
+    </script>
+</body>
+</html>
