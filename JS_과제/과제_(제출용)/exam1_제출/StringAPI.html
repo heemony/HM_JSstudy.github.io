@@ -3,17 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>String API</title>
+    <title>String API 함수 용례 정리</title>
+    <link rel="stylesheet" href="./common.css">
 </head>
 <body>
-    
-    <h2>String</h2>
-    <p>1. String에서 Array로 전환하는 split("구분자", limit)</p>
-    <p>split() 메서드는 String객체를 지정한 구분자를 이용하여 여러 개의 문자열로 나눈다.</p>
-    <script>
-        var avengers = "Iron man, Hulk, Thor, Black widow";
-        var result = avengers.split(",", 2); 
-        console.log(result); // ["Iron man", "Hulk"] - Array
-    </script>
+    <h1>String API</h1>
+    <ul>
+        <li>
+            <p class="title2">문자열 (String)</p>
+            <div>
+                - 변수 타입 중 <strong>primitive values</strong><br>
+                <strong>primitive values</strong> : 메모리 영역에서의 변경이 불가능하다. 재할당이 가능.<br>
+           
+            <span class="hl">코드</span><br>
+            <pre>
+                <code>
+var str1 = "hello I'm string";
+                </code>
+            </pre>
+
+            <span class="hl">문자 접근</span> <br>
+            <p>- 2가지 방법이 있다.</p>
+            <pre>
+                <code>
+// 1. charAt() 메서드 사용
+str1.charAt(1); 
+// returns "e"
+
+// 2. 문자열을 배열과 같은 오브젝트 취급하여, 문자에 해당하는 숫자 인덱스를 사용.
+return str1[1]; 
+// returns "e"
+                </code>
+            </pre>
+            <span class="hl">주의할 점</span> <br>
+            <p>- 문자열 원형과 String객체의 차이</p>
+            <pre>
+                <code>
+// 1. 원형 문자열(Primitive Strings) : 문자열 리터럴과 생성자 없이 String을 호출하여 반환된 문자열
+var s_prim = "foo"; // 문자열 리터럴
+var s_obj = new String(s_prim); // new 생성자 키워드를 사용하여 만든 String 객체
+
+console.log(typeof s_prim); // "string"
+console.log(typeof s_obj); // "Object"
+                </code>
+            </pre>
+            </div>
+            <script>
+                var str1 = "hello I'm string";
+                console.log(str1);
+                console.log(str1.charAt(1));
+                console.log(str1[1])
+            </script>
+        </li>
+        <li>
+            <p class="title2">1. 문자열 치환하기 String.replace() </p>
+            <div>
+                - 어떤 패턴에 일치하는 일부. <br>
+                - 또는 모든 부분이 교체된 새로운 문자열을 반환. <br> 
+                <span class="hl">구문</span> <br>
+                - str.replace(pattern, replacement) <br>
+                <br>
+                - (치환대상) pattern : 정규식 객체 또는 리터럴 | 새로운 문자로 대체될 string <br>
+                - (치환할 문자열) replacement : 새로운 String | 함수 <br>
+                <br>
+                <span class="hl">반환 값</span> <br>
+                - String, (기존 String을 바꾸지 않는다.) 새로운 문자열을 리턴한다. <br>
+                - 정규식(RegExp)이 될 수 있다. <br>
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+var str="000님  환영합니다. hello coding world"; 
+alert(str.replace('000', 'heemyun')); // 문자를 이용해서 값을 치환
+alert(str.replace(/000/gi, 'heemyun')); // 정규표현식을 이용해서 값을 치환
+                    </code>
+                </pre>
+            </div>
+            <script>
+
+            </script>
+        </li>
+        <li>
+            <p class="title2">2. 문자열의 특정 구간을 검색 String.slice()</p>
+            <div>
+                <span class="hl">구문</span> <br>
+                - str.slice(begin, end)<br>
+                <br>
+                begin : 검색 구간의 시작 지점. <br>
+                end : 검색 구간의 종료 지점. 지정하지 않으면 string.length-1과 같다. <br>
+                <span class="hl">반환 값</span> <br>
+                - string, 검색 결과에 해당하는 문자열 <br>
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                - 문자열에서 첫번째 인자와 두번째 인자 사이에 해당하는 문자열을 검색해서 리턴한다. <br>
+                - 두번째 인자(=end)를 지정하지 않으면 문자열의 끝까지를 검색 대상으로 한다.
+                <pre>
+                    <code>
+var str = 'coding everybody';
+console.log(str.slice(6,12)) // every
+console.log(str.slice(6)) // everybody, 두번째 인자를 생략했기 때문에 문자열 전체를 대상으로 검색
+console.log(str.slice(-6)) // rybody, 첫번째 인자가 음수이면 문자의 끝에서부터 검색함
+
+console.log(str) // coding everybody, str의 원래 값은 변하지 않음  
+                    </code>
+                </pre>
+            </div>
+            <script>
+
+            </script>
+        </li>
+        <li>
+            <p class="title2">3. 문자열을 기준으로 쪼개서 배열에 담는 String.split() </p>
+            <div>
+                <span class="hl">설명</span> <br>
+                - 반복문과 주로 사용된다. <br>
+                - 반대되는 메소드로는 Array.prototype.join()이 있다. <br>
+                <span class="hl">구문</span> <br>
+                - str.split(separator, limit)<br>
+                <span class="hl">반환 값</span> <br>
+                - Array, 검색 결과에 해당하는 문자열 <br>
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+var str = 'html,css,javascript,jquery,apache,php';
+str.split(',') //배열 [html,css,javascript,jquery,apache,php]
+str.split(',',2) // 배열 [html,css] 
+                    </code>
+                </pre>
+                <pre>
+                    <code>
+// &로 되어 있는 구분자를 ,로 변경하는 예제 
+var emails = 'a@cb.com&b@cb.com&c@cb.com&d@cb.com'; 
+emailArray = emails.split('&');
+emailStr = '';
+for(var i = 0 ; i < emailArray.length ; i++){
+    emailStr += emailArray[i]+','
+}
+alert(emailStr) // a@cb.com,b@cb.com,c@cb.com,d@cb.com, 
+                    </code>
+                </pre>
+                <pre>
+                    <code>
+// split와 join을 이용해서 처리 이메일 구분자를 변경 
+var emails = 'a@cb.com&b@cb.com&c@cb.com&d@cb.com'; 
+emailArray = emails.split('&');
+emailStr = emailArray.join(',');
+alert(emailStr) // a@cb.com,b@cb.com,c@cb.com,d@cb.com
+                    </code>
+                </pre>
+            </div>
+            <script>
+                var avengers = "Iron man, Hulk, Thor, Black widow";
+                var result = avengers.split(",", 2); 
+                console.log(result); // ["Iron man", "Hulk"] - Array
+            </script>
+        </li>
+        <li>
+            <p class="title2">4. 같은 것을 찾아주기 String.search() </p>
+            <div>
+                - <br>
+                <span class="hl">구문</span> <br>
+                - <br>
+                <span class="hl">반환 값</span> <br>
+                - 매치되는 것이 있다면 : 인덱스를 반환한다. <br>
+                - 매치되는 것이 없다면 : -1을 반환한다. <br>
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+var str = "hey JudE";
+var re = /[A-Z]/g;
+var re2 = /[.]/g;
+console.log(str.search(re)); // returns 4, 첫번째 대문자 "J"
+console.log(str.search(re2)); // returns -1, .을 찾을 수 없다.
+                    </code>
+                </pre>
+            </div>
+            <script>
+                var str = "hey JudE";
+                var re = /[A-Z]/g;
+                var re2 = /[.]/g;
+                console.log(str.search(re)); // returns 4, which is the index of the first capital letter "J"
+                console.log(str.search(re2)); // returns -1 cannot find '.' dot punctuation
+            </script>
+        </li>
+        <li>
+            <p class="title2">5. 정규식개체나 객체를 이용하여 매치되는 것을 찾기 String.match() </p>
+            <div>
+                - 문자열이 정규식과 매치되는 부분을 검색한다. <br>
+                <span class="hl">구문</span> <br>
+                - str.mtach(regexp)<br>
+                <br>
+                - regexp : 정규식 개체이다. <br>
+                - 객체로 전달되면 new RegExp(obj)를 사용하여 암묵적으로 RegExp로 변환된다. <br>
+                - 매개변수를 전달하지 않을 경우, 빈 문자열[] - array로 반환된다. <br>
+                <span class="hl">반환 값</span> <br>
+                - 문자열이 정규식과 일치하면 Array를 반환한다. <br>
+                
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+var str5 = 'For more information, see Chapter 3.4.5.1';
+var re5 = /see (chapter \d+(\.\d)*)/i;
+var found = str5.match(re5);
+console.log(found);
+
+// 출력결과
+// logs [ 'see Chapter 3.4.5.1',
+//        'Chapter 3.4.5.1',
+//        '.1',
+//        index: 22,
+//        input: 'For more information, see Chapter 3.4.5.1' ]
+
+// 'see Chapter 3.4.5.1'는 완전한 매치 상태임.
+// 'Chapter 3.4.5.1'는 '(chapter \d+(\.\d)*)' 부분에 의해 발견된 것임.
+// '.1' 는 '(\.\d)'를 통해 매치된 마지막 값임.
+// 'index' 요소가 (22)라는 것은 0에서부터 셀 때 22번째 위치부터 완전 매치된 문자열이 나타남을 의미함.
+// 'input' 요소는 입력된 원래 문자열을 나타냄.
+                    </code>
+                </pre>
+            </div>
+            <script>
+                var str5 = 'For more information, see Chapter 3.4.5.1';
+                var re5 = /see (chapter \d+(\.\d)*)/i;
+                var found = str5.match(re5);
+                console.log(found);
+                
+                // 출력결과
+                // logs [ 'see Chapter 3.4.5.1',
+                //        'Chapter 3.4.5.1',
+                //        '.1',
+                //        index: 22,
+                //        input: 'For more information, see Chapter 3.4.5.1' ]
+
+                // 'see Chapter 3.4.5.1'는 완전한 매치 상태임.
+                // 'Chapter 3.4.5.1'는 '(chapter \d+(\.\d)*)' 부분에 의해 발견된 것임.
+                // '.1' 는 '(\.\d)'를 통해 매치된 마지막 값임.
+                // 'index' 요소가 (22)라는 것은 0에서부터 셀 때 22번째 위치부터 완전 매치된 문자열이 나타남을 의미함.
+                // 'input' 요소는 입력된 원래 문자열을 나타냄.
+
+            </script>
+        </li>
+        <li>
+            <p class="title2">6. 문자열 공백제거 String.trim() </p>
+            <div>
+                <span class="hl">반환 값</span> <br>
+                - 양 끝에서 공백을 제거한 새로운 문자열을 반환.<br>
+                - 원본에 영향을 주지 않는다.
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+let str6 = "   문자열에 공백이 있습니다.   ";
+strResult6 = str6.trim();
+console.log(str6) // "   문자열에 공백이 있습니다.   "
+console.log(strResult6) // "문자열에 공백이 있습니다."
+
+
+let str7 = "      문자열 한쪽끝에 공백이 있습니다.";
+strResult7 = str7.trim(); 
+console.log(strResult7); // "문자열 한쪽끝에 공백이 있습니다."
+                    </code>
+                </pre>
+            </div>
+            <script>
+                let str6 = "   문자열 양쪽에 공백이 있습니다.   ";
+                strResult6 = str6.trim();
+                console.log(str6) // "   문자열 양쪽에 공백이 있습니다.   "
+                console.log(strResult6) // "문자열 양쪽에 공백이 있습니다."
+
+                let str7 = "      문자열 한쪽끝에 공백이 있습니다.";
+                strResult7 = str7.trim(); 
+                console.log(strResult7); // "문자열 한쪽끝에 공백이 있습니다."
+            </script>
+        </li>
+        <li>
+            <p class="title2">7. 특정한 문자열의 index를 돌려주는 String.indexOf() </p>
+            <div>
+                <span class="hl">구문</span> <br>
+                - stringValue.indexOf(searchValue[,fromIndex]) <br>
+                <br>
+                searchValue : string, 필수값이다. 탐색하고 싶은 문자열을 넣는다 <br>
+                fromIndex : integer(0 < fromIndex < stringValue.length -1) <br>
+                <span class="hl">설명</span> <br>
+                - stringValue에서 특정한 문자열의 위치(index)를 반환한다. <br>
+                - 탐색하려는 문자열이 존재하지 않는다면 -1을 반환한다. 
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+var stringValue = '안녕하세요 - 송희면입니다. 열심히 코딩을 공부하고 있어요..';
+console.log(stringValue.indexOf('희면')); // 9
+console.log(stringValue.indexOf('코딩')); // 20
+console.log(stringValue.indexOf('PHP')); // -1, PHP는 stringValue안에 존재하지 않는다.
+
+console.log(stringValue.indexOf('열심히',0)); // 16
+console.log(stringValue.indexOf('열심히',2)); // 16, 두번째 인자로 2가 주어지면 탐색의 대상이 '하세요 - 송희면입니다. 열심히 코딩을 공부하고 있어요..'로 줄어든다. index 값은 변하지 않는다
+console.log(stringValue.indexOf('열심히',19)); // -1, 17째 '심히 코딩을 공부하고 있어요..' 에서는 열심히가 없으므로 -1을 반환.
+                    </code>
+                </pre>
+            </div>
+            <script>
+                var stringValue = '안녕하세요 - 송희면입니다. 열심히 코딩을 공부하고 있어요..';
+                console.log(stringValue.indexOf('희면')); // 9
+                console.log(stringValue.indexOf('코딩')); // 20
+                console.log(stringValue.indexOf('PHP')); // -1, PHP는 stringValue안에 존재하지 않는다.
+                
+                console.log(stringValue.indexOf('열심히',0)); // 16
+                console.log(stringValue.indexOf('열심히',2)); // 16, 두번째 인자로 2가 주어지면 탐색의 대상이 '하세요 - 송희면입니다. 열심히 코딩을 공부하고 있어요..'로 줄어든다. index 값은 변하지 않는다
+                console.log(stringValue.indexOf('열심히',19)); // -1, 17째 '심히 코딩을 공부하고 있어요..' 에서는 열심히가 없으므로 -1을 반환.
+            </script>
+        </li>
+        <li>
+            <p class="title2">8. RegExp </p>
+            <div>
+                - RegExp 생성자는 패턴을 사용하여 텍스트를 판별할 때 사용한다. <br>
+                <span class="hl">설명</span> <br>
+                1. 리터럴 표기법<br>
+                : 매개변수는 두 빗금으로 감싸야 한다. 따옴표는 쓰지 않는다. <br>
+                2. 생성자 함수 <br>
+                : 빗금(X), 따옴표를 사용한다.
+                - <br> 
+                - <br>
+                - <br>
+                <span class="hl">플래그</span> <br>
+                - i : 대/소문자 무시 <br>
+                - g : 글로벌 무시
+            </div>
+            <div>
+                <span class="hl">코드</span> <br>
+                <pre>
+                    <code>
+/ab+c/i
+new RegExp(/ab+c/, 'i') // 리터럴
+new RegExp('ab+c', 'i') // 생성자
+                    </code>
+                </pre>
+            </div>
+            <script>
+
+            </script>
+        </li>
+    </ul>
 </body>
 </html>
