@@ -19,6 +19,6 @@ button::-moz-focus-inner{padding:0;border:0}
 .title3 {font-size: 18px; font-weight: 700;}
 .desc {font-size: 14px; color: black;}
 .hl {background: linear-gradient(to top, rgb(180, 255, 161) 50%, transparent 50%); font-weight: 900;}
-.blur {font-style: italic; color: rgb(102, 102, 102);}
+.blur {font-size: 10px; font-style: italic; color: rgb(102, 102, 102); position:absolute; bottom: 0;}
 .card {padding: 20px 0;}
 pre {display: block; background-color: rgba(172, 194, 179, 0.63); border-radius: 10px; margin: 10px; color: #666; page-break-inside: avoid; font-size: 15px; line-height: 1.6; margin-bottom: 1.6em; max-width: 100%; overflow: auto; padding: 1em 1.5em; word-wrap: break-word; }
