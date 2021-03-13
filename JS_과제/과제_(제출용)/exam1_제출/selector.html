@@ -5,8 +5,171 @@
 <meta charset="utf-8">
 <title>exam</title>
 <link rel="stylesheet" href="common.css" />
-<!-- <script src="http://code.jquery.com/jquery-latest.js"></script> jQuery library -->
+<script src="https://code.jquery.com/jquery-latest.js"></script> 
+<!-- jQuery library -->
 </head>
+<script>
+	// jQuery default
+	// $(document).ready(function(){
+	
+	// });
+	// $(function(){
+	
+	// });
+	
+	
+	// jQuery code
+	$(function(){
+		var examObj1 = $('.exam_wrap:eq(0)');
+		var examObj2 = $('.exam_wrap:eq(1)');
+		var examObj3 = $('.exam_wrap:eq(2)');
+		var examObj4 = $('.exam_wrap:eq(3)');
+		var examObj5 = $('.exam_wrap:eq(4)');
+		var examObj6 = $('.exam_wrap:eq(5)');
+		var examObj7 = $('.exam_wrap:eq(6)');
+		var examObj8 = $('.exam_wrap:eq(7)');
+
+		examObj1.find('button').on('click', function(){
+			examObj1.find('.exam_q *').css('background','yellow');
+		});
+
+		examObj2.find('button').on('click', function(){
+			examObj2.find('.exam_q span').css('background','yellow');
+		});
+
+		examObj3.find('button').on('click', function(){
+			examObj3.find('.exam_q em > span').css('background','yellow');
+		});
+
+		examObj4.find('button').on('click', function(){
+			examObj4.find('.exam_q > span').css('background','yellow');
+		});
+
+		examObj5.find('button').on('click', function(){
+			examObj5.find('.exam_q div + p').css('background','yellow');
+		});
+
+		examObj6.find('button').on('click', function(){
+			examObj6.find('.exam_q div ~ span').css('background','yellow');
+		});
+
+		examObj7.find('button').on('click', function(){
+			examObj7.find('.exam_q .active').css('background','yellow');
+		});
+
+		examObj8.find('button').on('click', function(){
+			examObj8.find('.exam_q #active').css('background','yellow');
+		});
+
+	});
+
+
+	
+	// javascript code
+	window.onload = function(){ 
+		// var examObj = document.getElementsByClassName('exam_wrap'); 
+		// // 1. [노션에정리하기]
+		// // document에서 classname이 'exam_wrap'인 모든 요소들을 유사배열 형태(HTMLCollection-LiveCollection)로 가지고 온다.
+		// 	// HTML Collection 은 오직 *element만을 담는다. 
+		// 		// *element (one specific type of node): div, body, window..같은 특정 타입.
+		// 	// NodeList는 general lists of nodes. (element는 node의 하위 개념)
+		// // [!] get~으로 가져오는 것과 query셀렉터의 차이는 몬가요.
+		// 	// get~ HTMLCollection으로 리턴함. (Live Collection형태 -> 실시간으로 업데이트 된다.)
+		// 	// querySelectorAll은 NodeList로 리턴함. (Static Collection형태 -> 실시간으로 업데이트 되지 않는다.), [*] 참고 대게 노드 리스트는 Live Colletion이다. 
+		// 		// 클래스 이름을 변경하여 속성값을 바꾸거나 할 때에는 querySelectorAll을 쓰는 편이 좋은 것 같다!
+
+		// // 2. [?] 다른 방법이 뭐가 있는지 찾아보기
+
+
+		// // 1번 문제)
+		// var examObj1 = document.getElementsByClassName('exam_wrap')[0]; 
+		// examObj1.getElementsByTagName('button')[0].onclick = function(){
+		// 	var examChild = examObj1.getElementsByClassName('exam_q')[0].querySelectorAll('*');
+		// 	for(var i = 0; i < examChild.length; i++){
+		// 		examChild[i].style.backgroundColor = 'yellow';
+		// 	}
+		// };
+	
+		// // 2번 문제)
+		// var examObj2 = document.getElementsByClassName('exam_wrap')[1]; 
+		// // console.log(examObj2.getElementsByTagName('button')[0]); 
+		// // examObj2에서 버튼은 하나이므로 index : 0 (HTMLCollection은 index로 찾을 수 있다.)
+		// examObj2.getElementsByTagName('button')[0].onclick = function() {
+		// 	var examChild = examObj2.getElementsByClassName('exam_q')[0].querySelectorAll('span');
+		// 	for(var i = 0; i < examChild.length; i++){
+		// 		examChild[i].style.backgroundColor = 'yellow';
+		// 	}
+		// };
+	
+		// // 3번 문제)
+		// var examObj3 = document.getElementsByClassName('exam_wrap')[2]; 
+		// console.log(examObj3);
+		// examObj3.getElementsByTagName('button')[0].onclick = function() {
+		// 	var elElemTest = examObj3.getElementsByClassName('exam_q')[0].children;
+		// 	console.log(elElemTest); 
+		// 	// 'exam_q'을 부모로 둔 자식 태그들의 HTMLCollection이 나옴. div, p, span, em
+			
+		// 	var emElem = examObj3.getElementsByClassName('exam_q')[0].querySelectorAll('em');
+		// 	var emElemChild = emElem[0].children;
+		// 	emElemChild[0].style.backgroundColor = "yellow";
+		// };
+	
+		// // 4번 문제)
+		// var examObj4 = document.getElementsByClassName('exam_wrap')[3];
+		// examObj4.getElementsByTagName('button')[0].onclick = function() {
+		// 	var spanElem = examObj4.querySelector('.exam_q > span');
+		// 	// [?] 이거 말고 또 다른 방법이 뭐가 있을지 찾아보기.
+		// 	spanElem.style.backgroundColor = "yellow";
+		// };
+	
+		// // 5번 문제)
+		// var examObj5 = document.getElementsByClassName('exam_wrap')[4];
+		// examObj5.getElementsByTagName('button')[0].onclick = function() {
+		// 	var pElem = examObj5.getElementsByClassName('exam_q')[0].children[1];
+		// 	// HTMLCollection(4) [div, p, span, em]
+		// 	// [?] 이렇게 쫌쫌따리로 찾는거 말고 눈치껏 찾아주게끔 못할까..? 바르 다음에 나오는 요소를 찾는 셀렉터가 따로 있는지..
+		// 		// 혹시 children 말고 querySelector를 쓰라는 의도였을까!? (가장 첫번째 요소를 찾아줌) 
+		// 	var pElem2 = examObj5.getElementsByClassName('exam_q')[0].querySelector('p'); 
+		// 	console.log(pElem2);
+		// 	pElem2.style.backgroundColor = "yellow";
+		// };
+		
+		// // 6번 문제)
+		// var examObj6 = document.getElementsByClassName('exam_wrap')[5];
+		// examObj6.getElementsByTagName('button')[0].onclick = function() {
+		// 	var allSpanElem = examObj6.getElementsByClassName('exam_q')[0].querySelectorAll('span');
+		// 	for(let i = 0; i < allSpanElem.length; i++) {
+		// 		allSpanElem[i].style.backgroundColor = "yellow";
+		// 	}
+		// };
+
+		// // 7번 문제)
+		// var examObj7 = document.getElementsByClassName('exam_wrap')[6];
+		// examObj7.getElementsByTagName('button')[0].onclick = function() {
+		// 	// var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].querySelectorAll('.active'); 
+		// 	// static collection으로 반환
+
+		// 	var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].getElementsByClassName('active'); 
+		// 	// live collection으로 반환 -> 클래스 이름같은거 변경할 때에는 바로바로 업데이트되기 때문에 for문으로 제어하면 원하는대로 안 된다고 함.(참고)
+
+		// 	console.log(classActiveElems)
+		// 	for(let i = 0; i < classActiveElems.length; i++) {
+		// 		classActiveElems[i].style.backgroundColor = "yellow";
+		// 	}
+		// };
+
+		// 8번 문제)
+		// var examObj8 = document.getElementsByClassName('exam_wrap')[7];
+		// examObj8.getElementsByTagName('button')[0].onclick = function() {
+		// 	// var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].getElementById('#active');
+		// 		// 위의 코드가 에러가 나는 이유
+		// 		// Document(or Element).getElementsByClassName과는 다르게 getElementById는 document.getElementById으로만 쓸 수 있다. DOM객체이기 때문.
+		// 			// 
+		// 	var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].querySelector('#active');
+		// 	idActiveElem.style.backgroundColor = "yellow";
+		// };
+	}
+</script>
 <body>
 <!-- wrapper [s] -->
 <div id="wrapper">
@@ -117,132 +280,5 @@
 </div>
 <!-- wrapper [e] -->
 </body>
-<script>
-	// jQuery default
-	// $(document).ready(function(){
-	
-	// });
-	// $(function(){
-	
-	// });
-	
-	
-	// jQuery code
-	// $(function(){
-	// 	var examObj1 = $('.exam_wrap:eq(0)');
-	// 	examObj1.find('button').on('click', function(){
-	// 		examObj1.find('.exam_q *').css('background','yellow');
-	// 	});
 
-	// 	var examObj2 = $('.exam_wrap:eq(1)');
-	// 	examObj2.find('button').on('click', function(){
-	// 		examObj1.find('.exam_q span').css('background','yellow');
-	// 	});
-	// });
-	
-	// javascript code
-	window.onload = function(){
-		var examObj = document.getElementsByClassName('exam_wrap'); 
-		// 1. [노션에정리하기]
-		// document에서 classname이 'exam_wrap'인 모든 요소들을 유사배열 형태(HTMLCollection-LiveCollection)로 가지고 온다.
-			// HTML Collection 은 오직 *element만을 담는다. 
-				// *element (one specific type of node): div, body, window..같은 특정 타입.
-			// NodeList는 general lists of nodes. (element는 node의 하위 개념)
-		// [!] get~으로 가져오는 것과 query셀렉터의 차이는 몬가요.
-			// get~ HTMLCollection으로 리턴함. (Live Collection형태 -> 실시간으로 업데이트 된다.)
-			// querySelectorAll은 NodeList로 리턴함. (Static Collection형태 -> 실시간으로 업데이트 되지 않는다.), [*] 참고 대게 노드 리스트는 Live Colletion이다. 
-				// 클래스 이름을 변경하여 속성값을 바꾸거나 할 때에는 querySelectorAll을 쓰는 편이 좋은 것 같다!
-
-		// 2. [?] 다른 방법이 뭐가 있는지 찾아보기
-
-
-		// 1번 문제)
-		var examObj1 = document.getElementsByClassName('exam_wrap')[0]; 
-		examObj1.getElementsByTagName('button')[0].onclick = function(){
-			var examChild = examObj1.getElementsByClassName('exam_q')[0].querySelectorAll('*');
-			for(var i = 0; i < examChild.length; i++){
-				examChild[i].style.backgroundColor = 'yellow';
-			}
-		};
-	
-		// 2번 문제)
-		var examObj2 = document.getElementsByClassName('exam_wrap')[1]; 
-		// console.log(examObj2.getElementsByTagName('button')[0]); 
-		// examObj2에서 버튼은 하나이므로 index : 0 (HTMLCollection은 index로 찾을 수 있다.)
-		examObj2.getElementsByTagName('button')[0].onclick = function() {
-			var examChild = examObj2.getElementsByClassName('exam_q')[0].querySelectorAll('span');
-			for(var i = 0; i < examChild.length; i++){
-				examChild[i].style.backgroundColor = 'yellow';
-			}
-		};
-	
-		// 3번 문제)
-		var examObj3 = document.getElementsByClassName('exam_wrap')[2]; 
-		console.log(examObj3);
-		examObj3.getElementsByTagName('button')[0].onclick = function() {
-			var elElemTest = examObj3.getElementsByClassName('exam_q')[0].children;
-			console.log(elElemTest); 
-			// 'exam_q'을 부모로 둔 자식 태그들의 HTMLCollection이 나옴. div, p, span, em
-			
-			var emElem = examObj3.getElementsByClassName('exam_q')[0].querySelectorAll('em');
-			var emElemChild = emElem[0].children;
-			emElemChild[0].style.backgroundColor = "yellow";
-		};
-	
-		// 4번 문제)
-		var examObj4 = document.getElementsByClassName('exam_wrap')[3];
-		examObj4.getElementsByTagName('button')[0].onclick = function() {
-			var spanElem = examObj4.querySelector('.exam_q > span');
-			// [?] 이거 말고 또 다른 방법이 뭐가 있을지 찾아보기.
-			spanElem.style.backgroundColor = "yellow";
-		};
-	
-		// 5번 문제)
-		var examObj5 = document.getElementsByClassName('exam_wrap')[4];
-		examObj5.getElementsByTagName('button')[0].onclick = function() {
-			var pElem = examObj5.getElementsByClassName('exam_q')[0].children[1];
-			// HTMLCollection(4) [div, p, span, em]
-			// [?] 이렇게 쫌쫌따리로 찾는거 말고 눈치껏 찾아주게끔 못할까..? 바르 다음에 나오는 요소를 찾는 셀렉터가 따로 있는지..
-				// 혹시 children 말고 querySelector를 쓰라는 의도였을까!? (가장 첫번째 요소를 찾아줌) 
-			var pElem2 = examObj5.getElementsByClassName('exam_q')[0].querySelector('p'); 
-			console.log(pElem2);
-			pElem2.style.backgroundColor = "yellow";
-		};
-		
-		// 6번 문제)
-		var examObj6 = document.getElementsByClassName('exam_wrap')[5];
-		examObj6.getElementsByTagName('button')[0].onclick = function() {
-			var allSpanElem = examObj6.getElementsByClassName('exam_q')[0].querySelectorAll('span');
-			for(let i = 0; i < allSpanElem.length; i++) {
-				allSpanElem[i].style.backgroundColor = "yellow";
-			}
-		};
-
-		// 7번 문제)
-		var examObj7 = document.getElementsByClassName('exam_wrap')[6];
-		examObj7.getElementsByTagName('button')[0].onclick = function() {
-			// var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].querySelectorAll('.active'); 
-			// static collection으로 반환
-
-			var classActiveElems = examObj7.getElementsByClassName('exam_q')[0].getElementsByClassName('active'); 
-			// live collection으로 반환 -> 클래스 이름같은거 변경할 때에는 바로바로 업데이트되기 때문에 for문으로 제어하면 원하는대로 안 된다고 함.(참고)
-
-			console.log(classActiveElems)
-			for(let i = 0; i < classActiveElems.length; i++) {
-				classActiveElems[i].style.backgroundColor = "yellow";
-			}
-		};
-
-		// 8번 문제)
-		var examObj8 = document.getElementsByClassName('exam_wrap')[7];
-		examObj8.getElementsByTagName('button')[0].onclick = function() {
-			// var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].getElementById('#active');
-				// 위의 코드가 에러가 나는 이유
-				// Document(or Element).getElementsByClassName과는 다르게 getElementById는 document.getElementById으로만 쓸 수 있다. DOM객체이기 때문.
-					// 
-			var idActiveElem = examObj8.getElementsByClassName('exam_q')[0].querySelector('#active');
-			idActiveElem.style.backgroundColor = "yellow";
-		};
-	}
-</script>
 </html>
