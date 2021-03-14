@@ -242,28 +242,8 @@ console.log(증가하는놈());
 console.log(증가하는놈());
 console.log(증가하는놈());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</script>
+<script>
 ////////////////////////////////////////////////////////////////////////////////
 /* 함수 선언문과 함수 표현식의 호이스팅 예제 */
 // decFunc(); // 출력 됨.
@@ -356,6 +336,160 @@ var A = {
 (function() {console.log(this)}.bind(A))();
 // > {foo: 1}
 
+</script>
+<p>0314</p>
+<a href="https://www.nextree.co.kr/p4150/"></a>
+<script>
+// 모듈화
+// 아래에 작성된 즉시실행함수는 name, gender, position 속성과 payBonus 메소드를 가진 객체를 clerk 변수에 반환한다.
+// 다시말해, 즉시실행함수가 clerk 변수에 저장되는 것이 아니라, 즉시실행함수의 '반환값'이 clerk 변수에 저장된다.
+// name, gender, position 변수를 글로벌 스코프에 추가하지 않고 단지 clerk변수만 추가되었다.
+// name, gender, position 속성은 clerk 변수에 저장된 객체의 속성이므로, 외부에서 접근이 가능하지만.. (public)
+// salary, totalBonus 변수는 즉시실행함수 내의 변수이므로 외부에서 접근할 수 없다. (private)
+// 또
+// payBonus 메소드를 호출할 때 마다 totalBonus 변수에 저장된 값이 업데이트 되지만
+// paySalary 메소드는 여러번 호출해도 salary 변수에 저장된 값은 업데이트 되지 않는다는 점이다.
+
+var clerk = (function() {
+    var name = 'teo';
+    var gender = 'male';
+    var position = 'senior';
+
+    // salary private
+    var salary = 2000;
+    var taxSalary = 200;
+    var totalBonus = 100;
+    var taxBonus = 10;
+
+    var paySalary = function() {
+        return salary - taxSalary;
+    };
+
+    var payBonus = function() {
+        totalBonus = totalBonus - taxBonus;
+        return totalBonus;
+    };
+
+    // Public 속성, 메소드
+    return {
+        name: name,
+        gender: gender,
+        position: position,
+
+        paySalary: paySalary,
+        payBonus: payBonus
+    };
+}());
+// name 속성은 Public
+console.log(clerk.name); // teo
+console.log(clerk.gender); // male
+console.log(clerk.position); // senior
+
+// salary 변수는 즉시실행함수 내부 변수이므로 private
+console.log(clerk.salary); // undefined
+console.log(clerk.totalBonus); // undefined
+console.log(clerk.taxBonus); // undefined
+
+// paySalary 메소드는 public - 업데이트되지 않는다.
+console.log(clerk.paySalary()); // 1800
+console.log(clerk.paySalary()); // 1800
+
+// payBonus 메소드는 pubic - 업데이트된다.
+console.log(clerk.payBonus()); // 90
+console.log(clerk.payBonus()); // 80
+</script>
+<script>
+// SPA 모듈화 구현시 코드 순서
+// 1. 모듈 스코프 내에서 사용할 변수 작성
+// 2. 유틸리티 메소드 작성
+// 3. DOM 조작 메소드 작성
+// 4. 이벤트 핸들러 작성
+// 5. Public 메소드 작성
+
+// SPA 모듈 작성 순서 예시
+var app = (function(){
+    // 1. 모듈 스코프 내에서 사용할 변수를 작성한다.
+    var scopeVar = {};
+    var utilMethod;
+    var manipulateDom;
+    var eventHandle;
+    var initModule;
+
+    // 2. 유틸리티 메소드 작성
+    utilMethod = function() {
+        // do something
+    }; 
+
+    // 3. DOM 조작 메소드 작성
+    manipulateDom = function() {
+        // do something
+    };
+
+    // 4. 이벤트 핸들러 작성
+    eventHandle = function() {
+        // do something
+    };
+
+    // 5. Public 메소드 작성
+    initModule = function() {
+        // do something
+    };
+
+    return {
+        init: initModule
+    };
+}());
+</script>
+<script>
+// 라이브러리를 모듈화하는 코딩 기법 - 제이쿼리, 백본 언스코어, 리콰이어JS 등 많은 VJS 라이브러리나 프레임워크가 아래와 같은 코딩기법을 사용한다.
+
+/*
+ * 라이브러리 모듈화를 위한 코딩기법1
+ * call 함수 이용
+ */
+
+(function() {
+    'use strict';
+
+    var root = this;
+    var version = '1.0';
+    var Module1;
+    if(typeof exports !== 'undefined') {
+        Module1 = exports;
+    } else {
+        Module1 = root.Module1 = {};
+    }
+    Module1.getVersion = function() {
+        return version;
+    }
+}).call(this);
+console.log(Module1.getVersion());
+/*
+ * export
+ * JS 모듈에서 함수, 객체, 원시 값을 내보낼 때 사용한다.
+ * 모듈에는 모듈이 실행될 때 API를 추가 할 수있는 객체 인 "exports"라는 자유 변수가 있습니다. 
+ * 모듈은 "exports" 개체를 유일한 내보내기 수단으로 사용해야합니다.
+ * 
+ */
+
+/*
+ * 라이브러리 모듈화를 위한 코딩기법2
+ * 글로벌 객체를 파라미터로 전달
+ */
+(function(global) {
+    var root = global;
+    var version = '2.0';
+    var Module2;
+    if(typeof exports !== 'undefined') {
+        Module2 = exports;
+    } else {
+        Module2 = root.Module2 = {};
+    }
+    Module2.getVersion = function() {
+        return version;
+    }
+}(this));
+console.log(Module2.getVersion());
 </script>
 </body>
 </html>
