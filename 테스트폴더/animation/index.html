@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>test</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<style>
+.test-wrap {
+	width: 200px;
+	height: 600px;
+	background: blue;
+}
+.test-item {
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+.img-section {
+    position: relative;
+    height: 100vh;
+}
+.img-wrap {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.img-wrap img {
+    position: absolute;
+    top: -2000px;
+    left: -2000px;
+    right: -2000px;
+    bottom: -2000px;
+    width: auto;
+    min-width: 100%;
+    min-height: 100%;
+    height: 100%;
+    margin: auto;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+<!--/* header */-->
+    <div style="height:1000px;background:#000"></div>
+    <!--/* content */-->
+    <div id="content" role="main">
+        <div class="test-section">
+            <div class="test-wrap">
+                <div class="test-item">Box</div>
+            </div>
+        </div>
+        <div style="height:1000px;background:#000"></div>
+        <div class="test-section2">
+            <div class="test-wrap">
+                <div class="test-item">Box</div>
+            </div>
+        </div>
+        <div style="height:1000px;background:#000"></div>
+        <div class="test-section3">
+            <div class="img-section">
+                <div class="img-wrap"><img src="@dummy_kv.jpg" alt=""></div>
+            </div>
+        </div>
+        <div style="height:1000px;background:#000"></div>
+        <div class="test-section4">
+            <div class="img-section">
+                <div class="img-wrap"><img src="@dummy_kv.jpg" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <div style="height:5000px;background:#000"></div>
+<!--/* footer */-->
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="vendor01.TweenMax.2.1.3.js"></script>
+<script src="vendor02.ScrollMagic-2.0.7.js"></script>
+<script src="vendor03.animation.gsap.js"></script>
+<script src="utils.js"></script>
+<script src="component.js"></script>
+</body>
+</html>

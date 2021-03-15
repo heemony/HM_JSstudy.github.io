@@ -1,8 +1,22 @@
+/** (모든 코드를 다 이해하면 좋지만 그게 아닐 경우에는) 
+ * 최소한 내가 정확하게 알아야 할 부분.
+ * Component : 크게 수정하거나 할 필요가 없을 것.
+ * CanvasBuild : [component 브라우저 상단 fixed 후] 사용자가 스크롤 내려오면서 background image가 fixed될 때 실행되는 부분. 
+ *  ㄴ1) scale '
+ *  ㄴ2) 캔버스 이미지(핸드폰 프레임)
+ * ParallaxBuild : [component fixed 전] 붙기 전 배경 animation.
+ */
+/** 그래서 수정할 수 있는 부분
+ *  1. 속도와 관련된 부분들
+ *  2. 이미지의 크기
+ *  3. GSAP 속성 : ease, power..
+ */
+
 (function (global, factory) { // 즉시실행함수 (변수, 콜백함수)
     global = global; 
     global.WhyGalaxy = global.WhyGalaxy || {}; 
     global.WhyGalaxy.CinemaView = factory(global); 
-})(this, function (global, isUndefined) { 
+})(this, function (global, isUndefined) { // this 는 global을 가르키고, factory는 function 함수이다..
     "use strict";
 
     var Component = (function () { // 즉시실행함수를 Component변수에 할당.
@@ -22,7 +36,7 @@
                 classes: {
                     isLoaded : 'is-loaded'
                 },
-                customEvent: ".Component" + new Date().getTime(),
+                customEvent: ".Component" + new Date().getTime(), // 왜 시간을 붙여준걸까요? : 혹시라도 변수명이 겹치거나 하면 안되니까 시간으로 구분지어줌!!
                 setScroll: false,
                 resizeStart: null,
                 resizeAttr : {
@@ -31,9 +45,11 @@
                 },
                 viewType: null
             };
-            this.opts = Util.def(defParams, args || {}); // opts? Util안에 있는 def..?
-            if (!(this.obj = $(this.opts.obj)).length) return;
-            this.init(); 
+            this.opts = Util.def(defParams, args || {}); 
+            // this.opts : var defParams에 opts라는 프로퍼티 키값으로 쓸거야.
+            // Util.def : var defParams에 받아온 args객체 혹은 빈객체를 복사할거야.
+            if (!(this.obj = $(this.opts.obj)).length) return; // 받아온게 없다면 여기서 실행 종료.
+            this.init(); // 있다면 init 실행.
         }
         Component.prototype = {
             init: function () { // [처음에 실행되는 init함수]
@@ -42,9 +58,9 @@
             }, 
             // 1번째 함수 _ PC 인지 MO 인지 구별해주는 함수
             initOpts: function () {
-                this.winWidth = Util.winSize().w; // width 사이즈 재어와라.
+                this.winWidth = Util.winSize().w; // width 사이즈 재와라.
                 if (this.winWidth > RESPONSIVE.MOBILE.WIDTH) { // 만약에 모바일보다 큰데, 
-                    if (this.opts.viewType !== 'PC') { // PC와는 다를 경우
+                    if (this.opts.viewType !== 'PC') { // PC가 아닐 경우,
                         this.opts.viewType = 'PC' // PC 값으로 할당
                     } 
                 } else if (this.winWidth <= RESPONSIVE.MOBILE.WIDTH) {
@@ -61,41 +77,50 @@
                 this.bindEvents(true); // [7번째 호출]
             },
             // 2번째 함수 _ 빌드픽쳐스 (정의하는 함수인건가여?)
+            /*
+             * 제이쿼리의 '프로미스'와 'deferred 객체' 
+             * (프로미스는 비동기 프로그래밍을 할 때 코드를 간결하게 관리할 수 있다.)
+             * Deferred : 제이쿼리가 프로미스를 사용할 수 있게 지원해주는 객체.
+             */
             buildPictures : function () {
-                Util.def(this, { // def? 정의하는 함수인가? 
+                Util.def(this, { // this(Component)에다가 아래 객체들을 복사해서 넣어라.
                     pictures : { // pictures라는 객체 프로퍼티
+                        // 왜 널값줬지? 걍 비교할라고?
                         instance : null,
+
                         // 없애는 메소드겠지 뭐..
                         destroy : $.proxy(function () { 
                             if (this.pictures.instance == null) return; // 픽쳐스 인스턴스 없으면 함수 빠져나가.
                             this.pictures.instance.destroy(); // 있다면.destroy() 실행
                             this.pictures.instance = null; // 그리고 null 값으로 할당.
-                        }, this),
+                        }, this), // 대체 이 this는 뭐지
+
                         // 로드하는 메소드겠지.. 뭐..
                         load : $.proxy(function (obj) {
-                            var deferred = $.Deferred(); 
+                            var deferred = $.Deferred(); // 비동기처리
                             if (this.pictures.instance == null) { // 빈값이라면 아래 코드 실행.
-                                // obj와 on이라는 객체 프로퍼티를 갖는 PicturesLoaded라는 인스턴스 생성해라..? 
+                                // obj와 on이라는 객체 프로퍼티를 갖는 PicturesLoaded라는 인스턴스 생성해라
                                 this.pictures.instance = new PicturesLoaded(obj, { 
                                     on : {
                                         complete : $.proxy(function () {
                                             deferred.resolve(); // resolve..해결됐다는건가..?
-                                        }, this) // 요 this는 뭐지???
+                                        }, this) // 요 this가 load 메소드의 매개변수로 넘겨지는 인자? 아니면 PicturesLoaded 메소드로 념겨지는 obj..?
                                     }
                                 });
                             }
-                            return deferred.promise(); // 프로미스..ㅠㅠ..?
-                        }, this) // 대체 이 this는 ㅜ머야..
+                            return deferred.promise(); // 프로미스 반환.
+                        }, this) // this는 메소드같은 것들이 실행되면 계속해서 자신을 바라보게끔 하려고 this를 넣는다.
                     }
                 });
-                // Component객체로 찍어난 인스턴스의 pictures가 로드됐다면 
-                this.pictures.load(this.obj).done($.proxy(function () {
+                // console.log(this);
+                // Component객체로 찍어난 인스턴스의 pictures가 로드됐다면 (*resolve) 
+                // 위의 resolve가 여기 done으로 연결된다. 
+                this.pictures.load(this.obj).done($.proxy(function () { 
                     // loadAfter() 호출해라 이말인건가?
                     this.loadAfter(); // [3번째 호출]
                     // 그리고 obj에 클래스 붙여리.
                     this.obj.addClass(this.opts.classes.isLoaded);
                 }, this));
-
             },
             // 5번째 함수 _ 빌드캔버스 (정의?)
             buildCanvas: function () {
@@ -172,12 +197,14 @@
                             if (this.scrollmagic.controller == null) return;
                             // 고정되는 신
                             this.scrollmagic.scene.stickyScene = new ScrollMagic.Scene(this.scrollmagic.opts.stickyOpts.sceneOpts)
-                                .setPin(this.scrollmagic.opts.stickyOpts.stickyObj) // set 프로퍼티..?
-                                .addTo(this.scrollmagic.controller); // 컨트롤러 붙여라~
+                                .setPin(this.scrollmagic.opts.stickyOpts.stickyObj) // div.'wg-cinema-view__sticky', pins the element for the the scene's duration.
+                                .addTo(this.scrollmagic.controller); // assign the scene to the controller.
+                            console.log(this.scrollmagic.opts.stickyOpts.stickyObj); // > div.'wg-cinema-view__sticky' 가져옴.
+                            console.log(this.scrollmagic.controller)
                             // 애니매이션 되는 신
                             this.scrollmagic.scene.animationScene = new ScrollMagic.Scene(this.scrollmagic.opts.animationOpts.sceneOpts)
                                 .addTo(this.scrollmagic.controller);
-                        }, this), // <- 대체 요 this가 머여
+                        }, this), 
                         destroy : $.proxy(function () {
                             if (this.scrollmagic.controller == null) return;
                             this.scrollmagic.controller.destroy(true);
@@ -291,7 +318,7 @@
                 }
                 this.opts.resizeAttr.w = winWidth;
             },
-            // out..call..back..?...뭐징..
+            // 현재 이거는 사용하지 않는다고 한다.. 일단 패스하세요~
             outCallback: function (ing) {
                 var callbackObj = this.opts[ing];
                 if (callbackObj == null) return;
@@ -299,7 +326,11 @@
             }
         };
 
+        // CanvasBuild는 fixed될 때 실행된다.
         function CanvasBuild(container, args) {
+            console.log(this) // CanvasBuild
+            console.log(args) // {viewType: "PC"}
+
             if (!(this instanceof CanvasBuild)) { // 만약에 this가 CanvasBuild가 아니면 
                 return new CanvasBuild(container, args);
                 // CanvasBuild 인스턴스를 만들어서 반환해라.
@@ -334,8 +365,9 @@
                 this.frameImg = this.frameWrap.find('.frame').get(0);
                 this.frameCutImg = this.frameWrap.find('.frame-cut').get(0);
             },
+            // 프레임과 관련된 메소드
             buildCanvasAnimation : function () {
-                this.bgColor = this.obj.attr("data-bg-color");
+                this.bgColor = this.obj.attr("data-bg-color"); // html코드에 박혀있는 배경컬러입니당.
                 Util.def(this, {
                     canvasAnimation : {
                         instance : null,
@@ -358,9 +390,13 @@
                                 }
                             },
                         },
+                        // 각각의 메소드들 어떻게 움직이는지 파악해보기! 
+                        // 0315 질문1. 왜 function에 prop을 넣고 안넣고 하지? 
+                        // 일단 안넣은건 필요가 없기 때문인가..
                         position : $.proxy(function () {
                             var winWidth = Util.winSize().w;
                             var winHeight = Util.winSize().h;
+                            // MO버전에서 세로일 땐 세로프레임, 가로일 땐 가로프레임으로 변하는데.. 그거 체크해주는 position
                             var degNum = (Util.isDevice && window.innerHeight > window.innerWidth) ? 90 : 0;
                             this.deg = degNum * Math.PI / 180;
                             this.ratio = window.devicePixelRatio || 1;
@@ -376,6 +412,7 @@
                             this.ct.rotate(this.deg);
                             this.ct.drawImage(this.frameCutImg, -this.frameX, -this.frameY, this.frameImg.width, this.frameImg.height)
                             this.ct.rotate(-this.deg);
+                            // xor말고도 다른 속성값 찾아보기!
                             this.ct.globalCompositeOperation = "xor";
                             this.ct.beginPath();
                             this.ct.fillStyle = this.bgColor;
@@ -387,20 +424,24 @@
                         }, this),
                         update : $.proxy(function (prop) {
                             var _this = this;
+                            console.log(_this)
                             if (this.canvasAnimation.instance !== null) {
                                 this.canvasAnimation.instance.kill();
                             }
+                            // canvasAni의 instance 변수에 = basicProp의 빈 객체 변수에다가 prop과, onUpdate라는 메소드 깊은복사. 그리고 총.7초 동안ㅇㅇ
                             this.canvasAnimation.instance = TweenLite.to(this.canvasAnimation.basicProp, .7, Util.def(prop, {
                                 onUpdate : function () {
                                     _this.imageScale = _this.canvasAnimation.basicProp.scale * _this.ratio;
                                     _this.newX = _this.imageScale * (_this.cvWidth / 2) - (_this.cvWidth / 2);
                                     _this.newY = _this.imageScale * (_this.cvHeight / 2) - (_this.cvHeight / 2);
-                                    _this.ct.clearRect(0, 0, _this.cvWidth, _this.cvHeight);
-                                    _this.ct.save();
-                                    _this.ct.translate(-_this.newX, -_this.newY);
-                                    _this.ct.scale(_this.imageScale, _this.imageScale);
-                                    _this.canvasAnimation.draw();
-                                    _this.ct.restore();
+                                    _this.ct.clearRect(0, 0, _this.cvWidth, _this.cvHeight); // 초기화하고
+                                    _this.ct.save(); // 초기화한 것을 저장한 뒤에
+                                    _this.ct.translate(-_this.newX, -_this.newY); // 다시 위치 잡아주고,
+                                    _this.ct.scale(_this.imageScale, _this.imageScale); // 얘는 왼쪽상단에서 가운데로 오게끔 해주네
+                                    _this.canvasAnimation.draw(); // 다시 그린다.
+                                    _this.ct.restore(); // 그리고 저장
+
+                                    // clearRect, save, restore 세 메소드를 셋트처럼 사용하기도 한다.
                                 }
                             }));
                         }, this),
@@ -416,10 +457,10 @@
                 });
                 this.canvasAnimation.build();
             },
-            // 백그라운드 애니메이션 
+            // 백그라운드의 scale 애니메이션 
             buildBgAnimation : function () {
-                Util.def(this, { // [?] Util.def는 정의하는 함수인가?
-                    bgAnimation : { // bgAnimation이라는 객체
+                Util.def(this, {
+                    bgAnimation : {
                         instance : null, 
                         prop : { // PC는 1.2 -> 1, MO는 1.4 -> 1 로 축소되는 prop 객체 프로퍼티
                             PC : {
@@ -445,20 +486,22 @@
                         },
                         scale : $.proxy(function (prop) { // [?] 이 코드에서 마지막 this로 뭘 하는거지?
                             TweenLite.to(this.bgWrap, .7, prop) 
-                            // TweenLite 뭐죠, 
+                            // TweenLite - GSAP (keyframe과 animation 정밀 컨트롤)
                             // 캔버스(component)의 변수 bgWrap는 '.iamge'이고, 0.7초 동안 실행하라? 뭐 그런의미일까
                         }, this)
                     }
                 });
             },
             buildTween : function () {
-                var _this = this,
+                var _this = this, // CanvasBuild
                     canvasProp = this.canvasAnimation.prop[this.opts.viewType],
                     bgProp = this.bgAnimation.prop[this.opts.viewType];
+                console.log(canvasProp)
                 Util.def(this, {
                     tweens : {
                         instance : null,
                         deleteTweenID : function (prop) {
+                            console.log(prop) // > {scale: 1.2, _gsTweenID: "t3"} 헉 이거 왜 이렇게 나오는지 잘 모르겠다 뭐지
                             var scopeProp = Util.def({}, prop);
                             scopeProp._gsTweenID;
                             return scopeProp;
@@ -468,13 +511,13 @@
                             this.bgAnimation.scale(this.tweens.deleteTweenID(bgProp['backgoundScale'].from));
                         }, this),
                         destroy : $.proxy(function () {
-                            this.tweens.instance.kill();
+                            this.tweens.instance.kill(); // tweenmax에서 제공하는 .kill 메소드 : 전체 애니메이션 종료.
                             this.tweens.instance = null;
                         }, this),
                         build : $.proxy(function () {
-                            var timeline = new TimelineLite();
-                            timeline.to(canvasProp.from, .7, Util.def(canvasProp.to, {
-                                ease: Power2.easeOut,
+                            var timeline = new TimelineLite(); // 새로운 TimelineLite 객체 생성해줘야함.
+                            timeline.to(canvasProp.from, .7, Util.def(canvasProp.to, { // .to 메소드 : css로 정의한 상태를 js로 정의한 상태로 애니메이션 시켜줌.
+                                ease: Power2.easeOut, // 전역 객체로 작동.
                                 onUpdate : function () {
                                     _this.canvasAnimation.update(_this.tweens.deleteTweenID(canvasProp.from));
                                 }
@@ -499,7 +542,7 @@
                 this.tweens.destroy();
             }
         }
-
+   
         function ParallaxBuild(container, args) {
             if (!(this instanceof ParallaxBuild)) {
                 return new ParallaxBuild(container, args);
@@ -530,7 +573,7 @@
                         prop : { // PC : 300 -> 0, MO : 280 -> 0 
                             PC : {
                                 from : {
-                                    y : 300
+                                    y : 1000
                                 },
                                 to : {
                                     y : 0
@@ -609,17 +652,20 @@
                 obj: ".wg-cinema-view",
             };
             this.opts = Util.def(defParams, args || {});
-            if (!(this.obj = $(this.opts.obj)).length) return;
+            // defParams에 인자로 받아온 args를 합치거나, 없다면 빈 객체를 합쳐라.
+            if (!(this.obj = $(this.opts.obj)).length) return; 
+            // this.obj가 없다면 함수 끝내고 나가기.
             this.init();
+            // 있다면 init실행 -> 
         }
         Component.prototype = {
             init: function () {
-                this.callComponent();
+                this.callComponent(); // callComponent실행
             },
+            // callComponent 함수
             callComponent: function () {
-                for (var i = 0, max = this.obj.length; i < max; i++) {
-                    new win.WhyGalaxy.CinemaView(this.obj.eq(i));
-                    // 
+                for (var i = 0, max = this.obj.length; i < max; i++) { // obj갯수만큼 포문돌려서 
+                    new win.WhyGalaxy.CinemaView(this.obj.eq(i)); // 만들어라.
                 }
             },
         };
@@ -637,7 +683,6 @@
  * 함수 안에서 함수를 만들면 new로 인스턴스를 찍어낼 때 마다 (프로퍼티(k:v), 메서드(f)들 같은거..) 각각 생기기 때문에 메모리를 마니 먹는당..
  * 같은 유형간에 공유하는 객체를 프로토타입이라 하는데, 프로토타입 체인이 그 공유하는 객체를 바라보게 해주면 공유를 할 수 있다~
  */
-
 /*
  * [ 2. 자체 호출 익명 함수 ]
  
@@ -664,13 +709,26 @@
     
 
 */
-
-/* 
-    // [ Proxy : 새로운 행동을 정의할 때 사용 ]
-
-    Proxy 객체는 기본적인 동작(속성 접근, 할당, 순회, 열거, 함수 호출) 등
-
-    new Proxy(target, handler)
-    - target : native array, function, 다른 proxy를 포함한 객체.
-    - handler : 프로퍼티들이 function인 객체. 동작이 수행될 때 handler는 Proxy의 행동을 정의.
+/** [ Proxy : 새로운 행동을 정의할 때 사용 ]
+ * 기본적인 동작에는 속성 접근, 할당, 순회, 열거, 함수 호출 등이 있겠지. 
+ * 
+ * new Proxy(target, handler)
+ *  ㄴ- target : native array, function, 다른 proxy를 포함한 객체.
+ *  ㄴ- handler : 프로퍼티들이 function인 객체. 동작이 수행될 때 handler는 Proxy의 행동을 정의.
 */
+/**
+ * Util.def(A, B); 
+ * A에다가 B를 깊은복사 한다. 
+ * 깊은 복사와 얕은 복사에 대한 차이점과 깊은 복사의 이점 찾아보기 (너무 깊게 말고 한 줄로 요약 가능하게끔. 이해할 수 있게끔.)
+ * 뭔가 private 변수로 선언해두고, 그 곳에다가 객체를 복사해서 쓰면 다른 곳에서 선언한 메소드들을 가져다가 쓸 수 있는 그런 환경이 되는데... <- 이 말 정확하게 풀어서 써보기
+ */
+/**
+ * frame과 frame-cut 이미지 (핸드폰 이미지)
+ * html파일에 있다.
+ * - 배경이 막힌 검은 이미지 -> 추후에 psd파일 오면 프레임과 프레임 컷 형태로 따야할 수 있음!
+ * - 배경이 뚫린 테두리 이미지
+ * css로 width값 설정해놨음. -> 파일 확인, 속성값 조절해서 구경해보기
+ * ㄴ_global
+ * ㄴ_mobile
+ * ㄴ_tablet
+ */
