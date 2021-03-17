@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2회차. 조건문과 반복문</title>
+</head>
+<body>
+<script>
+// 조건문과 반복문
+
+    // [조건문]
+    // 1. if : 유동성이 명확할 경우.
+    // var a = 92;
+    // if(a>90) {
+    //     // alert('수');
+    // } else if (a>80) {
+    //     alert('우');
+    // } else {
+    //     alert('낙제');
+    // }
+
+    // 2. switch : (렌더링이 if보다 조금 빠름).
+    // 데이터가 고정되어있거나 내용이 같은 경우, 조건이 많을 경우. 변동성이 짙다면 사용하지 않음.
+    // var a = 80;
+    // switch(a) {
+    //     case 10:
+    //         console.log('10');
+    //     break;
+    //     case 74:
+    //         console.log('74');
+    //     break;
+    //     case 97:
+    //         console.log('97');
+    //     break;
+    //     default:
+    //         console.log('default');
+    //     break;
+    // }
+
+    // [반복문]
+    // 1. for : 비교 조건에 따라서 반복되는 구문을 처리함.
+    // 문법
+    // for( 초기값; 비교조건; 초기값처리) {
+    //      // do something...
+    // }
+
+    // 예제1
+    for(var a = 0; a < 10; a++) {
+        console.log(a)
+    }
+
+    // 예제2
+    for(var b = 0, bMax = 10; b < bMax; b++) { // (미미하나) 최적화에 좋다. 미리 값을 찾아놓고 정해주면 좋음.
+        console.log(b)
+    }
+
+    // 예제3
+    var a = 0;
+    for(; a<10; a++) {
+        // 이렇게 초기화랑 초기값 처리를 () 바깥에서도 가능하다.
+    }
+
+    // 예제4
+    var a = 0;
+    for(; a<10;) {
+        // 이렇게 초기화랑 초기값 처리를 () 바깥에서도 가능하다.
+        a++
+    }
+
+    // 2. while 
+    // 단순한 반복문을 처리하기 적합. (불확실성이 짙거나 단순한 경우.)
+    var a = 0;
+    while ( a<10 ) {
+        console.log(a);
+        a++;
+    }
+    
+    // 예제2
+    var a = 0;
+    while ( a < 10) {
+        if ( a > 5 ) {
+            break; // 완전히 끝내라.
+        }
+        console.log('break > ' + a);
+        a++;
+    }
+
+    // 예제3
+    var a = 0;
+    while( a < 10 ) {
+        a++;
+        if( a == 3 || a == 6 ) {
+            continue; // 조건에 부합하면 아래 구문들을 실행하지 않고 건너뛰어라. 그리고 다시 실행함.
+        }
+        console.log('continue > ' + a);
+    }
+</script>
+<script>    
+    
+</script>
+</body>
+</html>
