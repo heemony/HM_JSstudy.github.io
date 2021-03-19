@@ -5,6 +5,10 @@
 <meta charset="utf-8">
 <title>exam</title>
 <link rel="stylesheet" href="common.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/vs2015.min.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script> 
+<script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
 <!-- wrapper [s] -->
@@ -32,6 +36,48 @@
 			</div>
 			<button type="button">다음</button>
 		</div>
+<div>
+<pre><code class="javascript">
+(function () {
+	'use strict';
+
+	var examFunc = {
+		init : function () { // init - 초기 실행문, 아래에 적힌 코드 순서대로 실행된다. (설계순서)
+			this.setElements(); // 선택자 정의
+			this.initOpts(); // 초기값 정의
+			this.clickEvent(); // 버튼에게 클릭 이벤트. (버튼 누르면 이벤트 넘겨줌.) (넘겨주는 이벤트 : setLayout)
+			this.initLayout(); // 첫 번째 li의 배경색상 지정해주기.
+		},
+		setElements : function () {
+			this.exam = $('.exam_wrap').eq(0);
+			this.examQ = this.exam.find('.exam_q');
+			this.examBtn = this.exam.find('button');
+			this.examUl = this.examQ.children();
+			this.examList = this.examUl.children();	
+		},
+		initOpts : function () {
+			this.condition = 0;
+		},
+		clickEvent : function () { 
+			this.examBtn.on('click', this.setLayout.bind(this));
+			// 바인딩할 함수 뒤에다가 .bind(this)를 붙여준다.
+
+			// 클릭 이벤트 같은 경우, 이벤트가 발생한 시점에서 발생 대상이 되는 객체가 this가 되는데 
+			// 이 경우 의도치 않게 this가 가리키는 객체가 다른 객체가 될 수 있기 때문에 bind 함수를 사용하여 클릭이벤트가 발생했을 때 객체를 인자로 전달한 객체로 고정한다. 
+			// -> 클릭 이벤트가 발생할 때 함수 내에서 사용되는 this는 examFunc가 됨. 
+		},
+		initLayout : function () { // 첫 번째 li의 배경색상 지정해주는 함수.
+			this.examList.eq(this.condition).css('background-color', 'yellow');
+		},
+		setLayout : function () { // 버튼 클릭하면 실행되는 함수. 배경 색상이 바뀌는 함수 정의
+			this.examList.eq(this.condition + 1).css('background-color', 'yellow');
+			this.condition++;
+		}
+	}
+	examFunc.init(); // init을 실행.
+})();
+</code></pre>
+		</div>
 		<div class="exam_wrap">
 			<h1>Q. 마지막부터 역순대로 선택하세요 (style 제어)</h1>
 			<div class="exam_q"><!-- 부모 -->
@@ -47,11 +93,48 @@
 			</div>
 			<button type="button">이전</button>
 		</div>
+<div>
+<pre><code class="javascript">
+(function () {
+	'use strict';
+
+	var examFunc = {
+		init : function () { 
+			this.setElements(); 
+			this.initOpts(); 
+			this.clickEvent(); 
+			this.initLayout();
+		},
+		setElements : function () {
+			this.exam = $('.exam_wrap').eq(1);
+			this.examQ = this.exam.find('.exam_q');
+			this.examBtn = this.exam.find('button');
+			this.examUl = this.examQ.children();
+			this.examList = this.examUl.children();
+		},
+		initOpts : function () {
+			this.condition = this.examList.length - 1;
+		},
+		clickEvent : function () { 
+			this.examBtn.on('click', this.setLayout.bind(this));
+		},
+		initLayout : function () {
+			this.examList.eq(this.initOpts).css('background-color', 'yellow');
+		},
+		setLayout : function () {
+			this.examList.eq(this.condition).css('background-color', 'yellow');
+			this.condition--;
+		}
+	}
+	examFunc.init(); 
+})();
+</code></pre>
+</div>
 		<div class="exam_wrap">
 			<h1>Q. 첫번째부터 순서대로 선택하고, 전에 선택했던 Element의 배경색을 지우세요 (style 제어)</h1>
 			<div class="exam_q"><!-- 부모 -->
 				<ul>
-					<li style="background-color:yellow">one</li>
+					<li>one</li>
 					<li>two</li>
 					<li>three</li>
 					<li>four</li>
@@ -65,11 +148,73 @@
 			<button type="button">이전</button>
 			<button type="button">다음</button>
 		</div>
+<div>
+<pre><code class="javascript">
+(function () {
+	'use strict';
+
+	var examFunc = {
+		init : function () { 
+			this.setElements(); 
+			this.initOpts(); 
+			this.clickEvent(); 
+			this.initLayout();
+		},
+		setElements : function () {
+			this.exam = $('.exam_wrap').eq(2);
+			this.examQ = this.exam.find('.exam_q');
+			this.examBtn = this.exam.children('button');
+			// this.examBtnPrev = this.exam.find('button').eq(0);
+			// this.examBtnNext = this.exam.find('button').eq(1);
+			this.examUl = this.examQ.children();
+			this.examList = this.examUl.children();
+		},
+		initOpts : function () {
+			this.condition = 0;
+		},
+		clickEvent : function () { 
+			this.examBtn.on('click', this.setLayout.bind(this));
+		},
+		initLayout : function () {
+			this.examList.eq(this.condition).css('background-color', 'yellow');
+		},
+		setLayout : function (ev) {
+			if(ev.target.innerHTML === '다음') {
+				this.condition++;  
+				this.examList.eq(this.condition).css('background-color', 'yellow');
+				this.clearLayout();	
+				if (this.condition > this.examList.length - 1) {
+					this.condition = this.examList.length - 1;
+					this.examList.eq(this.condition).css('background-color', 'yellow');
+					alert('더이상 갈 곳이 없어요.');
+					return;
+				}
+			} else { 
+				if(this.condition <= 0) {
+					alert('더이상 갈 곳이 없어요.');
+					return;
+				} else {
+					this.condition--;
+					this.examList.eq(this.condition).css('background-color', 'yellow');   
+					this.clearLayout();  
+				}
+				
+			}
+		},
+		clearLayout : function () { 
+			this.examList.eq(this.condition - 1).css('background-color', '');
+			this.examList.eq(this.condition + 1).css('background-color', '');
+		}
+	}
+	examFunc.init(); 
+})();
+</code></pre>
+</div>
         <div class="exam_wrap">
             <h1>Q. 첫번째부터 순서대로 선택하고, 전에 선택했던 Element의 배경색을 지우시고, 무한loop 돌게 하세요 (클래스 제어)</h1>
             <div class="exam_q"><!-- 부모 -->
                 <ul>
-                    <li class="active">one</li>
+                    <li>one</li>
                     <li>two</li>
                     <li>three</li>
                     <li>four</li>
@@ -84,6 +229,64 @@
             <button type="button">다음</button>
         </div>
 	</div>
+<div>
+<pre><code class="javascript">
+(function () {
+	'use strict';
+	var examFunc = {
+		init : function () { 
+			this.setElements();
+			this.initOpts(); 
+			this.initLayout();  
+			this.clickEvent();
+		},
+		setElements : function () {
+			this.exam = $('.exam_wrap').eq(3);
+			this.examQ = this.exam.find('.exam_q');
+			this.examBtn = this.exam.children('button');
+			this.examUl = this.examQ.children();
+			this.examList = this.examUl.children();
+		},
+		initOpts : function () {
+			this.condition = 0;
+		},
+		clickEvent : function () { 
+			this.examBtn.on('click', this.setLayout.bind(this));
+		},
+		initLayout : function () {
+			this.examList.eq(this.condition).addClass('active');
+		},
+		setLayout : function (ev) {
+			this.clearLayout(); // 전에 선택했던 배경색 지우기.
+
+			if(ev.target.innerHTML === '다음') { // 클릭한 타겟의 innerHTML 이 '다음'이면
+				this.examList.eq(this.condition + 1).addClass('active'); // 'initLayout'으로 one에 active가 붙어져 있기 때문에.. 그다음 two
+				this.condition++;
+
+				if(this.condition > this.examList.length - 1) { // 만약에 (클릭한 타겟의 this.condition이) 8을 넘어 9가 된다면
+					this.initOpts(); // this.condition을 0으로 돌려주고, (무한 루프니까 처음으로 돌아가야해서)
+					this.examList.eq(this.condition).addClass('active'); // 0인덱스에게 active 값을 붙여준다.
+				} 
+			} else { // 만약 클릭한 타겟의 innerHTML 이 다음이 아닌 경우 (여기서는 '이전' 이라면)
+				this.condition--; // 인덱스를 하나 '먼저' 빼주고,
+				this.examList.eq(this.condition).addClass('active'); // 클래스를 붙여야 잘 작동하겠지요~
+
+				if(this.condition < 0) { // 0 이하로 넘어가면 
+					this.condition = this.examList.length - 1; // 8로 재할당
+					this.examList.eq(this.condition).addClass('active'); // 그리고 해당 8인덱스에 클래스 붙여줌.
+				}      
+			}
+		},
+		clearLayout : function () { 
+			if(this.examList.hasClass('active')) {  
+				this.examList.removeClass('active'); 
+			}
+		}
+	}
+	examFunc.init(); 
+})();	
+</code></pre>
+</div>
 	<!-- container [e] -->
 	<hr />
 	<!-- footer [s] -->
@@ -103,7 +306,7 @@
 				this.setElements(); // 선택자 정의
 				this.initOpts(); // 초기값 정의
 				this.clickEvent(); // 버튼에게 클릭 이벤트. (버튼 누르면 이벤트 넘겨줌.) (넘겨주는 이벤트 : setLayout)
-				this.initLayout();  // 초반에 시작할 때 'one'에 배경색상 지정해놓기. 
+				this.initLayout(); 
 			},
 			setElements : function () {
 				this.exam = $('.exam_wrap').eq(0);
@@ -120,10 +323,10 @@
 				// 바인딩할 함수 뒤에다가 bind() 대충은 알겠는데 정확한 이유를 알고싶음. 
 			},
 			initLayout : function () { // 초반에 시작되는 애한테 노란거 주고 시작.
-				this.examList.eq(this.initOpts).css('background-color', 'yellow');
+				this.examList.eq(this.condition).css('background-color', 'yellow');
 			},
 			setLayout : function () { // 버튼 클릭하면 실행되는 함수. 배경 색상이 바뀌는 함수 정의
-				this.examList.eq(this.condition).css('background-color', 'yellow');
+				this.examList.eq(this.condition + 1).css('background-color', 'yellow');
 				this.condition++;
 			}
 		}
@@ -166,13 +369,6 @@
 	})();
 </script>
 <script>
-	/*
-		[질문1]
-		정방향에서 역방향으로 버튼 누를 경우, 바로 방향이 변화되지 않고 정방향으로 한 번 더 변하는 문제가 이씀..ㅠㅠ
-		1) 다음버튼 : one에서 nine까지 한 번 돌고 이전버튼 누를 경우, 바로 eight으로 돌아오지 않는 문제..
-		2) 이전버튼 : 새로고침한 상태에서 이전버튼을 누르면 nine으로 가지않고 one에서 머무는 문제..
-		조건문을 대체 어떻게 줘야할지 너무 어렵다..
-	*/
 	(function () {
 		'use strict';
 
@@ -191,62 +387,46 @@
 				// this.examBtnNext = this.exam.find('button').eq(1);
 				this.examUl = this.examQ.children();
 				this.examList = this.examUl.children();
-				console.log(this.examBtn);
 			},
 			initOpts : function () {
 				this.condition = 0;
-				this.limitCondition = this.examList.length - 1; // 8
 			},
 			clickEvent : function () { 
 				this.examBtn.on('click', this.setLayout.bind(this));
 			},
 			initLayout : function () {
-				this.examList.eq(this.initOpts).css('background-color', '');
+				this.examList.eq(this.condition).css('background-color', 'yellow');
 			},
-			/**
-			 * [질문2] 기능을 설계할 때 어떤 기준으로 쪼개서 나누는지?
-			 * 앞으로 갈 때 함수랑 뒤로갈 때 함수를 따로 짜줘야 하나요?
-			 * 
-			 * 내가 짠거 >
-			 * 1. setLayout : 버튼에는 타겟을 줘서 if 조건문으로 해가지고 버튼 구분,
-			 * 1-1. 다음버튼일 경우,  ++ 줘서 다음 인덱스에 색상 바꾸고,
-			 * 1-2. 이전버튼일 경우, clearLayout으로 .. -- 줘서 색상 바꾸고
-			 */ 
-			setLayout : function (e) {
-				this.clearLayout();
-
-				if(e.target.innerHTML === '다음') { // [질문] 이걸 좀 더 세련되게 택하는 방법은 없을깝쇼?
-					// this.clearLayout.bind(this);	// 해당 현재의 인덱스를 넘겨주고싶어서 binding을 시도해보았으나, clearLayout이 제대로 먹히지 않았다.. 
-													// -> 그래서 3번 문제에서는 clearLayout에 eq값을 지정해줬고,
-													// -> 4번 문제에서는 제이쿼리로 통으로 className이 있는지 체크함.
-													
-					// this.clearLayout(); // 조건문 밖으로 뺌.
+			setLayout : function (ev) {
+                if(ev.target.innerHTML === '다음') {
+					this.condition++;  
 					this.examList.eq(this.condition).css('background-color', 'yellow');
-					
-					if(this.condition < this.limitCondition) { 
-						this.condition++; 
+					this.clearLayout();	
+					if (this.condition > this.examList.length - 1) {
+						this.condition = this.examList.length - 1;
+						this.examList.eq(this.condition).css('background-color', 'yellow');
+						alert('더이상 갈 곳이 없어요.');
 						return;
-					}	
-				} else { // 클릭한 버튼이 다음이 아니라면, (여기서는 예외가 이전밖에 없으니까 '이전'이라면)
-					// this.clearLayout(); // 조건문 밖으로 뺌.
-
-					this.examList.eq(this.condition).css('background-color', 'yellow');
-					// if(this.condition < -1 || this.condition > this.limitCondition) { // -1보다 작거나 (즉 현재 인덱스가 0), 8보다 큰 경우에 
-						this.condition--; 	
-						// return;			
-					// }
-				}
+					}
+                } else { 
+					if(this.condition <= 0) {
+						alert('더이상 갈 곳이 없어요.');
+						return;
+					} else {
+						this.condition--;
+						this.examList.eq(this.condition).css('background-color', 'yellow');   
+						this.clearLayout();  
+					}
+					
+                }
 			},
-			clearLayout : function () { // 이전 혹은 이후 배경색상을 지워주는 함수.
+			clearLayout : function () { 
 				this.examList.eq(this.condition - 1).css('background-color', '');
 				this.examList.eq(this.condition + 1).css('background-color', '');
 			}
 		}
 		examFunc.init(); 
 	})();
-
-	// e.target : 실제 이벤트가 발생하는 위치. 내가 클릭한 해당 요소를 반환.
-	// e.currentTarget : 이벤트가 걸려있는 위치 반환(this가 가리키는 것과 같다.)
 </script>
 <script>
 	(function () {
@@ -257,7 +437,6 @@
                 this.initOpts(); // 초기값 정의
                 this.initLayout();  // 초반에 시작할 때 'one'에 배경색상 지정해놓기. 
 				this.clickEvent(); // 버튼에게 클릭 이벤트. (버튼 누르면 이벤트 넘겨줌.) (넘겨주는 이벤트 : setLayout)
-				
 			},
 			setElements : function () {
 				this.exam = $('.exam_wrap').eq(3);
@@ -271,41 +450,32 @@
 			},
 			clickEvent : function () { 
                 this.examBtn.on('click', this.setLayout.bind(this));
-				console.dir(this) // obj examFunc
-				// bind 메서드의 첫 번째 인수로 this를 넘겨줌. this는 examFunc obj이다.
-				// this 바인딩으로 하여금 clickEvent 함수를 실행하면, this.examBtn에 이벤트가 발생하는데 그 해당 환경(?)을 setLayout이 참조할 수 있게 된다. 
 			},
 			initLayout : function () {
-                this.examList.eq(this.initOpts).addClass('active');
+                this.examList.eq(this.condition).addClass('active');
 			},
 			setLayout : function (ev) {
-                this.clearLayout(); // 전에 선택했던 배경색 지우기.
-    
-                if(ev.target.innerHTML === '다음') { // 클릭한 타겟의 innerHTML 이 '다음'이면
-                    this.examList.eq(this.condition + 1).addClass('active'); // html에서 one에 먼저 active가 붙어져 있기 때문에.. 그다음 two
-                    this.condition++;
+				this.clearLayout(); // 전에 선택했던 배경색 지우기.
 
-                    if(this.condition > this.examList.length - 1) { // 만약에 (클릭한 타겟의 this.condition이) 8을 넘어 9가 된다면
-                        this.initOpts(); // this.condition을 0으로 돌려주고, (무한 루프니까 처음으로 돌아가야해서)
-                        this.examList.eq(this.condition).addClass('active'); // 0인덱스에게 active 값을 붙여준다.
-                    } 
-                } else { // 만약 클릭한 타겟의 innerHTML 이 다음이 아닌 경우 ('이전' 이라면)
-                    this.condition--; // 인덱스를 하나 먼저 빼주고,
-                    this.examList.eq(this.condition).addClass('active'); // 클래스를 붙여야 잘 작동하겠지요~
+				if(ev.target.innerHTML === '다음') { // 클릭한 타겟의 innerHTML 이 '다음'이면
+					this.examList.eq(this.condition + 1).addClass('active'); // 'initLayout'으로 one에 active가 붙어져 있기 때문에.. 그다음 two
+					this.condition++;
 
-                    if(this.condition < 0) { // 0 이하로 넘어가면 
-                        this.condition = this.examList.length - 1; // 8로 재할당
-                        this.examList.eq(this.condition).addClass('active'); // 그리고 해당 8인덱스에 클래스 붙여줌.
-                    }      
-                }
+					if(this.condition > this.examList.length - 1) { // 만약에 (클릭한 타겟의 this.condition이) 8을 넘어 9가 된다면
+						this.initOpts(); // this.condition을 0으로 돌려주고, (무한 루프니까 처음으로 돌아가야해서)
+						this.examList.eq(this.condition).addClass('active'); // 0인덱스에게 active 값을 붙여준다.
+					} 
+				} else { // 만약 클릭한 타겟의 innerHTML 이 다음이 아닌 경우 ('이전' 이라면)
+					this.condition--; // 인덱스를 하나 '먼저' 빼주고,
+					this.examList.eq(this.condition).addClass('active'); // 클래스를 붙여야 잘 작동하겠지요~
+
+					if(this.condition < 0) { // 0 이하로 넘어가면 
+						this.condition = this.examList.length - 1; // 8로 재할당
+						this.examList.eq(this.condition).addClass('active'); // 그리고 해당 8인덱스에 클래스 붙여줌.
+					}      
+				}
 			},
 			clearLayout : function () { 
-                console.log('html에 붙어있던 active를 다 떼고, 실행 할 때 마다 붙는 애들을 떼려는 목적으로 붙였어요.')
-                console.log('근데 html에 붙은 active는 없어지지가 않아요..')	
-                
-                // '해당 인덱스'에 class가 있는지 확인해서 (X)
-				// -> 해당이 아니라 그냥 '전체'에서 hasClass쓰면 되는거같아.
-					// 있다면 removeClass
 				if(this.examList.hasClass('active')) {  
 					this.examList.removeClass('active'); 
 				}
@@ -314,4 +484,108 @@
 		examFunc.init(); 
 	})();
 </script>
+<!-- <script>
+(function () {
+'use strict';
+
+var examFunc = {
+	init : function () { 
+		this.setElements(); 
+		this.initOpts(); 
+		this.clickEvent(); 
+		this.initLayout();
+	},
+	setElements : function () {
+		this.exam = $('.exam_wrap').eq(2);
+		this.examQ = this.exam.find('.exam_q');
+		this.examBtn = this.exam.children('button');
+		// this.examBtnPrev = this.exam.find('button').eq(0);
+		// this.examBtnNext = this.exam.find('button').eq(1);
+		this.examUl = this.examQ.children();
+		this.examList = this.examUl.children();
+	},
+	initOpts : function () {
+		this.condition = 0;
+	},
+	clickEvent : function () { 
+		this.examBtn.on('click', this.setLayout.bind(this));
+	},
+	initLayout : function () {
+		this.examList.eq(this.condition).css('background-color', 'yellow');
+	},
+	setLayout : function (ev) {
+		if(ev.target.innerHTML === '다음') {
+			this.condition++;  
+			this.examList.eq(this.condition).css('background-color', 'yellow');
+			this.clearLayout();
+
+		} else { 
+			this.condition--;
+			this.examList.eq(this.condition).css('background-color', 'yellow');    
+			this.clearLayout();  
+		}
+	},
+	clearLayout : function () { 
+		this.examList.eq(this.condition - 1).css('background-color', '');
+		this.examList.eq(this.condition + 1).css('background-color', '');
+	}
+}
+examFunc.init(); 
+})();	
+
+(function () {
+	'use strict';
+	var examFunc = {
+		init : function () { // init - 초기 실행문, 아래에 적힌 코드 순서대로 실행된다. (설계순서)
+			this.setElements(); // 선택자 정의
+			this.initOpts(); // 초기값 정의
+			// this.initLayout();  // 초반에 시작할 때 'one'에 배경색상 지정해놓기. 
+			this.clickEvent(); // 버튼에게 클릭 이벤트. (버튼 누르면 이벤트 넘겨줌.) (넘겨주는 이벤트 : setLayout)
+			
+		},
+		setElements : function () {
+			this.exam = $('.exam_wrap').eq(3);
+			this.examQ = this.exam.find('.exam_q');
+			this.examBtn = this.exam.children('button');
+			this.examUl = this.examQ.children();
+			this.examList = this.examUl.children();
+		},
+		initOpts : function () {
+			this.condition = 0;
+		},
+		clickEvent : function () { 
+			this.examBtn.on('click', this.setLayout.bind(this));
+		},
+		initLayout : function () {
+			this.examList.eq(this.condition).addClass('active');
+		},
+		setLayout : function (ev) {
+			this.clearLayout(); 
+
+			if(ev.target.innerHTML === '다음') { 
+				this.examList.eq(this.condition).addClass('active');
+				this.condition++;
+
+				if(this.condition > this.examList.length - 1) { 
+					this.initOpts(); 
+				} 
+			} else { 
+				this.condition--; 
+				this.examList.eq(this.condition - 1).addClass('active');
+
+				if(this.condition < 0) { 
+					this.condition = this.examList.length; 
+					this.examList.eq(this.condition).addClass('active');
+				}      
+			}
+		},
+		clearLayout : function () { 
+			if(this.examList.hasClass('active')) {  
+				this.examList.removeClass('active'); 
+			}
+		}
+	}
+	examFunc.init(); 
+})();
+</script> -->
 </html>
