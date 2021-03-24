@@ -7,6 +7,7 @@
 </head>
 <body>
 <p>함수(function)와 배열</p>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
     // 함수 정의, 호출, 인자, 종료 및 리턴값
 
@@ -180,6 +181,95 @@
     /*--------------------------------------------------------------------------------------------------------*/
     // BOM (browser object model)
     // 과제 링크 확인
+
+
+    // var obj = function() {
+    //     console.log(this);
+    // }
+    // new obj();
+
+
+    // 코카
+    // 1. 셀렉터 정리
+    // 2. 세 버튼 중 선택이 되어있는지 아닌지, 그리고 어디가 선택되어 있는지 확인하는 구문
+    (function () {
+        'use stricr';
+
+        var beargame = {
+            init: function() {
+                console.log('init');
+                this.setElements();
+                this.initOpts(); 
+                this.bindEvents();
+            },
+            setElements: function() {
+                this.appbtn = $('.btn_app');
+                this.boxList = $('.bxlst');
+                this.boxItem = this.boxList.children();
+                this.boxInput = this.boxItem.find('input');
+                this.gameArea = $('.game_area');
+                this.gameLane = this.gameArea.children();
+            },
+            initOpts: function() {
+                this.changeInput = false;
+                this.compeleteGame = false; // 게임이 완성되었는지 아닌지를 체크한다. 
+            },
+            bindEvents: function() {
+                this.appbtn.on('click', this.onclickFunc.bind(this));
+                
+                // this.boxInput.on('change', this.onChangeFunc.bind(this)); [!]얘 말고 이 바로 위 부모에게 이벤트를 줘보자.
+                this.boxItem.on('change', 'input',  this.onChangeFunc.bind(this)); 
+                // input이라고 타겟을 지정하고 넣었다.  input a button 이렇게 ㅅ띄어쓰기로 넣을 수도 있다. 
+                // currentT 선택한 애
+                // deligate 이벤트 부여된 애 
+            },
+            onclickFunc: function(e) {  // 선택하기 
+                e.preventDefault();
+                // a에는 #이 있기때문에 상단으로 점프한다 이걸 방지하기 위해서 a의 본연의 기능을 막는다. e.preventDefault
+                if ( !this.changeInput ) {
+                    alert('곰을 선택해주세여~~');
+                } else if (this.compeleteGame) {
+                    alert('이미 선택이 완료되었습니다.');
+                    this.randomFunc();
+                } else {
+                    // 곰을 선택을 했다면 else 구문이 실행된다.
+                    this.animateFunc();
+                }
+            },
+            onChangeFunc: function(e) {
+                console.log('체인지 되었나요?');
+                // 이 상태값을 위에다가 추가해보자. initOpts
+ 
+                var target = $(e.delegateTarget); // 얘는 지역변수라 외부에서 쓸 수 없다
+                this.targetIndex = target.index(); // 다른데서 쓸 애는 이렇게 this로 선언해주자.
+
+                this.changeInput = true; // 체인지가 되었다면 true로 값을 바꿔준다.
+                // 여기서 내가 선태한게 뭔지 알아보자.
+            
+            },
+            animateFunc: function() {
+                var targetLane = this.gameLane.eq(this.targetIndex),
+                    moveTarget = targetLane.find('.gom'); // gom이 병뚜껑
+                
+                targetLane.addClass('winlane');
+                moveTarget.stop().animate( { // 애니메이트같은 경우는 stop을 넣어줘야 좋다.
+                    top: '115px'
+                }, 500);
+                this.compeleteGame = true;
+            },
+            randomFunc: function() {
+                // 변수에 선택 안된거 집어넣고,
+                // 거기서 random 돌려서
+                // 함수 호출하면 되지 않을까.
+            },
+        };
+        beargame.init();
+    })();
+
+    // (선택한 인덱스 제외) 선택을 하지 않은 인덱스 두개가 랜덤으로 내려 올 수 있게 만들어주세요.
+    // 배열 사용
+    // math.random 사용
+
 </script>
 </body>
-</html>
+</html> 
