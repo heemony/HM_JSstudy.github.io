@@ -65,6 +65,105 @@
 	</div>
 	<!-- footer [e] -->
 </div>
+<script>
+	$(function() {
+		var examObj1 = $('.exam_wrap:eq(0)');
+		var examObj2 = $('.exam_wrap:eq(1)');
+		var examObj3 = $('.exam_wrap:eq(2)');
+		var examObj4 = $('.exam_wrap:eq(3)');
+		var examObj5 = $('.exam_wrap:eq(4)');
+		var examObj6 = $('.exam_wrap:eq(5)');
+		var examObj7 = $('.exam_wrap:eq(6)');
+		var examObj8 = $('.exam_wrap:eq(7)');
+	
+		examObj1.find('button').on('click', function() {
+			var myName = ['Song', 'Hee', 'Myun'];
+			var myNameToStr = myName.join(' ');
+			examObj1.find('button').after(`<p>${myNameToStr}</p>`);		
+		});
+		examObj2.find('button').on('click', function() {
+			var originStr = 'question';
+			// var rvStr = originStr.split('').reverse().join('');
+			// or
+			var rvStr = [...originStr].reverse().join('');
+			examObj2.find('button').after(`<p>${rvStr}</p>`);	
+		});
+		examObj3.find('button').on('click', function() {
+			var numArr = [40, 100, 1, 5, 25, 10];
+			var c = [];
+			// for(var key in numArr) {
+			// 	if(numArr[key] > numArr[key+1]) {
+			// 		c.push(numArr[key])
+			// 	} else {
+			// 		key++;
+			// 	}
+			// }
+			c.sort(function(a, b) { return a-b; });
+			examObj3.find('button').after(`<p>${c}</p>`);	
+		});
+
+		examObj4.find('button').on('click', function() {
+			var a, b = [];
+			for(var i = 0; i < 9; i++) {
+				for(var j = 1; j <= 9; j++) {
+					a[i] = i * j;
+					console.log(b)
+				};
+				b.push(a[i]);
+			};
+		});
+
+		// Q. 배열에 숫자 0 ~ 9까지 담아보세요. (for문 사용)
+		examObj5.find('button').on('click', function() {
+			var ex5 = [];
+			for(var i = 0; i < 10; i++) {
+				ex5.push(i);
+			};
+			examObj5.find('button').after(`<p>${ex5}</p>`);	
+		});
+		
+		// Q. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 6개 담아보세요. (for문 사용)
+		examObj6.find('button').on('click', function() {
+			var ex6 = [];
+
+			for(var i=0; i<6; i++) {
+				var newEx6 = Math.floor(Math.random() * 6);
+				ex6[i] = newEx6;
+			}
+			
+			console.log(ex6)
+			examObj6.find('button').after(`<p>${ex6}</p>`);	
+		});
+
+		// Q. 배열에 숫자 0 ~ 9까지 담고, 버튼 클릭시 랜덤한 숫자를 하나씩 빼주세요.
+		
+
+		var arr = [];
+		for(var i=0; i<10; i++) {
+			arr[i] = i;
+		}
+		console.log(arr)
+		arr
+
+		examObj7.find('button').on('click', function() {
+			var res7 = [];
+			
+			// // ex7배열에 0~9까지 숫자를 담는 초기화
+			// for(var i=0; i<10; i++) {
+			// 	ex7[i] = i;
+			// }
+
+			var rdm7 = arr[Math.floor(Math.random() * arr.length)];
+			res7.push(rdm7)
+		
+			console.log(res7)
+			
+
+		});
+
+		// Q. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 중복되는 값이 없도록 6개 담아보세요. (for/if문 사용)
+	});
+</script>
 <!-- wrapper [e] -->
 </body>
 </html>
