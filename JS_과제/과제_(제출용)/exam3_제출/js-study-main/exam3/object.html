@@ -6,7 +6,23 @@
 <title>exam</title>
 <link rel="stylesheet" href="common.css" />
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- highlights.js -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+<script>hljs.highlightAll() ;</script>
 </head>
+<style>
+	pre {
+		font-size: 12px;
+		width: 100%;
+		margin: 0 auto;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+</style>
 <body>
 <!-- wrapper [s] -->
 <div id="wrapper">
@@ -17,8 +33,87 @@
 	<hr />
 	<!-- container [s] -->
 	<div id="container">
+<pre><code class="javascript">
+[리터럴과 생성자 함수]
+
+1. 리터럴와 생성자 함수의 차이.
+	1-1. 리터럴 
+		- 소스 코드의 '고정된 값'을 대표하는 용어이다.
+		- 리터럴은 '변수 초기화'에 종종 사용된다. 
+		- 사람이 이해할 수 있는 문자 또는 약속된 기호를 사용하여 값을 생성하는 것. 
+	
+	1-2. 생성자 함수 
+		- 말 그대로 일종의 '함수'이다.
+		- '객체의 초기화'를 담당한다.
+		(리터럴과 달리 구현의 과정과 결과물은 함수 안에 숨겨져 있어서 확인이 어렵다. 또 어떠한 인자가 들어가냐에 따라 사이드 이펙트가 발생.)
+	
+	1-3. 결론 
+		- 생성자보다 리터럴을 쓰자.
+	1-4. 이유 
+		- 리터럴이 더 짧고 간결하다. 
+		- JS 객체가 클래스 문법으로 생성된다는 오해 방지 
+		'new' 생성자 함수는 본질적으로 어떤 객체의 프로토타입을 상속받아 새 객체를 만드는 함수에 불과하다. 
+
+2. 일급 객체 
+	자바스크립트의 함수는 '일급 객체'이다. 	
+	2-1. '일급 객체'란?
+		- 무명의 리터럴로 생성이 가능하다. 즉 런타임에 생성이 가능.
+		- '변수'나 '자료구조'(객체, 배열)에 저장할 수 있다.
+		- '함수의 매개변수'에 전달할 수 있다.
+		- '함수의 반환값'으로 사용할 수 있다. 
+
+3. 객체 리터럴
+	3-1. 구조 
+		- 프로퍼티와 메서드로 구성되어 있다. (data와 behavior)
+		- 코드 예시
+		var person = { 
+			name: 'Lee', // 프로퍼티 키: '프로퍼티 값' <- 프로퍼티 "객체의 상태를 나타내는 값 (data)"
+			age: 20, 
+			tomorrow: function() { // <-메서드 "프로퍼티(상태 데이터)를 참조하고 조작할 수 있는 동작 (behavior)"
+				this.age++; 
+				do somegthing...
+			}
+		}
+		
+		객체는 객체의 상태를 나타내는 값과 이 값(즉 프로퍼티)을 참조하고 조작할 수 있는 동작(메서드)를 포함한다. 
+		상태와 동작을 하나의 단위로 구조화할 수 있어 유용하다. 
+
+	3-2. 프로퍼티 접근
+		[*] 마침표 프로퍼티 접근 연산자'(.)' 를 사용하는 마침표 표기법
+		[*] 대괄호 프로퍼티 접근 연산자'[...]' 를 사용하는 대괄호 표기법
+			- 대괄호 프로퍼티 접근 연산자를 쓸 때, 연산자 내부에 지정하는 프로퍼티 키는 반드시 따옴표로 감싼 문자열이다.
+			- 코드 예시	
+			var person = {
+				name: 'Song'
+			};
+			person.name // Song
+			person.['name'] // Song
+			person.[name] // ReferenceError -> 식별자 name을 평가하기 위해 선언된 name을 찾지 못했기 때문에 참조 에러
+			person.age // Undefined -> 객체에 존재하지 않기 때문에 undefined
+</code></pre>
+<pre><code class="javascript">
+[함수와 메서드]
+
+1. 함수 
+	- 함수는 호출될 때, 매개변수 이외에도 'arguments객체'와 'this'를 암묵적으로 전달 받는다. 
+	- '함수의 호출 방식'에 의해 this에 바인딩할 어떠한 객체가 '동적'으로 결정된다.
+		> 함수를 선언하고 안에서 this를 정의할 때 바인딩될 객체가 정적으로 결정되는 것이 아니고,
+		호출할 때 함수가 '어떤 방식으로' 호출되었는지에 따라 this에 바인딩할 객체가 동적으로 결정됨.
+
+2. 메서드 
+	- '객체 안에 정의된 함수'를 메서드라고 부른다.
+	- 메서드는 자신이 속한 객체의 프로퍼티를 참조하고 변경할 수 있다.
+	(특정 객체 안에서 정의가 되어있어도, 함수라는 것 자체는 참조 타입 데이터다. -> 그렇기 때문에 호출 방식에 따라 this의 바인딩이 동적으로 정해짐.)
+
+위 코드에서.. 
+init 식별자는 obj객체에 속해있는 식별자로이며, 이 변수안에는 함수를 참조하는 주소값을 가지고 있다.
+init:f는 객체안의 함수, 즉 메서드로써 호출을 한 것이다.
+메서드로써 호출한 함수는 '해당 메서드를 호출한 객체'에 바인딩 된다. 
+</code></pre>
+
+		<!--[1]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 함수 호출시 new 를 붙인 것과 안 붙인 것의 차이를 설명하세요.</h1>
+			<h1>Q.1 함수 호출시 new 를 붙인 것과 안 붙인 것의 차이를 설명하세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = function () {<br>
 			&nbsp;&nbsp;&nbsp;console.log(this);<br>
@@ -27,8 +122,27 @@
 			// new obj();
 			</div>
 		</div>
+		<script>
+			// var obj = function() {
+			// 	console.log(this)
+			// };
+			// obj(); // return Window
+			// // new obj(); // return obj
+		</script>
+<pre><code class="javascript">
+var obj = function() {
+	console.log(this)
+};
+obj(); 
+// > Window - obj함수를 실행하였다.
+
+new obj(); 
+// > obj - new 키워드를 통해 obj 객체를 생성하였다.
+</pre></code>
+
+		<!--[2]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 객체 내에서의 this 를 설명하세요.</h1>
+			<h1>Q.2 객체 내에서의 this 를 설명하세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = {<br>
 			&nbsp;&nbsp;&nbsp;init : function () {<br>
@@ -38,8 +152,34 @@
 			obj.init();<br>
 			</div>
 		</div>
+		<script>
+			var obj = {
+				init: function() {
+					console.log(this)
+				}
+			};
+			obj.init();
+		</script>
+<pre><code class="javascript">
+
+
+var obj = {
+	init: function() {
+		console.log(this)
+	}
+};
+obj.init();
+// > {init: f}
+
+
+
+* 일반 함수의 this는 window이다. 
+* 그러나 여기선 객체의 메서드로써 실행했으므로 init의 this는 obj가 된다.
+</pre></code>
+
+		<!--[3]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 객체 내의 다른 메서드를 호출해보세요.</h1>
+			<h1>Q.3 객체 내의 다른 메서드를 호출해보세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = {<br>
 			&nbsp;&nbsp;&nbsp;init : function () {<br>
@@ -52,8 +192,37 @@
 			obj.init();<br>
 			</div>
 		</div>
+		<script>
+			var obj = {
+				init: function() {
+					// setElements 함수를 호출해봐요
+					this.setElements();
+				},
+				setElements: function() {
+					console.log('call')
+				}
+			}
+			obj.init();
+		</script>
+<pre><code class="javascript">
+var obj = {
+	init: function() {
+		// setElements 함수를 호출해봐요
+		this.setElements();
+	},
+	setElements: function() {
+		console.log('call')
+	}
+}
+obj.init();
+
+/*----------결과-----------*/
+// call
+</code></pre>
+
+		<!--[4]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 객체 내에서 다른 객체의 메서드를 호출해보세요.</h1>
+			<h1>Q.4 객체 내에서 다른 객체의 메서드를 호출해보세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = {<br>
 			&nbsp;&nbsp;&nbsp;init : function () {<br>
@@ -68,22 +237,127 @@
 			obj.init();<br>
 			</div>
 		</div>
+		<script>
+			// var obj = {
+			// 	name: 'obj',
+			// 	init : function () {
+			// 		// 객체 obj2 의 init 을 호출해봐요~
+					
+			// 		// 1) obj 객체 내에서 obj2의 init을 호출했다.
+			// 		window.obj2.init(); 
+			// 		console.log(`${this.name} 객체의 init을 호출했어요.`)
+			// 	}
+			// };
+			// var obj2 = {
+			// 	name: 'obj2',
+			// 	init : function () {
+			// 		console.log(`call ${this.name}`);
+			// 	}
+			// };
+			// // 2) obj.init()을 호출하기 전에 메서드를 할당해준다.
+			// obj.init = obj2.init;
+			// obj.init(); 
+
+			// // 3) call 바인드를 통해 obj init을 실행했지만 this는 obj2가 된다.
+			// obj.init.call(obj2);
+
+			var obj = {
+	name: 'obj',
+	init : function () {
+		// 객체 obj2 의 init 을 호출해봐요~
+	}
+};
+var obj2 = {
+	name: 'obj2',
+	init : function () {
+		console.log(`call ${this.name}`);
+	}
+};
+
+// obj.init()을 호출하기 전에 메서드를 할당해준다.
+obj.init = obj2.init;
+obj.init(); 
+		</script>
+<pre><code class="javascript">
+var obj = {
+	name: 'obj',
+	init : function () {
+		// 객체 obj2 의 init 을 호출해봐요~
+	}
+};
+var obj2 = {
+	name: 'obj2',
+	init : function () {
+		console.log(`call ${this.name}`);
+	}
+};
+
+// 자바스크립트의 함수는 '일급객체'이므로 값처럼 변수에 할당할 수 있다. 
+// obj.init()을 호출하기 전에 메서드를 할당해준다.
+obj.init = obj2.init; // 할당
+obj.init(); // 호출
+
+/*----------결과-----------*/
+// call obj
+// obj2의 init메서드를 실행했다. 그러나 this는 obj임을 알 수 있다.
+
+</code></pre>
+
+		<!--[5]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 데이터 타입들을 모두 넣은후, 값들을 출력해보세요.</h1>
+			<h1>Q.5 데이터 타입들을 모두 넣은후, 값들을 출력해보세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = {<br>
 			&nbsp;&nbsp;&nbsp;func : function () {<br>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log('func');<br>
 			&nbsp;&nbsp;&nbsp;},<br>
 			&nbsp;&nbsp;&nbsp;num : 3,<br>
-			&nbsp;&nbsp;&nbsp;...<br>
+			&nbsp;&nbsp;&nbsp;str : 'abcd',<br>
+			&nbsp;&nbsp;&nbsp;bool : true,<br>
+			&nbsp;&nbsp;&nbsp;personObj : {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name : 'song',<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;age : 29<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;},<br>
 			};<br>
-			console.log(obj.func);<br>
-			console.log(obj.num);
+			console.log(obj.func);<br> 
+			console.log(obj.num);<br>
+			console.log(obj.str);<br>
+			console.log(obj.bool);<br>
+			console.log(obj.personObj);<br>
 			</div>
 		</div>
+		<script>
+			// var obj = {
+			// 	func : function () {
+			// 		console.log('func');
+			// 	},
+			// 	num : 3,
+			// 	str : 'abcd',
+			// 	bool : true,
+			// 	personObj: {
+			// 		name: 'song',
+			// 		age: 29
+			// 	},
+			// };
+			// console.log(obj.func); 
+			// console.log(obj.num);
+			// console.log(obj.str);
+			// console.log(obj.bool);
+			// console.log(obj.personObj);
+		</script>
+<pre><code class="javascript">
+[결과]
+
+ƒ () { console.log('func');}
+3
+abcd
+true
+> {name: "song", age: 29}
+</code></pre>
+
+		<!--[6]-------------------------------------------------------------------->
 		<div class="exam_wrap">
-			<h1>Q. 객체내의 모든 속성들의 값을 배열에 저장한후, abc 순으로 sorting 하여, 'abcdefg' 문자열로 출력해보세요.</h1>
+			<h1>Q.6 객체내의 모든 속성들의 값을 배열에 저장한후, abc 순으로 sorting 하여, 'abcdefg' 문자열로 출력해보세요.</h1>
 			<div class="exam_q">예시)<br>
 			var obj = {<br>
 			&nbsp;&nbsp;&nbsp;e : 'e',<br>
@@ -96,9 +370,55 @@
 			};<br>
 			</div>
 		</div>
+		<script>
+			var obj = {
+				e : 'e',
+				d : 'd',
+				b : 'b',
+				g : 'g',
+				c : 'c',
+				f : 'f',
+				a : 'a'
+			};
+			var toStr = obj.prototype.toString();
+			console.log(toStr)
+		</script>
+
+<pre><code class="javascript">
+
+</code></pre>
+					
+		<!--[7]-------------------------------------------------------------------->
+		<!-- 문자열의 갯수를 구해라 -->
 		<div class="exam_wrap">
-			<h1>Q. 'bcaebe' 문자열을 hasOwnProperty 를 사용해서, {a : 1, b : 2, c : 1, e : 2} 로 변경해보세요.</h1>
+			<h1>Q.7 'bcaebe' 문자열을 hasOwnProperty 를 사용해서, {a : 1, b : 2, c : 1, e : 2} 로 변경해보세요.</h1>
 		</div>
+		<script>
+			var str = new String('bcaebe');
+			var obj = {};
+			var cnt = 0;
+			var pos = str.indexOf(a);
+			while (pos !== -1) {
+				cnt++;
+				pos = str.indexOf(a, pos + 1);
+			}
+			console.log(cnt)
+			
+		</script>
+<pre><code class="javascript">
+
+</pre></code>
+<pre><code class="javascript">
+[실행 컨텍스트]
+
+1. 함수는 실행을 하면 실행 컨텍스트가 생긴다.
+2. 컨텍스트 생성 시 
+	컨텍스트 안에 변수 객체, scope chain, this 가 생성이 된다. 
+	- 변수 객체 (arguments, variable)
+3. 컨텍스트 생성 후 함수가 실행된다. 
+	사용되는 변수들은 변수객체 안에서 값을 찾고 없다면 스코프체인을 따라 거슬러 올라가며 찾는다.
+4. 함수 실행이 마무리 되면 해당 컨텍스트는 사라진다. (클로저 제외)
+</pre></code>
 	</div>
 	<!-- container [e] -->
 	<hr />
