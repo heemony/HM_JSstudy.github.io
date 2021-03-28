@@ -9,19 +9,13 @@
 
 <!-- shades-of-purple rainbow paraiso-dark -->
 <!-- highlights.js -->
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
-<script>hljs.highlightAll() ;</script>
+<script>hljs.highlightAll() ;</script> -->
 </head>
 <style>
-	pre {
-		font-size: 12px;
-		width: 100%;
-		margin: 0 auto;
-		border-radius: 10px;
-		overflow: hidden;
-	}
+pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
 </style>
 <body>
 <!-- wrapper [s] -->
@@ -33,84 +27,6 @@
 	<hr />
 	<!-- container [s] -->
 	<div id="container">
-<pre><code class="javascript">
-[리터럴과 생성자 함수]
-
-1. 리터럴와 생성자 함수의 차이.
-	1-1. 리터럴 
-		- 소스 코드의 '고정된 값'을 대표하는 용어이다.
-		- 리터럴은 '변수 초기화'에 종종 사용된다. 
-		- 사람이 이해할 수 있는 문자 또는 약속된 기호를 사용하여 값을 생성하는 것. 
-	
-	1-2. 생성자 함수 
-		- 말 그대로 일종의 '함수'이다.
-		- '객체의 초기화'를 담당한다.
-		(리터럴과 달리 구현의 과정과 결과물은 함수 안에 숨겨져 있어서 확인이 어렵다. 또 어떠한 인자가 들어가냐에 따라 사이드 이펙트가 발생.)
-	
-	1-3. 결론 
-		- 생성자보다 리터럴을 쓰자.
-	1-4. 이유 
-		- 리터럴이 더 짧고 간결하다. 
-		- JS 객체가 클래스 문법으로 생성된다는 오해 방지 
-		'new' 생성자 함수는 본질적으로 어떤 객체의 프로토타입을 상속받아 새 객체를 만드는 함수에 불과하다. 
-
-2. 일급 객체 
-	자바스크립트의 함수는 '일급 객체'이다. 	
-	2-1. '일급 객체'란?
-		- 무명의 리터럴로 생성이 가능하다. 즉 런타임에 생성이 가능.
-		- '변수'나 '자료구조'(객체, 배열)에 저장할 수 있다.
-		- '함수의 매개변수'에 전달할 수 있다.
-		- '함수의 반환값'으로 사용할 수 있다. 
-
-3. 객체 리터럴
-	3-1. 구조 
-		- 프로퍼티와 메서드로 구성되어 있다. (data와 behavior)
-		- 코드 예시
-		var person = { 
-			name: 'Lee', // 프로퍼티 키: '프로퍼티 값' <- 프로퍼티 "객체의 상태를 나타내는 값 (data)"
-			age: 20, 
-			tomorrow: function() { // <-메서드 "프로퍼티(상태 데이터)를 참조하고 조작할 수 있는 동작 (behavior)"
-				this.age++; 
-				do somegthing...
-			}
-		}
-		
-		객체는 객체의 상태를 나타내는 값과 이 값(즉 프로퍼티)을 참조하고 조작할 수 있는 동작(메서드)를 포함한다. 
-		상태와 동작을 하나의 단위로 구조화할 수 있어 유용하다. 
-
-	3-2. 프로퍼티 접근
-		[*] 마침표 프로퍼티 접근 연산자'(.)' 를 사용하는 마침표 표기법
-		[*] 대괄호 프로퍼티 접근 연산자'[...]' 를 사용하는 대괄호 표기법
-			- 대괄호 프로퍼티 접근 연산자를 쓸 때, 연산자 내부에 지정하는 프로퍼티 키는 반드시 따옴표로 감싼 문자열이다.
-			- 코드 예시	
-			var person = {
-				name: 'Song'
-			};
-			person.name // Song
-			person.['name'] // Song
-			person.[name] // ReferenceError -> 식별자 name을 평가하기 위해 선언된 name을 찾지 못했기 때문에 참조 에러
-			person.age // Undefined -> 객체에 존재하지 않기 때문에 undefined
-</code></pre>
-<pre><code class="javascript">
-[함수와 메서드]
-
-1. 함수 
-	- 함수는 호출될 때, 매개변수 이외에도 'arguments객체'와 'this'를 암묵적으로 전달 받는다. 
-	- '함수의 호출 방식'에 의해 this에 바인딩할 어떠한 객체가 '동적'으로 결정된다.
-		> 함수를 선언하고 안에서 this를 정의할 때 바인딩될 객체가 정적으로 결정되는 것이 아니고,
-		호출할 때 함수가 '어떤 방식으로' 호출되었는지에 따라 this에 바인딩할 객체가 동적으로 결정됨.
-
-2. 메서드 
-	- '객체 안에 정의된 함수'를 메서드라고 부른다.
-	- 메서드는 자신이 속한 객체의 프로퍼티를 참조하고 변경할 수 있다.
-	(특정 객체 안에서 정의가 되어있어도, 함수라는 것 자체는 참조 타입 데이터다. -> 그렇기 때문에 호출 방식에 따라 this의 바인딩이 동적으로 정해짐.)
-
-위 코드에서.. 
-init 식별자는 obj객체에 속해있는 식별자로이며, 이 변수안에는 함수를 참조하는 주소값을 가지고 있다.
-init:f는 객체안의 함수, 즉 메서드로써 호출을 한 것이다.
-메서드로써 호출한 함수는 '해당 메서드를 호출한 객체'에 바인딩 된다. 
-</code></pre>
-
 		<!--[1]-------------------------------------------------------------------->
 		<div class="exam_wrap">
 			<h1>Q.1 함수 호출시 new 를 붙인 것과 안 붙인 것의 차이를 설명하세요.</h1>
@@ -153,16 +69,14 @@ new obj();
 			</div>
 		</div>
 		<script>
-			var obj = {
-				init: function() {
-					console.log(this)
-				}
-			};
-			obj.init();
+			// var obj = {
+			// 	init: function() {
+			// 		console.log(this)
+			// 	}
+			// };
+			// obj.init();
 		</script>
 <pre><code class="javascript">
-
-
 var obj = {
 	init: function() {
 		console.log(this)
@@ -193,16 +107,16 @@ obj.init();
 			</div>
 		</div>
 		<script>
-			var obj = {
-				init: function() {
-					// setElements 함수를 호출해봐요
-					this.setElements();
-				},
-				setElements: function() {
-					console.log('call')
-				}
-			}
-			obj.init();
+			// var obj = {
+			// 	init: function() {
+			// 		// setElements 함수를 호출해봐요
+			// 		this.setElements();
+			// 	},
+			// 	setElements: function() {
+			// 		console.log('call')
+			// 	}
+			// }
+			// obj.init();
 		</script>
 <pre><code class="javascript">
 var obj = {
@@ -338,12 +252,16 @@ obj.init(); // 호출
 			// 		name: 'song',
 			// 		age: 29
 			// 	},
+			// 	null: null,
+			// 	undefined: undefined,
 			// };
 			// console.log(obj.func); 
 			// console.log(obj.num);
 			// console.log(obj.str);
 			// console.log(obj.bool);
 			// console.log(obj.personObj);
+			// console.log(obj.null);
+			// console.log(obj.undefined);
 		</script>
 <pre><code class="javascript">
 [결과]
@@ -353,6 +271,8 @@ obj.init(); // 호출
 abcd
 true
 > {name: "song", age: 29}
+null
+undefined
 </code></pre>
 
 		<!--[6]-------------------------------------------------------------------->
@@ -380,11 +300,90 @@ true
 				f : 'f',
 				a : 'a'
 			};
-			var toStr = obj.prototype.toString();
-			console.log(toStr)
-		</script>
+			var newArr = []; // obj내 객체의 속성값을 저장할 배열(array).
 
+			for(var key in obj) {
+				newArr.push(obj[key]); // 속성값을 저장한다.	
+			}
+
+			// abc 순으로 sorting한다. Array.sort(); - 원본 배열이 변경된다.
+			newArr.sort();
+
+			// 문자열로 출력한다. - join();, toString();
+			var newStr = newArr.join(''); 
+				// 결과 > abcdefg
+				// or
+			// var newStr = newArr.toString();
+				// 결과 > a,b,c,d,e,f,g
+			console.log(newStr); 		
+		</script>
 <pre><code class="javascript">
+var obj = {
+	e : 'e',
+	d : 'd',
+	b : 'b',
+	g : 'g',
+	c : 'c',
+	f : 'f',
+	a : 'a'
+};
+var newArr = []; // obj내 객체의 속성값을 저장할 배열(array).
+
+for(var key in obj) {
+	newArr.push(obj[key]); // 속성값을 저장한다.	
+}
+
+// abc 순으로 sorting한다. Array.sort(); - 원본 배열이 변경된다.
+newArr.sort();
+
+// 문자열로 출력한다. - join();, toString();
+var newStr = newArr.join(''); 
+	// or
+	// var newStr = newArr.toString();
+	// 결과 > a,b,c,d,e,f,g
+console.log(newStr); // 결과 > abcdefg
+</code></pre>
+<br>
+<pre><code class="javascript">
+#객체 타입의 데이터를 사용하여 반복문 만들기
+
+var items = {
+	banana: 50,
+	apple: 80,
+	pineapple: 100
+}
+
+for (key in items) {
+	console.log("Fruit name: " + key); // 키 출력
+}
+
+for (key in items) {
+	console.log("Fruit name: " + items[key]); // 값 출력
+}
+
+# 객체에서 배열로 만들기 (변환)
+
+var fruits = []; // Fruits 배열에 객체의 키 값을 모두 추가
+for(key in items) {
+	fruit.push(key)
+}
+
+# 자바스크립트 반복문 종류
+1. for : 고전적인 for문
+2. for in : 객체의 프로퍼티 키 열거 전용 [*] 배열이 아닌 '객체' 순회시에만 사용.
+3. for of : 이터러블 순회 전용
+4. forEach(): 배열 순회 전용 메서드
+5. while : 고전적인 while문
+6. do while : 고전적인 do...while문
+7. Object 객체 메서드: 객체 순회 전용
+8. Array.prototye 메서드 : 배열 전용
+
+# 배열을 문자열로 바꾸기
+1. join() 함수 - 원하는 구분자를 넣어준다. 
+2. toString() 함수
+
+
+## 객체의 프로퍼티 순회하기
 
 </code></pre>
 					
@@ -394,30 +393,70 @@ true
 			<h1>Q.7 'bcaebe' 문자열을 hasOwnProperty 를 사용해서, {a : 1, b : 2, c : 1, e : 2} 로 변경해보세요.</h1>
 		</div>
 		<script>
-			var str = new String('bcaebe');
-			var obj = {};
-			var cnt = 0;
-			var pos = str.indexOf(a);
-			while (pos !== -1) {
-				cnt++;
-				pos = str.indexOf(a, pos + 1);
-			}
-			console.log(cnt)
+			var str = 'bcaebe';
+			
+			
+			// for (let i = 0; i < str.length; i++) {
+			// 	const element = str[i];
+			// 	console.log(element);
+				
+			// }
+			// $_string.split('').reduce( (acc, cur) => { 
+				// acc[cur] ? acc[cur] += 1 : acc[cur] = 1  ;return acc; }, {} )
+			
+			// for(let $_char of $_string){
+			// 	result[$_char] ? result[$_char] += 1 : result[$_char] = 1
+			// }
+
 			
 		</script>
 <pre><code class="javascript">
+# 객체의 네이티브 메소드 중 하나인 'hasOwnProperty'
+# 언제 쓰는가?
+# 왜 쓰는가?
 
-</pre></code>
-<pre><code class="javascript">
-[실행 컨텍스트]
+- hasOwnProperty 메소드가 하는 일 : 객체가 특정 프로퍼티에 대한 소유 여부를 반환.
 
-1. 함수는 실행을 하면 실행 컨텍스트가 생긴다.
-2. 컨텍스트 생성 시 
-	컨텍스트 안에 변수 객체, scope chain, this 가 생성이 된다. 
-	- 변수 객체 (arguments, variable)
-3. 컨텍스트 생성 후 함수가 실행된다. 
-	사용되는 변수들은 변수객체 안에서 값을 찾고 없다면 스코프체인을 따라 거슬러 올라가며 찾는다.
-4. 함수 실행이 마무리 되면 해당 컨텍스트는 사라진다. (클로저 제외)
+[예제1]
+const obj = {
+	a: 1,
+}
+obj.hasOwnproperty("a"); // true
+obj.hasOwnproperty("orange"); // false
+
+- 해당 객체에 특정 프로퍼티가 존재한다면 true, 그렇지 않으면 false를 반환한다. 
+
+- 단, ✨'프로토타입 체인은 확인하지 않으며 해당 객체가 스스로 정의한 프로퍼티만'✨을 판단한다. - [예제2]
+	
+[예제2]
+obj.b = 2;
+Object.prototype.c = 3;
+obj.b; // 2
+obj.c // 3
+
+obj.hasOwnProperty("b"); // true 📍 객체 스스로가 정의한 프로퍼티만을 확인한다. 
+obj.hasOwnProperty("c"); // false 📍 프로토타입 체인은 확인하지 않는다.
+
+- 루프 안에서 hasOwnProperty를 사용해보자. 
+- 해당 객체 자신의 프로퍼티 여부를 확인할 때 조건문과 함께 사용한다면 유용할 수 있겠다.
+
+[예제3]
+const obj = {
+	a: 1,
+	b: 2,
+	c: 3
+};
+const copy = {};
+let sum = 0;
+for(let key in obj) {
+	if(obj.hasOwnProperty(key)) {
+		sum += copy[key] = obj[key] * 2;
+		// sum += copy[a] = obj3[a] * 2 > sum += copy[a] = 2 > sum = 0 + 2
+		// sum += copy[b] = obj3[b] * 2 > sum += copy[b] = 4 > sum = 2 + 4
+		// sum += copy[c] = obj3[c] * 2 > sum += copy[c] = 6 > sum = 6 + 6
+	}
+}
+sum => 2 + 4 + 6  = 12
 </pre></code>
 	</div>
 	<!-- container [e] -->
