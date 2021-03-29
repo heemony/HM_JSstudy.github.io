@@ -91,7 +91,7 @@
                 alert('게임 종료');
                 return;
             } else {
-                this.setRandomNum(); 
+                this.setRandomFunc(); 
                 this.animateFunc(); 
             } 
         },
@@ -115,7 +115,7 @@
             this.completeGame = true;     
         },
 
-        setRandomNum: function() {
+        setRandomFunc: function() {
             var indexArr = [];
             for(var i = 0; i < this.boxItem.length; i++) {
                 indexArr[i] = i;
