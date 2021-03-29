@@ -9,10 +9,10 @@
 
 <!-- shades-of-purple rainbow paraiso-dark -->
 <!-- highlights.js -->
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/rainbow.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
-<script>hljs.highlightAll() ;</script>
+<script>hljs.highlightAll();</script> -->
 </head>
 <style>
 pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
@@ -247,9 +247,39 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
 	- indexOf
 	- includes
 
-	둘의 가장 큰 차이는 웹표준때문에 includes는 크롬에서 먹히는데, 익스플로러에선 안된다고 한다
-	indexOf는 대부분에서 가능하다고 함.
+	(둘의 가장 큰 차이는 웹표준때문에 includes는 크롬에서 먹히는데, 익스플로러에선 안된다고 한다
+	indexOf는 대부분에서 가능하다고 함.)
 
+	/*-----------------------------------------------------------*/
+	우선 어떤 데이터를 DB에서 가져왔고 JSON형식으로 변수에 담은 것을 가정한 상태이다.
+
+	var data = JSON.nameCd;
+
+	if(data.indexOf('문자') > -1) { // 이 때 data 변수안에 문자가 존재하면 값은 0이다.
+		alert("문자가 존재합니다.");
+	} else {
+		alert("문자가 존재하지 않습니다.");
+	}
+	/*-----------------------------------------------------------*/
+
+	이것과
+
+	/*-----------------------------------------------------------*/
+	var data = JSON.nameCd;
+
+	if(data.includes('문자')) { // 이 때 data 변수안에 문자가 존재하면 값은 true이다.
+		alert("문자가 존재합니다.");
+	} else {
+		alert("문자가 존재하지 않습니다.");
+	}
+	/*-----------------------------------------------------------*/
+
+	여러가지 특정 문자를 비교할 땐 includes가 훨씬 편리하다.
+
+
+	if(data.indexOf('문자') > -1 && data.indexOf('사랑') > -1 && data.indexOf('운명') > -1)
+	if(data.includes('문자','사랑','운명','실패') > -1) { // 콤마(,)를 기준으로 작성하면 끝
+		
 	
 </code></pre>
 <!-- wrapper [e] -->
