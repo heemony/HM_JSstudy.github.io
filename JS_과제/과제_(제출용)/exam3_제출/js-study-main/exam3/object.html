@@ -107,16 +107,16 @@ obj.init();
 			</div>
 		</div>
 		<script>
-			// var obj = {
-			// 	init: function() {
-			// 		// setElements 함수를 호출해봐요
-			// 		this.setElements();
-			// 	},
-			// 	setElements: function() {
-			// 		console.log('call')
-			// 	}
-			// }
-			// obj.init();
+			var obj = {
+				init: function() {
+					// setElements 함수를 호출해봐요
+					this.setElements();
+				},
+				setElements: function() {
+					console.log('call! init에서 setElements를 실행했습니다.')
+				}
+			}
+			obj.init();
 		</script>
 <pre><code class="javascript">
 var obj = {
@@ -176,22 +176,22 @@ obj.init();
 			// obj.init.call(obj2);
 
 			var obj = {
-	name: 'obj',
-	init : function () {
-		// 객체 obj2 의 init 을 호출해봐요~
-	}
-};
-var obj2 = {
-	name: 'obj2',
-	init : function () {
-		console.log(`call ${this.name}`);
-	}
-};
+				name: 'obj',
+				init : function () {
+					// 객체 obj2 의 init 을 호출해봐요~
+				}
+			};
+			var obj2 = {
+				name: 'obj2',
+				init : function () {
+					console.log(`call! ${this.name}.init으로 obj2의 init을 실행했습니다. `);
+				}
+			};
 
-// obj.init()을 호출하기 전에 메서드를 할당해준다.
-obj.init = obj2.init;
-obj.init(); 
-		</script>
+			// obj.init()을 호출하기 전에 메서드를 할당해준다.
+			obj.init = obj2.init;
+			obj.init(); 
+			</script>
 <pre><code class="javascript">
 var obj = {
 	name: 'obj',
@@ -241,27 +241,29 @@ obj.init(); // 호출
 			</div>
 		</div>
 		<script>
-			// var obj = {
-			// 	func : function () {
-			// 		console.log('func');
-			// 	},
-			// 	num : 3,
-			// 	str : 'abcd',
-			// 	bool : true,
-			// 	personObj: {
-			// 		name: 'song',
-			// 		age: 29
-			// 	},
-			// 	null: null,
-			// 	undefined: undefined,
-			// };
-			// console.log(obj.func); 
-			// console.log(obj.num);
-			// console.log(obj.str);
-			// console.log(obj.bool);
-			// console.log(obj.personObj);
-			// console.log(obj.null);
-			// console.log(obj.undefined);
+			var obj = {
+				func : function () {
+					console.log('func');
+				},
+				num : 3,
+				str : 'abcd',
+				bool : true,
+				personObj: {
+					name: 'song',
+					age: 29
+				},
+				null: null,
+				undefined: undefined,
+			};
+			console.log('/*-----------q5. [s] 데이터 타입을 모두 넣은 후 출력 ----------*/')
+			console.log(obj.func); 
+			console.log(obj.num);
+			console.log(obj.str);
+			console.log(obj.bool);
+			console.log(obj.personObj);
+			console.log(obj.null);
+			console.log(obj.undefined);
+			console.log('/*-----------q5. [e] 데이터 타입을 모두 넣은 후 출력 ----------*/')
 		</script>
 <pre><code class="javascript">
 [결과]
@@ -306,7 +308,7 @@ undefined
 				newArr.push(obj[key]); // 속성값을 저장한다.	
 			}
 
-			var newStr = newArr.sort().join('');
+			var newStr = newArr.sort().join(''); // 정렬 후 문자열로
 
 			console.log(newStr); 		
 		</script>
