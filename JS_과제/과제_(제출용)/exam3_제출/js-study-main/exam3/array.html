@@ -83,7 +83,7 @@ examObj3.find('button').on('click', function() {
 	var indexArr = [];
 
 	// 원본배열 정렬
-	for( i = 0; i < length-1 ; i++ ) {
+	for( i = 0; i < length-1; i++ ) {
 		for( j = 0; j < length-1; j++) {
 			if(numArr[j] < numArr[j + 1]) {
 				tmp = numArr[j + 1];
@@ -93,13 +93,18 @@ examObj3.find('button').on('click', function() {
 		}
 	}
 	
-	// 정렬 전의 배열에서 정렬 후의 숫자들이 있는지 확인하여 
+	// 정렬 후 배열에서, 정렬 전의 숫자들이 각각 몇 번째에 위치해있는지
 	for( i = 0; i < length ; i++ ) {
-		var index = copyArr.indexOf(numArr[i]); // 정렬 전 배열에서 큰 순서대로 해당하는 번호가 몇 번 인덱스에 있는지 확인.
+		var index = numArr.indexOf(copyArr[i]); // 정렬 전 배열에서 큰 순서대로 해당하는 번호가 몇 번 인덱스에 있는지 확인.
+		console.log('n',numArr[i]);
+		console.log('i',index);
 		if(index > -1) { // 해당하는 문자열이 있다면, (없으면 -1 반환. 있으면 해당 인덱스 반환.)
+			
 			indexArr[i] = index; // 새로운 배열에 인덱스 넣음.
+			console.log(indexArr[i]);
 		};
 	}
+	console.log(indexArr);
 	examObj3.append(`<p>${indexArr}</p>`);	
 });
 </code></pre>
@@ -342,7 +347,7 @@ examObj8.find('button').on('click', function() {
 			var indexArr = [];
 		
 			// 원본배열 정렬
-			for( i = 0; i < length-1 ; i++ ) {
+			for( i = 0; i < length-1; i++ ) {
 				for( j = 0; j < length-1; j++) {
 					if(numArr[j] < numArr[j + 1]) {
 						tmp = numArr[j + 1];
@@ -351,14 +356,21 @@ examObj8.find('button').on('click', function() {
 					}
 				}
 			}
+			console.log(numArr)
+			console.log(copyArr)
 			
-			// 정렬 전의 배열에서 정렬 후의 숫자들이 있는지 확인하여 
+			// 정렬 후 배열에서, 정렬 전의 숫자들이 각각 몇 번째에 위치해있는지
 			for( i = 0; i < length ; i++ ) {
-				var index = copyArr.indexOf(numArr[i]); // 정렬 전 배열에서 큰 순서대로 해당하는 번호가 몇 번 인덱스에 있는지 확인.
+				var index = numArr.indexOf(copyArr[i]); // 정렬 전 배열에서 큰 순서대로 해당하는 번호가 몇 번 인덱스에 있는지 확인.
+				console.log('n',numArr[i]);
+				console.log('i',index);
 				if(index > -1) { // 해당하는 문자열이 있다면, (없으면 -1 반환. 있으면 해당 인덱스 반환.)
+					
 					indexArr[i] = index; // 새로운 배열에 인덱스 넣음.
+					console.log(indexArr[i]);
 				};
 			}
+			console.log(indexArr);
 			examObj3.append(`<p>${indexArr}</p>`);	
 		});
 
@@ -374,7 +386,7 @@ examObj8.find('button').on('click', function() {
 				a = [];
 			}; 
 			for(let i = 0; i < b.length; i++) {
-                examObj4.append(`<p>${i+2}단 : ${b[i]}</p>`);	
+				examObj4.append(`<p>[${b[i]}]</p>`);	
 			} 	
 			console.log(b)
 		});
@@ -384,6 +396,7 @@ examObj8.find('button').on('click', function() {
 			for(var i = 0; i < 10; i++) {
 				ex5.push(i);
 			};
+			console.log(ex5)
 			examObj5.append(`<p>${ex5}</p>`);	
 		});	
 		// Q6. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 6개 담아보세요. (for문 사용)
