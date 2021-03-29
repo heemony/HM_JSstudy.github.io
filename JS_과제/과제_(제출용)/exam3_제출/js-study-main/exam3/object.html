@@ -9,10 +9,10 @@
 
 <!-- shades-of-purple rainbow paraiso-dark -->
 <!-- highlights.js -->
-<!-- <link rel="stylesheet"
+<link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
-<script>hljs.highlightAll() ;</script> -->
+<script>hljs.highlightAll() ;</script>
 </head>
 <style>
 pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
@@ -315,7 +315,7 @@ undefined
 				// or
 			// var newStr = newArr.toString();
 				// 결과 > a,b,c,d,e,f,g
-			console.log(newStr); 		
+			// console.log(newStr); 		
 		</script>
 <pre><code class="javascript">
 var obj = {
@@ -393,23 +393,40 @@ for(key in items) {
 			<h1>Q.7 'bcaebe' 문자열을 hasOwnProperty 를 사용해서, {a : 1, b : 2, c : 1, e : 2} 로 변경해보세요.</h1>
 		</div>
 		<script>
-			var str = 'bcaebe';
+			var str = 'babaved';
+			var cnt = {};
+			// 2. 혹은 for-in문을 사용하여 객체를 순회한다. 
+			for(let key in str ) {
+				var val = str[key]; // 새로운 객체 cnt의 프로퍼티 키에 val을 넣는다. val은 str의 프로퍼티 값
+
+				if ( (str.hasOwnProperty(key)) ) {
+					//f 이면 새로 만들어서 프로퍼티 키에 넣고
+					cnt[val] = 1;
+					console.log(cnt[val])
+				} else {
+					//t 있는거에서 더하고
+					cnt[val]++;	
+					console.log('뭐야 왜 안되냐..')
+				}
+			}
 			
+			console.log(cnt)
+
+
+			// str.split('').reduce( (acc, cur) => { 
+			// 	acc[cur] ? acc[cur] += 1 : acc[cur] = 1  ;return acc; 
+			// }, {} )
+
+			// console.log(acc)
 			
-			// for (let i = 0; i < str.length; i++) {
-			// 	const element = str[i];
-			// 	console.log(element);
-				
-			// }
-			// $_string.split('').reduce( (acc, cur) => { 
-				// acc[cur] ? acc[cur] += 1 : acc[cur] = 1  ;return acc; }, {} )
-			
-			// for(let $_char of $_string){
+			// for(let c of str){
 			// 	result[$_char] ? result[$_char] += 1 : result[$_char] = 1
 			// }
-
-			
 		</script>
+<pre><code class="javascript">
+
+</code></pre>
+<br>
 <pre><code class="javascript">
 # 객체의 네이티브 메소드 중 하나인 'hasOwnProperty'
 # 언제 쓰는가?

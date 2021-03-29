@@ -9,10 +9,10 @@
 
 <!-- shades-of-purple rainbow paraiso-dark -->
 <!-- highlights.js -->
-<!-- <link rel="stylesheet"
+<link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/rainbow.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
-<script>hljs.highlightAll();</script> -->
+<script>hljs.highlightAll();</script>
 </head>
 <style>
 pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
@@ -180,7 +180,7 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
 		// 2. 버튼을 누를 때 마다 난수 생성 -> 해당 난수가 있는지 배열에 확인한 후에 제거한다.
 		examObj7.find('button').on('click', function() {
 			// 2-1. 난수를 생성한다. 
-			var rn = Math.floor(Math.random() * ex7.length);
+			var rn = Math.floor(Math.random() * 10);
 
 			// 2-2. 배열의 갯수만큼 for문을 돌아서 난수와 같은 인덱스가 있는지 찾는다.
 			for(let i = 0; i < ex7.length; i++) {
