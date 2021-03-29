@@ -193,7 +193,7 @@
     // 1. 셀렉터 정리
     // 2. 세 버튼 중 선택이 되어있는지 아닌지, 그리고 어디가 선택되어 있는지 확인하는 구문
     (function () {
-        'use stricr';
+        'use strict';
 
         var beargame = {
             init: function() {
@@ -211,7 +211,7 @@
                 this.gameLane = this.gameArea.children();
             },
             initOpts: function() {
-                this.changeInput = false;
+                this.changeInput = false; // 인풋이 바뀌었는지 아닌지 체크한다.
                 this.compeleteGame = false; // 게임이 완성되었는지 아닌지를 체크한다. 
             },
             bindEvents: function() {
@@ -220,8 +220,8 @@
                 // this.boxInput.on('change', this.onChangeFunc.bind(this)); [!]얘 말고 이 바로 위 부모에게 이벤트를 줘보자.
                 this.boxItem.on('change', 'input',  this.onChangeFunc.bind(this)); 
                 // input이라고 타겟을 지정하고 넣었다.  input a button 이렇게 ㅅ띄어쓰기로 넣을 수도 있다. 
-                // currentT 선택한 애
-                // deligate 이벤트 부여된 애 
+                // event.currentTarget : 선택한 애
+                // event.deligateTarget : 이벤트 부여된 애 
             },
             onclickFunc: function(e) {  // 선택하기 
                 e.preventDefault();
@@ -261,15 +261,14 @@
                 // 변수에 선택 안된거 집어넣고,
                 // 거기서 random 돌려서
                 // 함수 호출하면 되지 않을까.
+                this.nonCheck = 
             },
         };
         beargame.init();
     })();
-
     // (선택한 인덱스 제외) 선택을 하지 않은 인덱스 두개가 랜덤으로 내려 올 수 있게 만들어주세요.
     // 배열 사용
     // math.random 사용
-
 </script>
 </body>
 </html> 

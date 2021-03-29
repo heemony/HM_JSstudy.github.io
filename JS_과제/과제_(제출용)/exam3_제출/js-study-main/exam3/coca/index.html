@@ -52,40 +52,82 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
+    
 (function () {
     'use strict';
 
     var takeBear = {
         init: function() {
-            this.setElements();
-            this.bindEvents();
+            this.setElements(); 
+            this.bindEvents(); 
         },
         setElements: function() {
             this.appBtn = $('.btn_app');
+            this.boxList = $('.bxlst');
+            this.boxItem = this.boxList.children(); // li
+            this.boxInput = this.boxItem.find('input');
+            this.gameArea = $('.game_area');
+            this.gameLane = this.gameArea.children();
 
         },
         initOpts: function() {
-
+            this.changeInput = false;
+            this.completeGame = false;
         },
         bindEvents: function() {
             this.appBtn.on('click', this.onClickFunc.bind(this));
+            this.boxItem.on('change', 'input', this.onChangeFunc.bind(this)); // event.delegateTarget
+            // [!] event.delegateTarget 이벤트 핸들러가 상위 요소가 추가 처리 될 때 사용
         },
-        onClickFunc: function() {
-            console.log(this.appBtn);
+        onClickFunc: function(e) {
+            e.preventDefault();
+            if( !this.changeInput ) {
+                alert('곰을 선택하세요.')
+            } else if ( this.completeGame ) {
+                alert('게임 종료');
+            } else {
+                this.animateFunc();
+            }
+            
         },
-        onChangeFunc: function() {
+        onChangeFunc: function(e) {
+            console.log(e.delegateTarget) // 그 상위요소까지
+            var target = $(e.delegateTarget); // 상위요소를 타겟으로 지정
+            this.targetIndex = target.index(); // 인덱스 번호 가져오기 -> animateFunc에서 사용할 것.
+            this.changeInput = true; // initOpts 값 true로 변경. (변경되었다는 뜻.)
+        },
 
-        },
         animateFunc: function() {
+            this.setRandomNum();
 
+            if( this.num === this.targetIndex ) {
+                this.setRandomNum();
+                this.animateFunc();
+            } else {
+                var targetLane = this.gameLane.eq(this.num),
+
+                    moveTarget = targetLane.find('.gom');
+                targetLane.addClass('winlane');
+                moveTarget.stop().animate( {
+                    top: '115px'
+                }, 500);
+                this.completeGame = true;
+            }
         },
-        randomFunc: function() {
 
+        // (선택한 인덱스 제외) 선택을 하지 않은 인덱스 두 개가 랜덤으로 내려 올 수 있게 만들어주세요.
+        // 배열 사용
+        // math.random 사용
+        setRandomNum: function() {
+            var indexArr = [0, 1, 2]; 
+            var randomNum = Math.floor(Math.random() * indexArr.length); // 배열 범위만큼 랜덤수를 뽑아서 
+            this.num = randomNum;
         },
-
     }
     takeBear.init();
 })();
+
+
 </script>
 </div>
 </body>
