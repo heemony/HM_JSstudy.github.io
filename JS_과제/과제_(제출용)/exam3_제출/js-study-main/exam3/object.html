@@ -306,16 +306,9 @@ undefined
 				newArr.push(obj[key]); // 속성값을 저장한다.	
 			}
 
-			// abc 순으로 sorting한다. Array.sort(); - 원본 배열이 변경된다.
-			newArr.sort();
+			var newStr = newArr.sort().join('');
 
-			// 문자열로 출력한다. - join();, toString();
-			var newStr = newArr.join(''); 
-				// 결과 > abcdefg
-				// or
-			// var newStr = newArr.toString();
-				// 결과 > a,b,c,d,e,f,g
-			// console.log(newStr); 		
+			console.log(newStr); 		
 		</script>
 <pre><code class="javascript">
 var obj = {
@@ -393,38 +386,51 @@ for(key in items) {
 			<h1>Q.7 'bcaebe' 문자열을 hasOwnProperty 를 사용해서, {a : 1, b : 2, c : 1, e : 2} 로 변경해보세요.</h1>
 		</div>
 		<script>
-			var str = 'babaved';
+			var str = 'bcaebe';
 			var cnt = {};
-			// 2. 혹은 for-in문을 사용하여 객체를 순회한다. 
-			for(let key in str ) {
-				var val = str[key]; // 새로운 객체 cnt의 프로퍼티 키에 val을 넣는다. val은 str의 프로퍼티 값
 
-				if ( (str.hasOwnProperty(key)) ) {
-					//f 이면 새로 만들어서 프로퍼티 키에 넣고
-					cnt[val] = 1;
-					console.log(cnt[val])
-				} else {
-					//t 있는거에서 더하고
-					cnt[val]++;	
-					console.log('뭐야 왜 안되냐..')
+			// 배열이 아닌 객체 순회시에 for-in 문 사용.
+			for(let i in str ) { // 문자열을 담고 있는 객체 str에서 for-in문을 돌린다. 
+				var key = str[i]; // 새로운 객체 cnt의 프로퍼티 키에 key를 넣을거다. key는 str의 프로퍼티 값인 영문 str
+
+				if ( !(cnt.hasOwnProperty(key)) ) { // cnt배열에서 해당 key가 없을 경우
+					cnt[key] = 1; // 숫자 1
+				} else { // 있을 경우 (중복 체크)
+					cnt[key]++;	// 증가시켜준다.
 				}
 			}
 			
 			console.log(cnt)
+			// 결과 {b: 2, c: 1, a: 1, e: 2}
 
 
 			// str.split('').reduce( (acc, cur) => { 
 			// 	acc[cur] ? acc[cur] += 1 : acc[cur] = 1  ;return acc; 
 			// }, {} )
 
-			// console.log(acc)
 			
 			// for(let c of str){
 			// 	result[$_char] ? result[$_char] += 1 : result[$_char] = 1
 			// }
 		</script>
+<br>
 <pre><code class="javascript">
+var str = 'bcaebe';
+var cnt = {};
 
+// 배열이 아닌 객체 순회시에 for-in 문 사용.
+for(let i in str ) { // 문자열을 담고 있는 객체 str에서 for-in문을 돌린다. 
+	var key = str[i]; // 새로운 객체 cnt의 프로퍼티 키에 key를 넣을거다. key는 str의 프로퍼티 값인 영문 str
+
+	if ( !(cnt.hasOwnProperty(key)) ) { // cnt배열에서 해당 key가 없을 경우
+		cnt[key] = 1; // 숫자 1
+	} else { // 있을 경우 (중복 체크)
+		cnt[key]++;	// 증가시켜준다.
+	}
+}
+
+console.log(cnt)
+// 결과 {b: 2, c: 1, a: 1, e: 2}
 </code></pre>
 <br>
 <pre><code class="javascript">
