@@ -121,8 +121,8 @@
                 indexArr[i] = i;
             }
             indexArr.splice(this.targetIndex, 1); // 타겟을 제외한 숫자 고르기. 
-            var randomIndex = Math.floor(Math.random() * indexArr.length); // 랜덤 인덱스로 쓸 놈을 구했다.
-            var randomTarget = indexArr[randomIndex]; // 찐 타겟을 골라냈다!
+            var randomIndex = Math.floor(Math.random() * indexArr.length); // 랜덤 인덱스
+            var randomTarget = indexArr[randomIndex]; // 찐 타겟
             this.randomTarget = randomTarget; 
         },
     }
