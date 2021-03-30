@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi"> -->
 <title>코카콜라~</title>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/coca.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/vs2015.min.css"> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script> 
@@ -50,85 +52,85 @@
 
     <div style="height:2000px"></div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script>
-    
-(function () {
-    'use strict';
-
-    var takeBear = {
-        init: function() {
-            this.setElements(); 
-            this.bindEvents(); 
-        },
+   
+    <script>
         
-        setElements: function() {
-            this.appBtn = $('.btn_app');
-            this.boxList = $('.bxlst');
-            this.boxItem = this.boxList.children(); // li
-            this.boxInput = this.boxItem.find('input');
-            this.gameArea = $('.game_area');
-            this.gameLane = this.gameArea.children();
-        },
+    (function () {
+        'use strict';
 
-        initOpts: function() {
-            this.changeInput = false;
-            this.completeGame = false;
-        },
-
-        bindEvents: function() {
-            this.appBtn.on('click', this.onClickFunc.bind(this));
-            this.boxItem.on('change', 'input', this.onChangeFunc.bind(this)); // event.delegateTarget
-            // [!] event.delegateTarget 이벤트 핸들러가 상위 요소가 추가 처리 될 때 사용
-        },
-
-        onClickFunc: function(e) {
-            e.preventDefault();
-            if( !this.changeInput ) {
-                alert('곰을 선택하세요.');
-                return;
-            } else if ( this.completeGame ) {
-                alert('게임 종료');
-                return;
-            } else {
-                this.setRandomFunc(); 
-                this.animateFunc(); 
-            } 
-        },
-
-        onChangeFunc: function(e) {
-            console.log(e.delegateTarget) 
-            var target = $(e.delegateTarget); 
-            this.targetIndex = target.index(); 
-            this.changeInput = true;
-            console.log(this.targetIndex); 
-        },
-
-        animateFunc: function() {
-            var targetLane = this.gameLane.eq(this.randomTarget), 
-                moveTarget = targetLane.find('.gom');
+        var takeBear = {
+            init: function() {
+                this.setElements(); 
+                this.bindEvents(); 
+            },
             
-            targetLane.addClass('winlane'); 
-            moveTarget.stop().animate( {
-                top: '115px'
-            }, 500);
-            this.completeGame = true;     
-        },
+            setElements: function() {
+                this.appBtn = $('.btn_app');
+                this.boxList = $('.bxlst');
+                this.boxItem = this.boxList.children(); // li
+                this.boxInput = this.boxItem.find('input');
+                this.gameArea = $('.game_area');
+                this.gameLane = this.gameArea.children();
+            },
 
-        setRandomFunc: function() {
-            var indexArr = [];
-            for(var i = 0; i < this.boxItem.length; i++) {
-                indexArr[i] = i;
-            }
-            indexArr.splice(this.targetIndex, 1); // 타겟을 제외한 숫자 고르기. 
-            var randomIndex = Math.floor(Math.random() * indexArr.length); // 랜덤 인덱스
-            var randomTarget = indexArr[randomIndex]; // 찐 타겟
-            this.randomTarget = randomTarget; 
-        },
-    }
-    takeBear.init();
-})();
-</script>
+            initOpts: function() {
+                this.changeInput = false;
+                this.completeGame = false;
+            },
+
+            bindEvents: function() {
+                this.appBtn.on('click', this.onClickFunc.bind(this));
+                this.boxItem.on('change', 'input', this.onChangeFunc.bind(this)); // event.delegateTarget
+                // [!] event.delegateTarget 이벤트 핸들러가 상위 요소가 추가 처리 될 때 사용
+            },
+
+            onClickFunc: function(e) {
+                e.preventDefault();
+                if( !this.changeInput ) {
+                    alert('곰을 선택하세요.');
+                    return;
+                } else if ( this.completeGame ) {
+                    alert('게임 종료');
+                    return;
+                } else {
+                    this.setRandomFunc(); 
+                    this.animateFunc(); 
+                } 
+            },
+
+            onChangeFunc: function(e) {
+                console.log(e.delegateTarget) 
+                var target = $(e.delegateTarget); 
+                this.targetIndex = target.index(); 
+                this.changeInput = true;
+                console.log(this.targetIndex); 
+            },
+
+            animateFunc: function() {
+                var targetLane = this.gameLane.eq(this.randomTarget), 
+                    moveTarget = targetLane.find('.gom');
+                
+                targetLane.addClass('winlane'); 
+                moveTarget.stop().animate( {
+                    top: '115px'
+                }, 500);
+                this.completeGame = true;     
+            },
+
+            setRandomFunc: function() {
+                var indexArr = [];
+                for(var i = 0; i < this.boxItem.length; i++) {
+                    indexArr[i] = i;
+                }
+                indexArr.splice(this.targetIndex, 1); // 타겟을 제외한 숫자 고르기. 
+                var randomIndex = Math.floor(Math.random() * indexArr.length); // 랜덤 인덱스
+                var randomTarget = indexArr[randomIndex]; // 찐 타겟
+                this.randomTarget = randomTarget; 
+            },
+        }
+        takeBear.init();
+    })();
+    </script>
 </div>
 </body>
 </html>
