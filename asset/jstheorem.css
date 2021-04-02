@@ -1,0 +1,19 @@
+@charset "utf-8";
+*{margin:0;padding:0}
+body{font-size:14px;line-height:1.5;color:rgb(0,0,0); padding: 0 2%; font-family: 'DGM';}
+h1,h2,h3,h4,h5,h6{text-align:left}
+button,label{cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+/* hr{display:none} */
+.title {font-size: 38px; color: gray;}
+.title2 {font-size: 25px; background: linear-gradient(to top, rgba(164, 208, 255, 0.749) 50%, transparent 50%); color: rgb(0, 0, 0); display: inline-block; padding: 0 5px; margin-bottom: 5px;}
+.title3 {font-size: 18px; background: linear-gradient(to top, rgba(247, 178, 245, 0.749) 50%, transparent 50%); font-weight: 700; display: inline-block; padding: 0 5px; margin-bottom: 5px;}
+.code {font-size: 18px; background: linear-gradient(to top, rgba(99, 123, 43, 0.324) 50%, transparent 50%); font-weight: 700; display: inline-block; padding: 0 5px; margin-bottom: 5px;}
+.desc {font-size: 14px; color: black;}
+.hl {background: linear-gradient(to top,rgb(255, 239, 149) 50%, transparent 50%); font-weight: 900;}
+.point {background: linear-gradient(to top,rgb(244, 119, 91) 50%, transparent 50%); font-weight: 900;}
+.blur {font-size: 10px; font-style: italic; color: rgb(102, 102, 102); position:absolute; bottom: 0;}
+.card {padding: 20px 0; font-size: 16px;}
+.date {font-size: 18px;}
+pre {font-size: 14px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
+a {color: rgb(71, 71, 71);}

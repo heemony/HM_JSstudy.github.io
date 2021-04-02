@@ -53,7 +53,7 @@
         console.log(this.test); 
         console.log(window.test);
     }
-    sayFoo();
+    sayFoo(); // 일반함수이므로 this는 window가 된다. 
 
 
   
@@ -66,9 +66,9 @@
     // 생성자 함수로 호출하는 방법
     // 함수를 생성을하면 프로토타입이 생성이 되는데 이것을 우리가 수정을 할 수 있따. 
     (function(win, $, doc, isUndefined) {  // 맨 아래에서 이렇게 넘겨주면 위에서 이렇게 받는다.
-        // console.log(argument[]).. 찍어보면 언디파인드 나옴 얘를 활용하려면,isUndefined 로 활용한다.
+        // console.log(arguments).. 찍어보면 언디파인드 나옴 얘를 활용하려면,isUndefined 로 활용한다.
         // 1. 참조할 함수가 있다.
-        var component = function(container, args) {
+        var Component = function(container, args) {
             console.log(container)
             console.log(args) // 들어오는 top값은 130인데
             var defParams = {
@@ -91,7 +91,7 @@
         };
 
         // 2. 위에 참조한 함수로 객체를 만드는 것.
-        component.prototype = {
+        Component.prototype = {
             // d이 안에서 우리가 정의했던 init...가튼 함수르른다. 
             // opts : {
                 // 1.의 함수가 2.를 바라보고 있고, 1에서 정의한 opts가 지금 주석 단거처럼 
@@ -105,7 +105,13 @@
                 // }) 이게 아니라
                 new swiper(this.opts.wiperObj, this.opts.slideOpts);
             }
-        };
+
+            // 예를 들면
+            setElements : function() {
+                this.어쩌구.on('click', this.init.bind(this)) <= 요기서 왜 this를 바인드 해주나여..?? 디스가 둘이 다른건가용~~
+                
+            }
+        },
 
         // 페이지가 로드되면..이라는 뜻임. : $(fucntion() {})
         $(function () {
@@ -147,6 +153,13 @@
     
 
     // 검수할떄 나머지 li 다 주석해놓고 2개로만 검수해 볼 것.
+
+    1. 배열을 받아온다
+    2. 원본 / 깊은복사 새로만들고
+    3. 깊은 복사한 애에서 랜덤으로 뽑기
+    4. 빈 배열이 될 때 => 사이클 돌았다. 처음으로 (원본에서 다시 깊은복사를 ㅎ ㅏㄴ다.)
+
+
 
 </script>
 </body>

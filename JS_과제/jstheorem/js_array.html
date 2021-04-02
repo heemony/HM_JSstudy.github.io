@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- highlights.js -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<style>
+    .upbtn {position: fixed; bottom: 20px; right: 20px; width: 28px; height: 28px; border-radius: 50%; text-align: center; font-size: 20px;}
+    .upbtn.active { animation: blink 3s linear infinite; }
+    ul, li {padding: 0;}
+    a {text-decoration: none; color: rgb(112, 110, 98)}
+    @keyframes blink {
+        0% { background-color: rgba(205, 205, 205, 0.666);}
+        25% { background-color: rgb(187, 244, 152);}
+        50% { background-color: rgb(252, 227, 0); bottom: 25px;}
+        75% {background-color: rgba(85, 142, 211, 0.461)}
+        100% {background-color: rgb(237, 186, 242);}
+    }
+</style>
+<title>JS - Array</title>
+</head>
+<body>
+    <h1>JS - Array (정리중)</h1>
+    <hr>
+    <div class="pageIndex">
+        <h2 id="startpoint">목차</h2>
+        <ul class="lists">
+        <li class="list"><a href="#content1">#1. Array</a></li>
+        <li class="list"><a href="#content2">#2. 자바스크립트 배열은 배열이 아니다.</a></li>
+        <li class="list"><a href="#content3">#3. length 프로퍼티</a></li>
+        <li class="list"><a href="#content4">#4. 배열 생성</a></li>
+        <li class="list"><a href="#content5"></a></li>
+        <li class="list"><a href="#content6"></a></li>
+        <li class="list"><a href="#content7"></a></li>
+        </ul>
+    </div>
+    <div class="btnBox"><a href="#startpoint"><span class="upbtn"><span>👆🏿</span></span></a></div>
+<pre id="content1"><code class="javascript">// #4 JS - array
+// Array에 대해 정리합니다.
+
+#1 배열이란?
+여러 개의 값을 순차적으로 나열한 자료구조. JS는 배열을 다루기 위해 유용한 메서드를 다수 제공한다. 
+
+const arr = ['apple', 'banana', 'orange'];
+
+1-1. 배열의 구성
+- 요소 element : 배열이 가지고 있는 값
+    (배열의 요소가 될 수 있는 값 : 원시값, 객체, 함수, 배열 등 (JS에서 값으로 인정하는 모든 것))
+- 인덱스 : 요소의 위치
+
+
+1-2. 인덱스와 대괄호 표기법을 사용하여 배열의 요소에 접근한다.
+arr[0] // -> apple
+arr[1] // -> banana
+arr[2] // -> oragne
+
+
+1-3. 배열은 length 를 갖는다.
+arr.length // -> 3
+
+
+1-4. 배열의 순회
+
+- for 문을 이용한다.
+for(let i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+}
+
+
+✨1-5. 배열은 객체이다. 타입이 따로 존재하지 않는다.
+typeof arr // -> object
+
+
+1-6. 배열의 생성
+- 배열 리터럴, Array 생성자 함수, Array.of, Array.from 메서드로 생성할 수 있다. 
+
+- Array : 배열의 생성자 함수
+- Array.prototype : 배열의 프로토타입 객체, 배열을 위한 빌트인 메서드를 제공함.
+
+
+1-7. 배열은 객체다. 하지만 일반 객체와는 구별되는 특징이 있다.
+___________________________________________________
+|   구분   |         객체         |      배열
+---------------------------------------------------
+|   구조   | 프로터티 키, 프로퍼티 값  |   인덱스와 요소 
+| 값의 참조 |     프로퍼티 키        |      인덱스
+| 값의 순서 |         X           |        O
+| length  |         X           |        O
+---------------------------------------------------
+
+객체와 배열을 구분짓는 명확한 차이는 '값의 순서'와 'length' 프로퍼티 이다.
+
+// 반복문으로 자료구조를 순서대로 순회하기 위해서는 자료구조의 요소에 순서대로 접근할 수 있어야 하며
+// 자료구조의 길이를 알 수 있어야 한다. 
+
+1-8. 배열의 장점?
+처음부터 순차적으로 요소에 접근이 가능하다. 
+마지막부터 역순으로 요소에 접근이 가능하다.
+특정 위치에서 순차적으로 접근할 수 있다.
+-> length 덕분
+
+</code></pre>
+<pre id="content2"><code class="javascript">
+#2. 자바스크립트 배열은 배열이 아니다. 
+
+[ 자료구조에서 말하는 배열 ] 
+동일한 크기의 메모리 공간이 연속적으로 나열된 '밀집 배열'
+- 단 한 번의 연산으로 임의 접근가능, O(1) 고속 효율 동작
+- 하지만 정렬되지 않은 배열에서 특정한 요소를 검색하려면 배열의 처음부터 특정 요소를 발견할 때 까지 차례로 선형검색한다. O(n)
+
+// 선형 검색을 통해 (array)에 특정 요소(target)가 있는지 확인한다.
+// 배열에 특정 요소가 있다면 특정 요소의 인덱스를 반환하고, 존재하지 않으면 -1을 반환한다.
+function linearSearch(array, target) {
+    const length = array.length;
+
+    for(let i = 0; i < length; i++) {
+        if (array[i] === target) return 1;
+    }
+    return -1;
+}
+console.log(linearSearch([1,2,3,4,5], 6)); // -> -1
+console.log(linearSearch([1,3,5,7,9], 5)); // -> 2
+
+- 또한 배열에 요소를 삽입하거나 삭제하는 경우 배열의 요소를 연속적으로 유지하기 위해 요소를 이동시켜야 한다는 단점도 있다.
+
+
+
+/////////👆🏻여기까지가 일반적인 자료구조에서의 배열👆🏻//////////
+
+
+
+[ JS에서의 배열은 '희소 배열' 이다. ]
+
+2-1. 희소배열?
+배열의 요소를 위한 각각의 메모리 공간이 동일한 크기가 아니어도 된다. 연속적으로 이어져 있지 않을 수도 있다. 
+
+엄밀히 따지자면 JS의 배열은 일반적 의미의 배열이 아님. 
+
+2-2. 자바스크립트의 배열은 일반적인 배열의 동작을 흉내 낸 특수한 객체이다. 
+/*
+    console.log(Object.getOwnPropertyDescriptors(['apple','banana','orange']));
+
+    >
+    '0': {value: "apple", writable: true, enumerable: true, configurable: true}
+    '1': {value: "banana", writable: true, enumerable: true, configurable: true}
+    '2': {value: "orange", writable: true, enumerable: true, configurable: true}
+    length: {value: 3, writable: true, enumerable: false, configurable: false}
+    __proto__: Object
+*/
+
+프로퍼티 '키' : '문자열'과 'length'
+프로퍼티 '값' : 배열의 '요소'
+
+2-3. '배열의 요소'의 정체는
+사실 '프로퍼티 값'이다.
+
+2-4. 어떤 값이라도 배열의 요소가 될 수 있다.
+
+const arr = ['String', 10, true, null, undefined, NaN, Infinity, [ ], { }, function() {}];
+
+2-5. 일반적인 배열 < JS의 배열을 흉내내는 객체 : 장점은?
+인덱스를 통한 '접근'의 성능은 떨어지나,
+특정 요소를 '검색'하거나, 요소의 '삽입', '삭제'의 경우 일반적인 배열보다 빠른 성능을 갖는다.
+
+</code></pre>
+<pre id="content3"><code class="javascript">
+#3. length 프로퍼티
+
+3-1. length 프로퍼티의 값은 배열에 요소를 추가하거나 삭제하면 자동 갱신된다. 
+// 코드 생략
+
+3-2. 임의로 length값을 명시적으로 할당할 수 있다.
+값도 변경이 된다. 
+그러나, 실제로 배열의 길이가 늘어나지는 않는다.
+
+const arr = [1];
+
+// 현재 length 프로퍼티 값인 1보다 큰 숫자 값 3을 length 프로퍼티에 할당
+arr.length = 3;
+
+// length 프로퍼티 값은 변경되지만 실제로 배열의 길이가 늘어나지는 않는다.
+console.log(arr.length); // -> 3
+console.log(arr); // -> [1, empty × 2]
+
+여기서 empty는 실제로 추가된 배열의 요소가 아니다. 존재하지 않는 값이다. 메모리 공간도 확보하지 않는다. 빈 요소도 생성하지 않는다.
+
+3-3. 희소 배열의 length는 희소 배열의 실제 요소 개수보다 언제나 크다. 하지만 배열을 생성할 때에는 희소 배열을 생성하지 않도록 주의하자.
+
+</code></pre>
+<pre id="content4"><code class="javascript">
+#4. 배열 생성
+
+4-1. '배열 리터럴'
+가장 일반적인 방법 리터럴
+
+const arr = [1, 2, 3]
+
+4-2. Array '생성자 함수'
+
+Object 생성자 함수를 통해 객체를 생성할 수 있듯이, Array 생성자 함수를 통해 배열을 생성할 수도 있다. 
+Array 생성자 함수는 전달된 인수의 개수에 따라 다르게 동작하므로 주의가 필요하다. 
+
+❄️ 전달된 인수가 1개이고 숫자인 경우 : length 프로퍼티 값이 인수인 배열을 생성한다.
+
+
+</code></pre>
+<pre><code class="javascript"></code></pre>
+<pre><code class="javascript"></code></pre>
+
+<script>
+    (function() {
+        var upbtn = {
+            btnBox: '.btnBox',
+            targetObj: '.upbtn',
+            activeClass: 'active',
+            changePoint: 250,
+            currenHeight: null,
+            win: window,
+            init: function() {
+                this.setElements();
+                this.bindEvents();
+            },
+            setElements: function() {
+                this.btnBox = $(this.btnBox);
+                this.targetObj = this.btnBox.find(this.targetObj);
+                this.win = window;
+            },
+            bindEvents: function() { 
+                $(this.win).on('scroll', this.setScroll.bind(this));
+            },
+            setScroll: function() { 
+                this.currenHeight =  $(this.win).scrollTop();
+                this.activeScroll();
+            },
+            activeScroll: function() { 
+                if(this.currenHeight < this.changePoint) {
+                    this.removeActive();
+                } else if (this.currenHeight >= this.changePoint) {
+                    this.addActive();
+                }
+            },
+            addActive: function() { 
+                this.targetObj.addClass(this.activeClass);
+            },
+            removeActive: function() {
+                this.targetObj.removeClass(this.activeClass);
+            },
+        }
+        upbtn.init();
+    })();   
+</script>
+</body>
+</html>
