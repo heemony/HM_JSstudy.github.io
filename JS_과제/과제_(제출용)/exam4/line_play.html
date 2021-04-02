@@ -134,6 +134,7 @@
             objItem: '.swiper-slide',
             btn: '.btn_random',
             itemArr: [],
+            randomArr: [],
 
         };
         this.opts = $.extend(defParams, args || {});
@@ -145,7 +146,7 @@
             this.setElements();
             this.setArrayFunc();
             this.bindEvent();
-            this.setRandnumFunc();
+            this.setRandNumFunc();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -154,69 +155,48 @@
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
             this.itemArr = this.opts.itemArr;
+            this.randomArr = this.opts.randomArr;
         },
         setArrayFunc: function() {
             for(let i = 0 ; i < this.objItem.length; i++) {
                 this.itemArr[i] = this.objItem[i];
+                // 배열을 옴기긴 했는데 초기화가 되는지 확인해볼 것.
             }
         },
         bindEvent: function() {
-            this.btn.on('click', this.clickBtnFunc.bind(this));
+            this.btn.on('click', this.setRandArrFunc.bind(this));
         },
-        clickBtnFunc: function() {
-            this.setRandnumFunc();
-            // console.log(this.itemArr[this.randomNum]);
+        setRandNumFunc: function() { // 중복되지 않는 랜덤수 뽑. -> 숫자 하나만 뽑아서
+            var maxIndex = this.itemArr.length;
+            var randomNum = Math.floor(Math.random() * maxIndex + 1);             
         },
-        setRandnumFunc: function() { // 중복되지 않는 랜덤수 뽑.
-            var randomIndexArr = [];
-            var maxIndex = this.objItem.length;
-            console.log(maxIndex)
-            for(let i = 0; i < maxIndex; i++) {
-                var ramdomNum = Math.floor(Math.random() * maxIndex + 1);
-                if( !randomIndexArr.includes(ramdomNum) ) {
-                    randomIndexArr.push(ramdomNum);
-                } else {
-                    i--;
-                }
+        showItemFunc: function() {
+            this.objItem.hide().eq(this.randomNum).show();
+        },
+
+        setRandArrFunc: function() {     
+            this.setRandNumFunc(); // 버튼을 클릭하면 랜덤 숫자를 뽑느다.
+            var limit = 12;
+
+            if ( !this.randomArr.includes(this.randomNum) || typeof this.randomArr === undefined ) {
+                this.randomArr.push(this.randomNum); // 랜덤 숫자를 담는다. [] 중복제거, []이 전과 비교 
+                this.showItemFunc();
             }
-            this.randomIndexArr = randomIndexArr;
-            this.aaFunc();
         },
-        // https://velog.io/@eunjin/Javascript-%ED%8A%B9%EC%A0%95-%EC%88%AB%EC%9E%90-%EB%B2%94%EC%9C%84%EC%97%90%EC%84%9C-%EC%A4%91%EB%B3%B5%EC%9D%84-%EC%A0%9C%EC%99%B8%ED%95%9C-%EB%9E%9C%EB%8D%A4-%EC%88%AB%EC%9E%90-%EB%BD%91%EB%8A%94-%EB%B0%A9%EB%B2%95
-        // https://woo-yaa.tistory.com/35
-
-        // 랜덤 숫자 뽑아서
-        // 그 수를 가지고 이전에 보여줬던거랑 비교. 비교 대상이 없거나 같지 않다면 보여줌. / 이전것과 동일하면 수를 다시 뽑아야 함.
-        // 뽑아가지고 넘어 온 애들을 배열로 만든다. -> 12개에 중복체크까지 해서 다 맞다면 게임 끝 -> 초기화 함수를 돌려준다.
-        aaFunc: function() {  
-            // let i = 0;
-            // while (this.randomIndexArr.length === 12) {
-            //     console.log(this.itemArr[this.randomIndexArr[i]]);
-            //     this.randomIndexArr.shift(i);
-            //     i++;
-            // }
-            // console.log(this.randomIndexArr.length)
-
-            
-            // for(let i = 0; i < this.randomIndexArr.length-1 ; i++) {
-            //     this.itemArr[this.randomIndexArr[i]];
-            //     this.randomIndexArr.shift(i);
-            //     console.log(this.randomIndexArr)
-
-            //     if ( this.randomIndexArr.length === 6 || undefined) {
-            //         this.aaFunc();
-            //     } 
-                // else {
-                //     // this.setArrayFunc();
-                // }   
-            // }
-        },
+        
     };
 
     $(function () {
         var randomPlay = new exam();
     })
 })();
+
+// 그 수를 가지고 이전에 보여줬던거랑 비교. 비교 대상이 없거나 같지 않다면 보여줌. / 이전것과 동일하면 수를 다시 뽑아야 함.
+// 뽑아가지고 넘어 온 애들을 배열로 만든다. -> 12개에 중복체크까지 해서 다 맞다면 게임 끝 -> 초기화 함수를 돌려준다.
+
+// 1.
+// https://velog.io/@eunjin/Javascript-%ED%8A%B9%EC%A0%95-%EC%88%AB%EC%9E%90-%EB%B2%94%EC%9C%84%EC%97%90%EC%84%9C-%EC%A4%91%EB%B3%B5%EC%9D%84-%EC%A0%9C%EC%99%B8%ED%95%9C-%EB%9E%9C%EB%8D%A4-%EC%88%AB%EC%9E%90-%EB%BD%91%EB%8A%94-%EB%B0%A9%EB%B2%95
+// https://woo-yaa.tistory.com/35
 </script>
 </body>
 </html>

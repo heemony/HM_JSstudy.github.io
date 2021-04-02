@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- highlights.js -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<style>
+    .upbtn {position: fixed; bottom: 20px; right: 20px; width: 28px; height: 28px; border-radius: 50%; text-align: center; font-size: 20px;}
+    .upbtn.active { animation: blink 3s linear infinite; }
+    ul, li {padding: 0;}
+    a {text-decoration: none; color: rgb(112, 110, 98)}
+    @keyframes blink {
+        0% { background-color: rgba(205, 205, 205, 0.666);}
+        25% { background-color: rgb(187, 244, 152);}
+        50% { background-color: rgb(252, 227, 0); bottom: 25px;}
+        75% {background-color: rgba(85, 142, 211, 0.461)}
+        100% {background-color: rgb(237, 186, 242);}
+    }
+</style>
+<title>Execution Context</title>
+</head>
+<body>
+<pre><code class="javascript">
+#1. 실행 컨텍스트 Execution Context
+
+#실행 가능한 코드가 실행되기 위해 필요한 환경
+- 전역 코드
+- eval 코드
+- 함수 코드
+
+#실행에 필요한 정보
+- 변수 : 전역, 지역, 매개 변수, 객체의 프로퍼티
+- 함수 선언
+- 변수의 유효범위 (scope)
+- this
+
+#실행 컨텍스트는 스택구조를 가진다.
+
+
+# 
+1. 함수는 실행을 하면 실행 컨텍스트가 생긴다.
+
+2. 컨텍스트 생성 시 
+    컨텍스트 안에 '변수 객체', 'scope chain', 'this' 가 생성이 된다. 
+    - 변수 객체 (arguments, variable)
+
+3. 컨텍스트 생성 후 함수가 실행된다. 
+    사용되는 변수들은 변수객체 안에서 값을 찾고 없다면 스코프체인을 따라 거슬러 올라가며 찾는다.
+
+4. 함수 실행이 마무리 되면 해당 컨텍스트는 사라진다. (클로저 제외)
+
+
+# V/O 변수 객체 구성
+- 변수
+- 매개변수(parameter), 인수정보(arguments)
+- 함수 선언(표현식 제외)
+
+V/O는 실행 컨텍스트의 프로퍼티이기 때문에 값을 갖는다. -> 그 값은 다른 객체를 가리킴
+전역 컨텍스트의 경우 V/O -> G/O
+함수 컨텍스트의 경우 V/O -> A/O : 매개변수와 인수의 정보를 배열로 담고 있는 argument obj가 추가됨. 
+
+# S/C
+스코프 체인 : (전역 객체 제외)의 프로퍼티가 아닌 식별자, 즉 변수를 검색하는 매커니즘이다.
+프로토타입 체인 : 변수가 아닌 객체의 프로퍼티(메소드 포함)를 검색하는 매커니즘이다.
+
+# 변수 객체화 실행
+스코프 체인의 생성과 초기화가 종료하면 변수 객체화가 실행됨.
+변수 객체화란 변수 오브젝트에 프로퍼티와 값을 추가하는 것을 의미함. 변수의 객헤촤임.
+- 변수, 매개변수, 인수 정보(arguments), 함수 선언
+
+# 변수 객체화의 순서
+1. 매개변수(param)가 VO의 프로퍼티, 인수(arguments)가 값
+2. 함수(표현식 제외)를 대상으로 함수명이 VO의 프로퍼티, 생성된 함수 객체가 값 <= 이게 그 유명한 함수 호이스팅
+3. 변수 선언을 대상으로 변수명이 VO의 프로퍼티, undefined가 값 <= 이게 그 유명한 변수 호이스팅
+
+# 클로저
+* 생성된 함수 객체는 [[scope]] 프로퍼티를 가짐. (함수 객체만이 소유한 내부 프로퍼티) 함수 객체가 실행되는 환경이다.
+내부 함수의 [[scope]]프로퍼티는 자신의 실행 환경과 자신을 포함하는 외부 함수의 실행 환경과 전역객체를 가리킴
+이때 자신을 포함하는 외부 함수의 실행 컨텍스트가 소멸해도 [[scope]] 프로퍼티가 가리키는 외부 함수의 실행 환경은 소멸하지 않고 참조한다.
+
+# 변수 처리 
+1. 선언
+2. 초기화
+3. 할당
+
+
+// arguments 객체는 함수 호출 시 전달된 인수의 정보를 담고 있는 이터러블한 유사 배열 객체이다.
+// 매개변수는 인수로 초기화 된다.
+// 갯수가 
+https://poiemaweb.com/js-function#61-arguments-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0 
+
+</code></pre>
+</body>
+</html>
