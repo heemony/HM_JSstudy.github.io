@@ -124,13 +124,8 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            checkState: false,
-            originalArr : [
-                0,1,2,3,4,5,6,7,8,9,10,11
-            ],
-            tmpArr : [
-                0,1,2,3,4,5,6,7,8,9,10,11
-            ]
+            originalArr : [ 0,1,2,3,4,5,6,7,8,9,10,11],
+            tmpArr : [0,1,2,3,4,5,6,7,8,9,10,11]
         };
         this.opts = $.extend(defParams, args || {});
         if (!(this.obj = $(this.opts.obj)).length) return;
@@ -140,7 +135,10 @@
         init : function () {
             this.setElements();
             this.bindEvent();
-            this.setRandArrFunc();
+            this.activeFunc();
+        },
+        initOpts: function() {
+            this.checkstate = false;
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -150,27 +148,31 @@
             this.btn = this.obj.find(this.opts.btn);
             this.tmpArr = this.opts.tmpArr;
             this.originalArr = this.opts.originalArr;
-            this.checkstate = this.opts.checkstate;
         },    
         bindEvent: function() {
-            this.btn.on('click', this.setRandArrFunc.bind(this));
+            this.btn.on('click', this.activeFunc.bind(this));
+        },
+        activeFunc: function() {     
+            this.setRandNumFunc();
+            this.showItemFunc(); 
         },
         initArrFunc: function() { // 배열 초기화.
             this.checkstate = false;
-            if(this.tmpArr.length === 0) {
-                // console.log(this.deletedNum)
-                this.checkstate = true;
-                this.tmpArr = [...this.originalArr];
+            if(this.tmpArr.length === 0) { // 순회 마치면
+                console.log(this.deletedNum)
+                this.checkstate = true; // 트루로..
+                this.tmpArr = [...this.originalArr]; // 배열 복사
             }
-            // console.log(this.tmpArr)
+            console.log(this.tmpArr)
         },
-        returnRandomFunc: function() {
+        setRandomFunc: function() {
             var maxIndex = this.tmpArr.length;
+            var tmpRandom;
             var randomNum; 
-            let deletedNum;
-            if( this.checkstate ){
+            var deletedNum;
+            if( this.checkstate ){ // 마지막과 비교
                 for (;;) {
-                    let tmpRandom = Math.floor(Math.random() * maxIndex);    
+                    tmpRandom = Math.floor(Math.random() * maxIndex);    
                     if(this.deletedNum === tmpRandom) {
                         continue;
                     }
@@ -180,29 +182,27 @@
             } else {
                 randomNum = Math.floor(Math.random() * maxIndex);    
             }
+            
             this.randomNum = randomNum;
             this.deletedNum = deletedNum;
         },
         setRandNumFunc: function() { 
             this.initArrFunc();
-            this.returnRandomFunc();
+            this.setRandomFunc();
             this.tmpArr = this.tmpArr.filter((item, idx) => {
                 if( idx === this.randomNum) {
                     this.deletedNum = item;
                 }
                 return idx !== this.randomNum;
             }) 
-            // if( this.checkstate ) {
-            //     console.log(this.deletedNum)
-            // }
+            if( this.checkstate ) {
+                console.log(this.deletedNum)
+            }
         },
         showItemFunc: function() {
             this.objItem.hide().eq(this.deletedNum).show();
         },
-        setRandArrFunc: function() {     
-            this.setRandNumFunc();
-            this.showItemFunc(); 
-        },
+        
     };
     $(function () {
         var randomPlay = new exam();
