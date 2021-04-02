@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../asset/jstheorem.css">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- highlights.js -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/rainbow.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<title>jsworks2</title>
+</head>
+<body>
+    <h1 class="title">#4 JS</h1>
+    <h2 class="title2">컴포넌트 단위 프로그래밍</h2>
+<pre><code class="javascript">
+✅ 형태 
+    - 함수 : 함수
+    - 생성자 함수 : 객체, 상황에 따라서 재활용이 가능하고 객체 수정이 용이함.
+    
+✅  사용하는 이유
+    컴포넌트 단위 레벨이다. 객체의 수정이 용이하다. 여러 번 호출할 수 있다.
+
+✅  생성자 함수로 호출하는 방법
+    함수를 생성하면 'prototype'이 생성이 된다.
+    이 'prototype'에 접근해서 수정을 할 수 있다. 
+
+</code></pre>
+<p class="title3">[Code]</p>
+<pre><code class="javascript">
+    (function(win, $, doc, isUndefined) { // <- 2. 이렇게 파라미터를 통해 인수값을 받는다.
+        
+        console.log(arguments)
+        // ... Do something
+
+    })(window, window.JQuery, window.document); // <- 1. 즉시 실행함수를 호출할 때 인자값을 넘겨준다. 
+
+</code></pre>
+<script>
+    (function(win, $, doc, isUndefined) {
+        console.log(arguments)
+    })(window, window.JQuery, window.document);
+</script>
+<div class="desc">
+    <p>
+        console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+        -> isUndefined로 활용할 수 있다. 
+    </p>
+    <p class="code">[Result]</p>
+    <pre><code class="javascript">
+    Arguments(3) [Window, undefined, document, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+        0: Window {window: Window, self: Window, document: document, name: "", location: Location, …}
+        1: undefined
+        2: document
+        callee: ƒ (win, $, doc, isUndefined)
+        length: 3
+        Symbol(Symbol.iterator): ƒ values()
+        __proto__: Object
+    </code></pre>
+</div>
+
+<div class="block">
+<p class="title3">[구조]</p>
+<pre><code class="javascript">
+    (function(win, $, doc, isUndefined) {
+        // #1. 참조가 가능한 함수가 있다.
+        var Component = function(container, args) {
+            // 1-1. 파라미터 정의.
+            var defParams = {
+                obj: container,
+                top: null,
+                box: '.box',
+                swiperObj: '.swiper-slide',
+                slideOpts: {
+                    arrow: true,
+                    dots: false
+                }
+            }
+            this.opts = $.exteds(대상, 객체1, 객체2, ... , 객체n) 
+            // this.opts = Util.def(defParams, args) 
+            this.opts = Util.def(defParams, {args || {}}); 
+            this.init();
+        },
+
+        // #2. 위(1)에서 참조한 함수로 객체를 만들 수 있다. 
+        //    -> 생성자 함수를 만들면 해당 생성자 함수의 프로토타입을 바라본다.
+        Component.prototype = {
+            init: function() {
+                new swiper(this.opts.wiperObj, this.opts.slideOpts); // - 굿
+            },
+            setElements: function() {
+                this.클릭대상이담긴변수.on('click', this.init.bind(this));
+            }
+        },
+
+        // #3. 페이지가 로드되면... 이라는 뜻 => $(function() {})
+        $(function() {
+            new Component('.box', { 
+                top: '130px',
+                bottom: {
+                    //...
+                }
+            });
+        })
+    })(window, window.JQuery, window.document);
+</code></pre>
+<p class="title3"> [설명]</p>
+<pre><code class="javascript">
+    (function(win, $, doc, isUndefined) {
+
+        // #1. 참조가 가능한 함수가 있다.
+        var Component = function(container, args) {
+            console.log(container);
+            console.log(args);
+
+            // 1-1. 파라미터 정의.
+            var defParams = {
+                obj: container,
+                top: null,
+                box: '.box',
+                swiperObj: '.swiper-slide',
+                slideOpts: {
+                    arrow: true,
+                    dots: false
+                }
+            }
+            this.opts = $.exteds(대상, 객체1, 객체2, ... , 객체n) 
+                // 다수의 객체를 머지한다. 머지할 수 있는 뎁스이 깊이가 깊지않다.
+                // 최종적으로 나중에 덮어 씌어지는 값이 남게된다.
+                // 언제쓰는가? 
+                // 플러그인 생성시 선택 옵션값을 전달 받은 경우 인자를 합쳐야하는 경우가 있다. 
+
+            this.opts = Util.def(defParams, args) // *hivelab common js - 깊은 복사를 해준다.
+                // defParams와 args를 깊은 복사 해준다. 
+                //// (참조 데이터를 얕은 복사 할 경우 원본값이 변경될 수 있는 위험이 있다.)    
+                // 더 구체적으로 깊은 복사를 해주려면,
+            this.opts = Util.def(defParams, {args || {}}); // args가 있다면 가져오고, 없다면 빈 객체를 가져와라.
+            
+            this.init();
+        },
+
+        // #2. 위(1)에서 참조한 함수로 객체를 만들 수 있다. 
+        //    -> 생성자 함수를 만들면 해당 생성자 함수의 프로토타입을 바라본다.
+        Component.prototype = {
+           /**
+            * 이 곳에서..
+            * 생성자 함수(1)가 프로토타입(2)를 바라보고 있고, 
+            * 1에서 정의한 opts는 이 곳에 아래와 같은 형식으로 들어와있다고 생각할 수 있다.
+                opts: {
+                    ...
+                }
+            */
+
+            // 2-1. 함수를 정의해서 넣는다. 
+
+                // 1) init에서 생성자 함수와 new 키워드를 이용하여 객체를 생성해보자.
+            init: function() {
+                new swiper(this.opts.wiperObj, this.opts.slideOpts); // - 굿
+
+                // new swiper('.swiper-slide', {
+                //     arrow: true,
+                //     dots: flase
+                // }) // - 굳이 이렇게 구구절절 쓸 필요가 없다. 
+            },
+            setElements: function() {
+                this.클릭대상이담긴변수.on('click', this.init.bind(this));
+            }
+        },
+
+        // #3. 페이지가 로드되면... 이라는 뜻 => $(function() {})
+        $(function() {
+            // #3. ...객체를 생성한다.
+            new Component('.box', { // 옵션 값을 넘겨주기 위해 {} 객체로 던져준다. 
+                top: '130px',
+                bottom: {
+                    // depth : 이렇게 괄호 치고 객체 안에 객체가 들어가는 것
+                }
+            });
+            // -> (#1) 에서 '.box'는 container가 받고, {...}는 args가 받음.
+
+            new Component('.wrapper', {
+                top: '2000px',
+                bottom: {
+                    // ...
+                }
+            })
+
+            // 이렇게 아래에 추가하여 계속 생성할 수 있고, 
+            // 여기서 생성을 하면 함수가 객체 형태로 호출이 되면서 그 객체에 자동으로 this가 바인딩된다.
+
+        })
+    })(window, window.JQuery, window.document);
+</code></pre>
+<script>
+    (function(win, $, doc, isUndefined) {
+
+        // #1. 참조가 가능한 함수가 있다.
+        var Component = function(container, args) {
+            console.log(container);
+            console.log(args);
+
+            // 1-1. 파라미터 정의.
+            var defParams = {
+                obj: container,
+                top: null,
+                box: '.box',
+                swiperObj: '.swiper-slide',
+                slideOpts: {
+                    arrow: true,
+                    dots: false
+                }
+            }
+            this.opts = $.exteds(대상, 객체1, 객체2, ... , 객체n) 
+                // 다수의 객체를 머지한다. 머지할 수 있는 뎁스이 깊이가 깊지않다.
+                // 최종적으로 나중에 덮어 씌어지는 값이 남게된다.
+                // 언제쓰는가? 
+                // 플러그인 생성시 선택 옵션값을 전달 받은 경우 인자를 합쳐야하는 경우가 있다. 
+
+            this.opts = Util.def(defParams, args) // *hivelab common js - 깊은 복사를 해준다.
+                // defParams와 args를 깊은 복사 해준다. 
+                //// (참조 데이터를 얕은 복사 할 경우 원본값이 변경될 수 있는 위험이 있다.)    
+                // 더 구체적으로 깊은 복사를 해주려면,
+            this.opts = Util.def(defParams, {args || {}}); // args가 있다면 가져오고, 없다면 빈 객체를 가져와라.
+            
+            this.init();
+        },
+
+        // #2. 위(1)에서 참조한 함수로 객체를 만들 수 있다. 
+        //    -> 생성자 함수를 만들면 해당 생성자 함수의 프로토타입을 바라본다.
+        Component.prototype = {
+           /**
+            * 이 곳에서..
+            * 생성자 함수(1)가 프로토타입(2)를 바라보고 있고, 
+            * 1에서 정의한 opts는 이 곳에 아래와 같은 형식으로 들어와있다고 생각할 수 있다.
+                opts: {
+                    ...
+                }
+            */
+
+            // 2-1. 함수를 정의해서 넣는다. 
+
+                // 1) init에서 생성자 함수와 new 키워드를 이용하여 객체를 생성해보자.
+            init: function() {
+                new swiper(this.opts.wiperObj, this.opts.slideOpts); // - 굿
+
+                // new swiper('.swiper-slide', {
+                //     arrow: true,
+                //     dots: flase
+                // }) // - 굳이 이렇게 구구절절 쓸 필요가 없다. 
+            },
+            setElements: function() {
+                this.클릭대상이담긴변수.on('click', this.init.bind(this));
+            }
+        },
+
+        // #3. 페이지가 로드되면... 이라는 뜻 => $(function() {})
+        $(function() {
+            // #3. ...객체를 생성한다.
+            new Component('.box', { // 옵션 값을 넘겨주기 위해 {} 객체로 던져준다. 
+                top: '130px',
+                bottom: {
+                    // depth : 이렇게 괄호 치고 객체 안에 객체가 들어가는 것
+                }
+            });
+            // -> (#1) 에서 '.box'는 container가 받고, {...}는 args가 받음.
+
+            new Component('.wrapper', {
+                top: '2000px',
+                bottom: {
+                    // ...
+                }
+            })
+
+            // 이렇게 아래에 추가하여 계속 생성할 수 있고, 
+            // 여기서 생성을 하면 함수가 객체 형태로 호출이 되면서 그 객체에 자동으로 this가 바인딩된다.
+
+        })
+    })(window, window.JQuery, window.document);
+</script>
+
+<!-- <div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div>
+<div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div>
+<div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div>
+<div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div>
+<div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div>
+<div class="block">
+    <p class="title3">[Code]</p>
+    <pre><code class="javascript">
+        
+    </code></pre>
+    <script>
+    
+    </script>
+    <div class="desc">
+        <p>
+            console.log(arguments); 를 찍어보면 undefined가 나온다. <br>
+            -> isUndefined로 활용할 수 있다. 
+        </p>
+        <p class="code">[Result]</p>
+        <pre><code class="javascript">
+        
+        </code></pre>
+    </div>
+</div> -->
+
+
+</body>
+</html>
