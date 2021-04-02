@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
-<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- shades-of-purple rainbow 
+atom-one-dark-reasonable
+-->
 <!-- highlights.js -->
 <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/shades-of-purple.min.css">
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/atom-one-dark-reasonable.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 <style>
@@ -35,10 +37,14 @@
         <li class="list"><a href="#content1">#1. Array</a></li>
         <li class="list"><a href="#content2">#2. 자바스크립트 배열은 배열이 아니다.</a></li>
         <li class="list"><a href="#content3">#3. length 프로퍼티</a></li>
-        <li class="list"><a href="#content4">#4. 배열 생성</a></li>
-        <li class="list"><a href="#content5"></a></li>
-        <li class="list"><a href="#content6"></a></li>
-        <li class="list"><a href="#content7"></a></li>
+        <li class="list"><a href="#content00">유사 배열 객체와 이터러블 객체</a></li>
+        <li class="list"><a href="#content4">##4-1. 배열 생성</a></li>
+        <li class="list"><a href="#content5">##4-2. 배열 요소의 참조</a></li>
+        <li class="list"><a href="#content6">##4-3. 배열 요소의 추가와 갱신</a></li>
+        <li class="list"><a href="#content7">##4-4. 배열 요소의 삭제</a></li>
+        <li class="list"><a href="#content8">##4-5. 배열 메서드</a></li>
+        <li class="list"><a href="#content9">##4-6. 배열 고차 함수</a></li>
+        <li class="list"><a href="#content10">❤️ 재밌는 예제❤️ </a></li>
         </ul>
     </div>
     <div class="btnBox"><a href="#startpoint"><span class="upbtn"><span>👆🏿</span></span></a></div>
@@ -194,26 +200,189 @@ console.log(arr); // -> [1, empty × 2]
 3-3. 희소 배열의 length는 희소 배열의 실제 요소 개수보다 언제나 크다. 하지만 배열을 생성할 때에는 희소 배열을 생성하지 않도록 주의하자.
 
 </code></pre>
+<pre id="content00"><code class="javascript">
+    유사 배열 객체와 이터러블 객체??
+    
+    👉 유사 배열 객체 
+    1) 마치 배열처럼 인덱스를 프로퍼티 값에 접근할 수 있고 length 프로퍼티를 갖는 객체를 말한다. 2) 배열 처럼 for문으로 순회할 수 있다.
+    
+    // 1) 유사 배열 객체
+    const arrayLike = {
+        '0' : 'apple',
+        '1' : 'banana',
+        '2' : 'pineapple'
+    };
+    
+    // 2) 배열 처럼 for문으로 순회할 수 있다.
+    for (let i = 0; i < arrayLike.length; i++) {
+        console.log(arrayLike[i]);
+    }
+    
+    // 결과
+    // apple
+    // banana
+    // pineapple
+    
+    
+    👉 이터러블 객체
+    Symbol.iterator 메서드를 구현하여 for...of 문을 순회할 수 있다.
+    
+</code></pre>
 <pre id="content4"><code class="javascript">
-#4. 배열 생성
+#4. 배열의 함수 정리
+##4-1. 배열 생성
 
-4-1. '배열 리터럴'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1) '배열 리터럴'
 가장 일반적인 방법 리터럴
 
 const arr = [1, 2, 3]
 
-4-2. Array '생성자 함수'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2) Array '생성자 함수'
 
 Object 생성자 함수를 통해 객체를 생성할 수 있듯이, Array 생성자 함수를 통해 배열을 생성할 수도 있다. 
 Array 생성자 함수는 전달된 인수의 개수에 따라 다르게 동작하므로 주의가 필요하다. 
 
 ❄️ 전달된 인수가 1개이고 숫자인 경우 : length 프로퍼티 값이 인수인 배열을 생성한다.
+❄️ 전달된 인수가 없는 경우 빈 배열을 생성한다. : new Array(); // -> []
+❄️ 전달된 인수가 2개 이상이거나 숫자가 아닌 경우 인수를 요소로 갖는 배열을 생성한다.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2) Array.of
+
+👉 전달된 인수를 요소로 갖는 배열을 생성한다. 
+
+// 전달된 인수가 1개이고 숫자이더라도 인수를 요소로 갖는 배열을 생성한다.
+Array.of(1); // -> [1]
+Array.of(1, 2, 3); // -> [1, 2, 3]
+Array.of('string'); // -> ['string']
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3) Array.from
+
+👉 '유사 배열 객체' 또는 '이터러블 객체'를 인수로 전달받아 배열로 변환하여 반환한다.
+
+// 유사 배열 객체를 변환하여 배열을 생성한다.
+Array.from( { length: 2, 0: 'a', 1: 'b' } ); // -> ['a', 'b']
+
+// 이터러블을 변환하여 배열을 생성한다. 문자열은 이터러블이다.
+Array.from('Hello'); // -> ["h", "e", "l", "l", "o"]
+
+
+👉 Array.from을 사용하면 두 번째 인수로 전달한 '콜백 함수'를 통해 '값을 만들면서 요소를 채울 수 있다'. 
+두 번째 인수로 전달한 콜백 함수에 첫 번째 인수에 의해 생성된 배열의 '요소값'과 '인덱스'를 순차적으로 전달하면서 호출하고, 
+콜백 함수의 반환값으로 구성된 배열을 반환한다.
+
+// Array.from에 length만 존재하는 유사 배열 객체를 전달하면 undefined를 요소로 채운다.
+Array.from({ length: 3 }); // -> [undefined, undefined, undefined]
+Array.from({ length: 3 }, (_, i) => i); // -> [0, 1, 2]
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+</code></pre>
+<pre id="content5"><code class="javascript">
+#4. 배열의 함수 정리
+##4-2. 배열 요소의 참조
+
+배열의 요소를 참조할 떄에는 [] 를 쓴다.
+[] 대괄호 안에는 index가 들어온다.
+정수로 평가되는 표현식이라면 인데스 대신 사용이 가능하다.
+'인덱스'는 "참조할 수 있다"는 의미에서 '객체의 프로퍼티 키'와 같은 역할을 한다.
+
+
+/*---------------------*/
+const arr = [1, 2];
+
+// 인덱스가 0인 요소를 참조
+arr[0] // -> 1
+
+// 인덱스가 1인 요소를 참조
+arr[1] // -> 2
+
+// '존재하지 않는 요소'에 접근하면
+undefined
+/*---------------------*/
+
+배열은 사실 인덱스를 나타내는 문자열을 프로퍼티 키로 갖는 객체임. 
+존재하지 않는 프로퍼티 키로 객체의 프로퍼티에 접근했을 때 undefined를 반환하는 것처럼
+배열도 존재하지 않는 요소를 참조하면 undefined를 반환한다.
 
 
 </code></pre>
-<pre><code class="javascript"></code></pre>
+<pre id="content6"><code class="javascript">
+#4. 배열의 함수 정리
+##4-3. 배열 요소의 추가와 갱신
+
+객체에서 프로퍼티를 동적으로 추가할 수 있는 것처럼, '배열에도 요소를 동적으로 추가'할 수 있다.
+존재하지 않는 인덱스를 사용해 값을 할당하면 새로운 요소가 추가된다.
+이때 length 프로퍼티 값은 자동 갱신된다.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5) 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</code></pre>
+<pre id="content7"><code class="javascript">
+#4. 배열의 함수 정리
+##4-2. 배열 요소의 참조
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4) 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5) 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</code></pre>
+
 <pre><code class="javascript"></code></pre>
 
+<pre><code class="javascript"></code></pre>
 <script>
     (function() {
         var upbtn = {

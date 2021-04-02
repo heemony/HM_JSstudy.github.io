@@ -113,15 +113,6 @@
 
     // 검수할떄 나머지 li 다 주석해놓고 2개로만 검수해 볼 것.
 
-    // 1. 배열 만들기
-    // 2. 복제 배열 만들기
-    // 3. 복제 배열에서 랜덤으로 뽑기
-    // + 랜덤 함수에서-> 중복이 있는가 체크하면서 -> 5.hide 
-    // 4. 배열이 다 비었으면, 다시 시작. -> setArrayFunc
-    // + 다시 시작될 때 마지막과 첫번째가 중복되면 안됨. -> 이건 어케하지
-    // 5. 지워주는 함수 .hide
-    // 6. (전체 초기화 시) 보여주는 함수 .show
-
 </script>
 <script>
 (function () {
@@ -133,9 +124,13 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            itemArr: [],
-            randomArr: [],
-
+            checkState: false,
+            originalArr : [
+                0,1,2,3,4,5,6,7,8,9,10,11
+            ],
+            tmpArr : [
+                0,1,2,3,4,5,6,7,8,9,10,11
+            ]
         };
         this.opts = $.extend(defParams, args || {});
         if (!(this.obj = $(this.opts.obj)).length) return;
@@ -144,9 +139,8 @@
     exam.prototype = {
         init : function () {
             this.setElements();
-            this.setArrayFunc();
             this.bindEvent();
-            this.setRandNumFunc();
+            this.setRandArrFunc();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -154,49 +148,66 @@
             this.objWrap = this.objCont.find(this.opts.objWrap);
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
-            this.itemArr = this.opts.itemArr;
-            this.randomArr = this.opts.randomArr;
-        },
-        setArrayFunc: function() {
-            for(let i = 0 ; i < this.objItem.length; i++) {
-                this.itemArr[i] = this.objItem[i];
-                // 배열을 옴기긴 했는데 초기화가 되는지 확인해볼 것.
-            }
-        },
+            this.tmpArr = this.opts.tmpArr;
+            this.originalArr = this.opts.originalArr;
+            this.checkstate = this.opts.checkstate;
+        },    
         bindEvent: function() {
             this.btn.on('click', this.setRandArrFunc.bind(this));
         },
-        setRandNumFunc: function() { // 중복되지 않는 랜덤수 뽑. -> 숫자 하나만 뽑아서
-            var maxIndex = this.itemArr.length;
-            var randomNum = Math.floor(Math.random() * maxIndex + 1);             
+        initArrFunc: function() { // 배열 초기화.
+            this.checkstate = false;
+            if(this.tmpArr.length === 0) {
+                // console.log(this.deletedNum)
+                this.checkstate = true;
+                this.tmpArr = [...this.originalArr];
+            }
+            // console.log(this.tmpArr)
+        },
+        returnRandomFunc: function() {
+            var maxIndex = this.tmpArr.length;
+            var randomNum; 
+            let deletedNum;
+            if( this.checkstate ){
+                for (;;) {
+                    let tmpRandom = Math.floor(Math.random() * maxIndex);    
+                    if(this.deletedNum === tmpRandom) {
+                        continue;
+                    }
+                    randomNum = tmpRandom;
+                    break;
+                }
+            } else {
+                randomNum = Math.floor(Math.random() * maxIndex);    
+            }
+            this.randomNum = randomNum;
+            this.deletedNum = deletedNum;
+        },
+        setRandNumFunc: function() { 
+            this.initArrFunc();
+            this.returnRandomFunc();
+            this.tmpArr = this.tmpArr.filter((item, idx) => {
+                if( idx === this.randomNum) {
+                    this.deletedNum = item;
+                }
+                return idx !== this.randomNum;
+            }) 
+            // if( this.checkstate ) {
+            //     console.log(this.deletedNum)
+            // }
         },
         showItemFunc: function() {
-            this.objItem.hide().eq(this.randomNum).show();
+            this.objItem.hide().eq(this.deletedNum).show();
         },
-
         setRandArrFunc: function() {     
-            this.setRandNumFunc(); // 버튼을 클릭하면 랜덤 숫자를 뽑느다.
-            var limit = 12;
-
-            if ( !this.randomArr.includes(this.randomNum) || typeof this.randomArr === undefined ) {
-                this.randomArr.push(this.randomNum); // 랜덤 숫자를 담는다. [] 중복제거, []이 전과 비교 
-                this.showItemFunc();
-            }
+            this.setRandNumFunc();
+            this.showItemFunc(); 
         },
-        
     };
-
     $(function () {
         var randomPlay = new exam();
     })
 })();
-
-// 그 수를 가지고 이전에 보여줬던거랑 비교. 비교 대상이 없거나 같지 않다면 보여줌. / 이전것과 동일하면 수를 다시 뽑아야 함.
-// 뽑아가지고 넘어 온 애들을 배열로 만든다. -> 12개에 중복체크까지 해서 다 맞다면 게임 끝 -> 초기화 함수를 돌려준다.
-
-// 1.
-// https://velog.io/@eunjin/Javascript-%ED%8A%B9%EC%A0%95-%EC%88%AB%EC%9E%90-%EB%B2%94%EC%9C%84%EC%97%90%EC%84%9C-%EC%A4%91%EB%B3%B5%EC%9D%84-%EC%A0%9C%EC%99%B8%ED%95%9C-%EB%9E%9C%EB%8D%A4-%EC%88%AB%EC%9E%90-%EB%BD%91%EB%8A%94-%EB%B0%A9%EB%B2%95
-// https://woo-yaa.tistory.com/35
 </script>
 </body>
 </html>
