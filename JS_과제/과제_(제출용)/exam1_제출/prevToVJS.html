@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function() {
+            var sel = document.getElementById('sel');
+            var text = document.getElementById('demo');
+
+            function getPrevSib (elem, filter) {
+                demo.innerHTML = '';
+                var sibs = [];
+                while(elem = elem.previousSibling) {
+                    if(elem.nodeType == 3) {continue}; 
+                    // elem의 nodeType == 3 이면 (text) 
+                    // elem의 nodeType == 1 이면 (element) 
+                    if(!filter || filter(elem)) {sibs.push(elem);}
+                    console.log(fiter)
+                    console.log(silbs)
+                }
+                
+                for(var i = 0; i<sibs.length; i++) {
+                    demo.innerHTML += '<br>' + sibs[i].innerHTML;
+                    console.log(sibs[i]);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <p id="demo"></p>
+    <button onClick="getPrevSib(sel)">까꿍</button>
+    <ol>
+        <li>첫번쨰</li>
+        <li>두번쨰</li>
+        <li>세번쨰</li>
+        <li>네번쨰</li>
+        <li id="sel">다섯번쨰</li>
+        <li>여섯번쨰</li>
+        <li>일곱번쨰</li>
+        <li>여덟번쨰</li>
+        <li>아홉번쨰</li>
+        <li>열번쨰</li>
+    </ol>
+
+</body>
+
+</html>

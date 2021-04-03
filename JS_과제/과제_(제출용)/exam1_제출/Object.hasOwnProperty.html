@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object.hasOwnProperty(속성명)</title>
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+<p class="title2">obj.hasOwnProperty</p>
+<pre>
+    <code>
+        // Object
+        // 객체, 모든 객체의 최종 prototype 이기도 하다.
+        
+        // hasOwnProperty(속성명)
+        // (MDN >) 객체가 특정 프로퍼티를 가지고 있는지를 나타내는 불리언 값을 반환한다.
+        // 단, 프로토타입 체인은 확인하지 않고, 해당 객체가 스스로 정의한 프로퍼티만을 판단한다.
+        
+        // 풀어서 설명하면..
+        // 객체의 속성이 상속받은 속성인지 => "프로토타입 체인에 있는 속성인지"
+        // 상속받지 않은 속성인지 알려준다. => "객체 자신의 프로퍼티인지"
+        // 객체 자신의 속성이면 true값을, 부모의 속성이거나 아예 속성이 아닐 경우에는 false값을 반환한다.
+        
+        
+        // 예제1.
+        var obj = {
+            example: 'yes',
+        };
+        
+        console.log(obj.example); // yes
+        console.log(obj.hasOwnProperty('example'));
+        // obj가 'example'이라는 속성을 가지고 있나요? 네 true
+        
+        console.log(obj.toString); // ƒ toString() { [native code] }
+        console.log(obj.hasOwnProperty('toString')); 
+        // obj가 'toString'이라는 속성을 가지고 있나요? 아니요 false
+        
+        
+        // 예제2.
+        var obj = {
+            a: 1
+        }
+        obj.b = 2;
+        Object.prototype.c = 3;
+        
+        console.log(obj.b); // 2
+        console.log(obj.c); // 3
+        
+        console.log(obj.hasOwnProperty("b")); // true - 해당 객체 자신의 프로퍼티
+        console.log(obj.hasOwnProperty("c")); // false - 프로토타입 체인에 있는 (위임 받은) 프로퍼티
+        
+        
+        // 예제3. for..in loop안에서 hasOwnProperty로 필터링하는 코드.
+        const obj2 = {
+            a: 1,
+            b: 2,
+            c: 3,
+        };
+        Object.prototype.d = 4;
+        console.log('obj2.d : ' + obj2.d); // 4
+        
+        const copy2 = {};
+        let sum = 0;
+        for (let key in obj2) {
+            if(obj2.hasOwnProperty(key)) { /* obj객체 자신의 프로퍼티인지 확인을 한다. */
+                sum += copy2[key] = obj2[key] * 2;
+                console.log(`copy2[${key}] ${copy2[key]}`);
+                console.log(`obj2[${key}] ${obj2[key]}`);
+                // obj[key]의 값(=value)에 *2를 하여 새로 만든 객체 copy의 key의 값으로 해당 value값을 넣는다.
+            }
+        }
+        console.log(sum); // 12 
+        
+        
+        // 예제4. Object에 있는 toString함수를 오버라이딩 해보자.
+        
+        // 예제4 코드1. toText라는 함수를 만들었다.
+        const me = {
+            firstName: "Song ",
+            lastName: "Heemyun",
+            toText() {
+                return this.firstName + this.lastName;
+            }
+        };
+        let text = "Hi~ my name is ";
+        console.log(text + me.toText()); // Hi~ my name is Song Heemyun
+        
+        // 예제4 코드2. toText 대신에 시스템적으로 암시적 호출을 하는 toString()을 활용해보자 - "오버라이딩"
+        const me2 = {
+            firstName: "Song ",
+            lastName: "Heemyun",
+            toString() {
+                return this.firstName + this.lastName;
+            }
+        };
+        let text2 = "Hi~~ my nams is ";
+        // 위와 같은 코드가 존재할 때, toString()을 오버라이딩 했다는 것을 명시적으로 알려줘야 한다.
+        
+        // [BAD] - 프로토타입 체인을 통해 Object.toString 접근.
+        // if(me2.toString) {
+        //     text2 += me2;
+        // }; 
+            // 이런 조건도 줄 수 있지만 명확하지 않기에 비추. 
+            // 이유는 me2 객체에 toString() 여부와 상관없이 프로토타입 체인을 통해 접근하기 때문.
+        
+        // [GOOD] - 직접 정의 혹은 오버라이딩한 프로퍼티가 있는지 확인.
+        if(me2.hasOwnProperty("toString")) {
+            text2 += me2;
+            console.log(text2);
+        }
+        
+        // 정리
+        // * 예기치 못한 상황에 따른 버그를 대비할 수 있다.
+        // * 코드의 가독성을 향상시킬 수 있다.
+    </code>
+</pre>
+<script>
+// Object
+// 객체, 모든 객체의 최종 prototype 이기도 하다.
+
+// hasOwnProperty(속성명)
+// (MDN >) 객체가 특정 프로퍼티를 가지고 있는지를 나타내는 불리언 값을 반환한다.
+// 단, 프로토타입 체인은 확인하지 않고, 해당 객체가 스스로 정의한 프로퍼티만을 판단한다.
+
+// 풀어서 설명하면..
+// 객체의 속성이 상속받은 속성인지 => "프로토타입 체인에 있는 속성인지"
+// 상속받지 않은 속성인지 알려준다. => "객체 자신의 프로퍼티인지"
+// 객체 자신의 속성이면 true값을, 부모의 속성이거나 아예 속성이 아닐 경우에는 false값을 반환한다.
+
+
+// 예제1.
+var obj = {
+    example: 'yes',
+};
+
+console.log(obj.example); // yes
+console.log(obj.hasOwnProperty('example'));
+// obj가 'example'이라는 속성을 가지고 있나요? 네 true
+
+console.log(obj.toString); // ƒ toString() { [native code] }
+console.log(obj.hasOwnProperty('toString')); 
+// obj가 'toString'이라는 속성을 가지고 있나요? 아니용 false
+
+
+// 예제2.
+var obj = {
+    a: 1
+}
+obj.b = 2;
+Object.prototype.c = 3;
+
+console.log(obj.b); // 2
+console.log(obj.c); // 3
+
+console.log(obj.hasOwnProperty("b")); // true - 해당 객체 자신의 프로퍼티
+console.log(obj.hasOwnProperty("c")); // false - 프로토타입 체인에 있는 (위임 받은) 프로퍼티
+
+
+// 예제3. for..in loop안에서 hasOwnProperty로 필터링하는 코드.
+const obj2 = {
+    a: 1,
+    b: 2,
+    c: 3,
+};
+Object.prototype.d = 4;
+console.log('obj2.d : ' + obj2.d); // 4
+
+const copy2 = {};
+let sum = 0;
+for (let key in obj2) {
+    if(obj2.hasOwnProperty(key)) { /* obj객체 자신의 프로퍼티인지 확인을 한다. */
+        sum += copy2[key] = obj2[key] * 2;
+        console.log(`copy2[${key}] ${copy2[key]}`);
+        console.log(`obj2[${key}] ${obj2[key]}`);
+        // obj[key]의 값(=value)에 *2를 하여 새로 만든 객체 copy의 key의 값으로 해당 value값을 넣는다.
+    }
+}
+console.log(sum); // 12 
+
+
+// 예제4. Object에 있는 toString함수를 오버라이딩 해보자.
+
+// 예제4 코드1. toText라는 함수를 만들었다.
+const me = {
+    firstName: "Song ",
+    lastName: "Heemyun",
+    toText() {
+        return this.firstName + this.lastName;
+    }
+};
+let text = "Hi~ my name is ";
+console.log(text + me.toText()); // Hi~ my name is Song Heemyun
+
+// 예제4 코드2. toText 대신에 시스템적으로 암시적 호출을 하는 toString()을 활용해보자 - "오버라이딩"
+const me2 = {
+    firstName: "Song ",
+    lastName: "Heemyun",
+    toString() {
+        return this.firstName + this.lastName;
+    }
+};
+let text2 = "Hi~~ my nams is ";
+// 위와 같은 코드가 존재할 때, toString()을 오버라이딩 했다는 것을 명시적으로 알려줘야 한다.
+
+// [BAD] - 프로토타입 체인을 통해 Object.toString 접근.
+// if(me2.toString) {
+//     text2 += me2;
+// }; 
+    // 이런 조건도 줄 수 있지만 명확하지 않기에 비추. 
+    // 이유는 me2 객체에 toString() 여부와 상관없이 프로토타입 체인을 통해 접근하기 때문.
+
+// [GOOD] - 직접 정의 혹은 오버라이딩한 프로퍼티가 있는지 확인.
+if(me2.hasOwnProperty("toString")) {
+    text2 += me2;
+    console.log(text2);
+}
+
+// 정리
+// * 예기치 못한 상황에 따른 버그를 대비할 수 있다.
+// * 코드의 가독성을 향상시킬 수 있다.
+</script>
+</body>
+</html>

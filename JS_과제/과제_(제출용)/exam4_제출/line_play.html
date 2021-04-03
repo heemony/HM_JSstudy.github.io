@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <title>Line Play</title>
+    <style>
+        *{margin:0;padding:0}
+        body{font-family:'나눔고딕';line-height:1.5;color:#555}
+        ul,li{list-style:none}
+        button{cursor:pointer}
+        button::-moz-focus-inner{padding:0;border:0}
+        .create_wrap{width:500px;margin:50px auto}
+        .swiper-container{overflow:hidden;width:500px;height:380px}
+        .swiper-container img{max-width:100%;vertical-align:top}
+        .swiper-wrapper{position:relative;height:100%;}
+        .swiper-wrapper .swiper-slide{position:absolute;left:0;top:0}
+        .btn_random{display:block;margin:20px auto 0;padding:15px 30px;border:2px solid #00ce23;border-radius:10px;background:none;font-family:inherit;font-weight:bold;font-size:20px;color:#00ce23}
+        .btn_random:after{display:inline-block;width:17px;height:15px;margin-top:-4px;margin-left:5px;background:url('img/ico.png') no-repeat;background-size:100% auto;vertical-align:middle;content:''}
+    </style>
+</head>
+<body>
+<div class="create_wrap js-play-wrap">
+    <div class="swiper-container">
+        <ul class="swiper-wrapper">
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_01.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_02.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_03.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_04.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_05.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_06.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_07.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_08.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_09.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_10.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_11.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        <li class="swiper-slide">
+            <span class="avatar_box">
+                <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
+            </span>
+        </li>
+        </ul>
+    </div>
+    <button type="button" class="btn_random"><span>다른 아바타 보기</span></button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    // 과제 조건
+    // 1. 새로고침 할 때 마다 '랜덤한 캐릭터'가 노출된다. 
+    // 2. [다른 아바타 보기 버튼]을 누르면 '이 전에 보여지지 않았던' 랜덤한 캐릭터가 보여진다.  (같은 캐릭터 중복되면 안 됨.)
+    // 3. 모든 캐릭터가 다 노출이 됐으면, 다시 시작하는거.. 
+    // 3-1. +) 다람쥐가 마지막에 노출이 되었다 다시 시작됐을 때 또 다람쥐가 나오면 안됨. 
+    //          마지막과 첫번째가 중복되면 안 됨!
+    // 4. li는 무조건 Jquery의 show, hide로 컨트롤한다. li remove 하지마셈 !! 
+    // 5. 배열 사용해라 math.random
+    
+    // -> 어떤 배열의 형태로 만들것인가?
+    // --> 배열 형태 2가지
+    // -----> 1. [0, 1, 2, 3, 4, 5, 6, ..] 11개를 푸시해서 랜덤으로 뽑을 것인가. <- 이 방법으로 하세요. 여기서 랜덤으로 뽑는 방법을 사용.
+    // -----> 2. [5, 7,2, 3, 1, ,2 ,5, 11,] 애초에 랜덤으로 해서 뽑을 것인가. <- 일단 랜덤으로 배열이 만들어지면, 예상이 가능하기 때문에 맞지 않음.
+
+    // 랜덤으로 5가 뽑혔다? 원본 배열에서 지워줘야겟죠? 
+    // '뽑힌 값'과 '인덱스'를 헷갈리지 말 것!! 
+    // 뽑힌 값 != 인덱스 라는 거 잊지마~~
+    
+
+    // 검수할떄 나머지 li 다 주석해놓고 2개로만 검수해 볼 것.
+
+</script>
+<script>
+(function () {
+    'use strict';
+    function exam (container, args) {
+        var defParams = {
+            obj : container || '.js-play-wrap',
+            objCont: '.swiper-container',
+            objWrap: '.swiper-wrapper',
+            objItem: '.swiper-slide',
+            btn: '.btn_random',
+            originalArr : [ 0,1,2,3,4,5,6,7,8,9,10,11],
+            tmpArr : [0,1,2,3,4,5,6,7,8,9,10,11]
+        };
+        this.opts = $.extend(defParams, args || {});
+        if (!(this.obj = $(this.opts.obj)).length) return;
+        this.init();
+    };
+    exam.prototype = {
+        init : function () {
+            this.setElements();
+            this.bindEvent();
+            this.activeFunc();
+        },
+        initOpts: function() {
+            this.checkstate = false;
+        },
+        setElements: function() {
+            this.obj = $(this.opts.obj);
+            this.objCont = this.obj.find(this.opts.objCont);
+            this.objWrap = this.objCont.find(this.opts.objWrap);
+            this.objItem = this.objWrap.find(this.opts.objItem);
+            this.btn = this.obj.find(this.opts.btn);
+            this.tmpArr = this.opts.tmpArr;
+            this.originalArr = this.opts.originalArr;
+        },    
+        bindEvent: function() {
+            this.btn.on('click', this.activeFunc.bind(this));
+        },
+        activeFunc: function() {     
+            this.overlapCheckFunc(); // 
+            this.showItemFunc(); // 스타일
+        },
+        initArrFunc: function() { // 배열 초기화.
+            this.checkstate = false;
+            if(this.tmpArr.length === 0) { // 순회 마치면
+                console.log('사이클의 마지막 인덱스', this.deletedNum)
+                this.checkstate = true; // 트루로..
+                this.tmpArr = [...this.originalArr]; // 배열 채워주기
+            }
+            console.log(this.tmpArr)
+        },
+        setRandomFunc: function() { 
+            var maxIndex = this.tmpArr.length;
+            var tmpRandom; 
+            var randomNum; 
+            var deletedNum;
+            if( this.checkstate ){ // 마지막과 비교
+                for (;;) {
+                    tmpRandom = Math.floor(Math.random() * maxIndex);    
+                    if(this.deletedNum === tmpRandom) {
+                        continue;
+                    }
+                    randomNum = tmpRandom; // 처음과 마지막이 같으면 안되는 조건 만족
+                    break;
+                }
+            } else {
+                randomNum = Math.floor(Math.random() * maxIndex); 
+            }
+            
+            this.randomNum = randomNum;
+            this.deletedNum = deletedNum;
+        },
+        overlapCheckFunc: function() { 
+            this.initArrFunc(); // 순회를 다 돌았을 경우의 배열 초기화. tf로 ..
+            this.setRandomFunc(); // randomNum, deletedNum 가져옴
+            this.tmpArr = this.tmpArr.filter((item, idx) => { 
+                if( idx === this.randomNum) {  // randomNum - 인덱스, item - 삭제될 요소
+                    this.deletedNum = item;
+                } 
+                return idx !== this.randomNum; 
+            })  
+
+            // 확인용 콘솔
+            if( this.checkstate ) {
+                console.log('사이클 순회 후 처음 지워질 인덱스', this.deletedNum)
+            }
+        },
+        showItemFunc: function() {
+            this.objItem.hide().eq(this.deletedNum).show();
+        },
+    };
+    $(function () {
+        var randomPlay = new exam();
+    })
+})();
+</script>
+</body>
+</html>

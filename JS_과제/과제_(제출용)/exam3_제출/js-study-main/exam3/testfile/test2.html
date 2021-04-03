@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>exam</title>
+<link rel="stylesheet" href="common.css" />
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<!-- wrapper [s] -->
+<div id="wrapper">
+	<!-- header [s] -->
+	<div id="header">
+	</div>
+	<!-- header [e] -->
+	<hr />
+	<!-- container [s] -->
+	<div id="container">
+		<div class="exam_wrap">
+			<h1>Q. [40, 100, 1, 5, 25, 10] 에서 가장 큰 수 순서대로 index 를 배열로 출력하세요.  (for/if문 사용)</h1>
+			<div class="exam_q">예시) [40, 100, 1, 5, 25, 10] => [1, 0, 5, 4, 2, 3]</div>
+			<button type="button">버튼</button>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. 2중 배열로 구구단을 만드세요. (for문 사용)</h1>
+			<div class="exam_q">예시) [[2,4,6...],[3,6,9...]...]</div>
+			<button type="button">버튼</button>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 중복되는 값이 없도록 6개 담아보세요. (for/if문 사용)</h1>
+			<div class="exam_q">예시) [4, 2, 3, 1, 5, 0]</div>
+			<button type="button">버튼</button>
+		</div>
+	</div>
+	<!-- container [e] -->
+	<hr />
+	<!-- footer [s] -->
+	<div id="footer">
+	</div>
+	<!-- footer [e] -->
+</div>
+<script>
+	$(function() {
+		var examObj1 = $('.exam_wrap:eq(0)');
+		var examObj2 = $('.exam_wrap:eq(1)');
+		var examObj3 = $('.exam_wrap:eq(2)');
+	
+
+		// 버블정렬 
+		examObj1.find('button').on('click', function() {
+			var numArr = [40, 100, 1, 5, 25, 10];
+            var c = [];
+            console.log(c)
+			for(var key in numArr) {
+                // console.log(numArr[key])
+				if(numArr[key] > numArr[key+1]) {
+                    console.log(key)
+                    c.push(numArr[key])
+           
+				} else {
+					key++;
+				}
+			}
+			c.sort(function(a, b) { return a-b; });
+			examObj1.find('button').after(`<p>${c}</p>`);	
+		});
+
+        // Q. 2중 배열로 구구단을 만드세요. (for문 사용)
+		examObj2.find('button').on('click', function() {
+            var a = [];
+            var b = [];
+            for(let i = 2; i < 10; i++) {
+                for(let j = 1; j < 10; j++) {
+                    a.push(i * j); 
+                }
+                b.push(a); 
+                a = []; 
+            }   
+
+            for(let i = 0; i < b.length; i++) {
+                examObj2.find('button').after(`<p>${b[i]}</p>`);	
+            } 
+        });
+        
+        // Q. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 중복되는 값이 없도록 6개 담아보세요. (for/if문 사용)
+        examObj3.find('button').on('click', function() {
+                // var a = Array(9).fill(null).map(() => Array());
+                var a = [];
+                var b = [];
+                var k = 0;
+                for(var i = 1; i < 10; i++) {
+                    for(var j = 1; j < 10; j++) {
+                        var n = (i+1)*j;
+                        b.push(n);
+                        a[k].push(b);
+                    };
+                    k++;
+                
+                };
+            console.log(a)
+            examObj3.find('button').after(`<p>${c}</p>`);	
+            });
+			
+	});
+</script>
+<!-- wrapper [e] -->
+</body>
+</html>

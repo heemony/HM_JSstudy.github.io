@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>exam</title>
+<link rel="stylesheet" href="common.css" />
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+
+<!-- shades-of-purple rainbow paraiso-dark -->
+<!-- highlights.js -->
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/rainbow.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<style>
+pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
+</style>
+<body>
+<!-- wrapper [s] -->
+<div id="wrapper">
+	<!-- header [s] -->
+	<div id="header">
+	</div>
+	<!-- header [e] -->
+	<hr />
+	<!-- container [s] -->
+	<div id="container">
+		<div class="exam_wrap">
+			<h1>Q1. 배열에 본인 이름을 한글자씩 담은 다음 문자열로 출력하세요.</h1>
+			<div class="exam_q">예시) ['Lee', 'Hwan'] => 'Lee Hwan'</div>
+			<button type="button">버튼</button>
+		</div>
+		<div class="exam_wrap">
+			<h1>Q2. 'question' 문자열을 거꾸로 출력하세요. (for문 사용)</h1>
+			<div class="exam_q">예시) 'question' => 'noitseuq'</div>
+			<button type="button">버튼</button>
+		</div>
+		
+		<div class="exam_wrap">
+			<h1>Q3. [40, 100, 1, 5, 25, 10] 에서 가장 큰 수 순서대로 index 를 배열로 출력하세요.  (for/if문 사용)</h1>
+			<div class="exam_q">예시) [40, 100, 1, 5, 25, 10] => [1, 0, 5, 4, 2, 3]</div>
+			<button type="button">버튼</button>
+		</div>
+
+		<div class="exam_wrap">
+			<h1>Q4. 2중 배열로 구구단을 만드세요. (for문 사용)</h1>
+			<div class="exam_q">예시) [[2,4,6...],[3,6,9...]...]</div>
+			<button type="button">버튼</button>
+		</div>
+
+		<div class="exam_wrap">
+			<h1>Q5. 배열에 숫자 0 ~ 9까지 담아보세요. (for문 사용)</h1>
+			<div class="exam_q">예시) [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</div>
+			<button type="button">버튼</button>
+		</div>
+
+
+		<div class="exam_wrap">
+			<h1>Q6. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 6개 담아보세요. (for문 사용)</h1>
+			<div class="exam_q">예시) [4, 2, 3, 2, 3, 0]</div>
+			<button type="button">버튼</button>
+		</div>
+
+
+		<div class="exam_wrap">
+			<h1>Q7. 배열에 숫자 0 ~ 9까지 담고, 버튼 클릭시 랜덤한 숫자를 하나씩 빼주세요.</h1>
+			<div class="exam_q">예시) [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] => [0, 1, 2, 3, 4, 5, 7, 8, 9] => [0, 1, 3, 4, 5, 7, 8, 9]</div>
+			<button type="button">버튼</button>
+		</div>
+
+		<div class="exam_wrap">
+			<h1>Q8. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 중복되는 값이 없도록 6개 담아보세요. (for/if문 사용)</h1>
+			<div class="exam_q">예시) [4, 2, 3, 1, 5, 0]</div>
+			<button type="button">버튼</button>
+		</div>
+
+<!-- <div>
+	<h3>공부해서 해결해야 할 부분들 (부족한 부분들)</h3>
+	<pre><code class="javascript">
+		[7번 문제]
+		1. 버튼을 누를 때 마다 진행을 해야했기 때문에 전역변수로 설정을 해줬는데, 함수 안에서 진행이 되지 않는 까닭은?
+		2. 중복 없이 뽑고 싶은데 어떻게 해야할지를 모르겠음 ㅋㅋ..
+		
+		[8번 문제]
+			[처음에 했던 오류나던 코드]
+			examObj8.find('button').on('click', function() {
+				var ex8 = [];
+		
+				for(let i = 0; i < 6; i++) {
+					var n = Math.floor(Math.random() * 5);
+					if( ex8.indexOf(n) === -1) { // ex8에서 뽑은 난수 n에 해당하는 숫자가 없다면 
+						ex8.push(n); // ex8 배열에 해당 숫자를 넣어주세요.
+					} else { // 있다면
+						i--; // 증가된 인덱스를 -1 해주고 for문을 나온다.
+					}
+				};
+				examObj8.append(`${ex8}`);	
+			});
+		
+			[오류가 났던 이유]
+			1. 난수 범위 설정 : [5] -> 6, 함수 제대로 이해할 것..ㅠㅠ..
+			2. [indexOf] -> includes : 요 차이 정리할 것.
+			3. for문 변수 타입 : [var] -> let : 뭐 포문 쓸 땐 var보단 let이 낫다함.
+	</code></pre>
+</div>
+<div>
+	<h3>문자열의 포함 여부 함수</h3>
+	<pre><code class="javascript">
+		# 문자열 포함여부는 2가지가 있다.
+		- indexOf
+		- includes
+	
+		(둘의 가장 큰 차이는 웹표준때문에 includes는 크롬에서 먹히는데, 익스플로러에선 안된다고 한다
+		indexOf는 대부분에서 가능하다고 함.)
+	
+		/*-----------------------------------------------------------*/
+		우선 어떤 데이터를 DB에서 가져왔고 JSON형식으로 변수에 담은 것을 가정한 상태.
+	
+		var data = JSON.nameCd;
+	
+		if(data.indexOf('문자') > -1) { // 이 때 data 변수안에 문자가 존재하면 값은 0이다.
+			alert("문자가 존재합니다.");
+		} else {
+			alert("문자가 존재하지 않습니다.");
+		}
+		/*-----------------------------------------------------------*/
+	
+		이것과
+	
+		/*-----------------------------------------------------------*/
+		var data = JSON.nameCd;
+	
+		if(data.includes('문자')) { // 이 때 data 변수안에 문자가 존재하면 값은 true이다.
+			alert("문자가 존재합니다.");
+		} else {
+			alert("문자가 존재하지 않습니다.");
+		}
+		/*-----------------------------------------------------------*/
+	
+		여러가지 특정 문자를 비교할 땐 includes가 훨씬 편리하다.
+	
+	
+		if(data.indexOf('문자') > -1 && data.indexOf('사랑') > -1 && data.indexOf('운명') > -1)
+		if(data.includes('문자','사랑','운명','실패') > -1) { // 콤마(,)를 기준으로 작성하면 끝
+	</code></pre>
+</div> -->
+	</div>
+	<!-- container [e] -->
+	<hr />
+	<!-- footer [s] -->
+	<div id="footer">
+	</div>
+	<!-- footer [e] -->
+</div>
+<script>
+	$(function() {
+		var examObj1 = $('.exam_wrap:eq(0)');
+		var examObj2 = $('.exam_wrap:eq(1)');
+		var examObj3 = $('.exam_wrap:eq(2)');
+		var examObj4 = $('.exam_wrap:eq(3)');
+		var examObj5 = $('.exam_wrap:eq(4)');
+		var examObj6 = $('.exam_wrap:eq(5)');
+		var examObj7 = $('.exam_wrap:eq(6)');
+		var examObj8 = $('.exam_wrap:eq(7)');
+	
+		// Q1. 배열에 본인 이름을 한글자씩 담은 다음 문자열로 출력하세요.
+		examObj1.find('button').on('click', function() {
+			var myName = ['Song', 'Hee', 'Myun'];
+			var myNameToStr = myName.join(' ');
+			examObj1.append(`<p>${myNameToStr}</p>`);		
+		});
+
+		// Q2. 'question' 문자열을 거꾸로 출력하세요. (for문 사용)
+		examObj2.find('button').on('click', function() {
+			var originStr = 'question';
+			var rvsStr = [];
+				// 1. 내장함수 사용하기.
+				// var rvsStr = originStr.split('').reverse().join('');
+				// or
+				// var rvsStr = [...originStr].reverse().join('');
+
+			// 2. for문 사용하기.
+			var z = originStr.split('');
+			console.log(z)
+			for(let i = z.length-1; i >= 0; i--) {
+				rvsStr[z.length-1-i ] = z[i];
+			};
+			// var result = JSON.stringify(rvsStr);
+			var result = rvsStr.join('');
+			examObj2.append(`<p>${result}</p>`);	
+		});
+
+		// Q3. [40, 100, 1, 5, 25, 10] 에서 가장 큰 수 순서대로 index 를 배열로 출력하세요.  (for/if문 사용)
+		examObj3.find('button').on('click', function() {
+			var numArr = [40, 100, 1, 5, 25, 10];
+			var copyArr = numArr.slice(); // 복사
+			var length = numArr.length;
+			let i, j, tmp;
+			var indexArr = [];
+		
+			// 원본배열 정렬
+			for( i = 0; i < length-1; i++ ) {
+				for( j = 0; j < length-1; j++) {
+					if(numArr[j] < numArr[j + 1]) {
+						tmp = numArr[j + 1];
+						numArr[j + 1] = numArr[j];
+						numArr[j] = tmp;
+					}
+				}
+			}
+			console.log(numArr)
+			console.log(copyArr)
+			
+			// 정렬 후 배열에서, 정렬 전의 숫자들이 각각 몇 번째에 위치해있는지
+			for( i = 0; i < length ; i++ ) {
+				var index = numArr.indexOf(copyArr[i]); // 정렬 전 배열에서 큰 순서대로 해당하는 번호가 몇 번 인덱스에 있는지 확인.
+				console.log('n',numArr[i]);
+				console.log('i',index);
+				if(index > -1) { // 해당하는 문자열이 있다면, (없으면 -1 반환. 있으면 해당 인덱스 반환.)
+					
+					indexArr[i] = index; // 새로운 배열에 인덱스 넣음.
+					console.log(indexArr[i]);
+				};
+			}
+			console.log(indexArr);
+			examObj3.append(`<p>${indexArr}</p>`);	
+		});
+
+		// Q4. 2중 배열로 구구단을 만드세요. (for문 사용)
+		examObj4.find('button').on('click', function() {
+			var a = [];
+			var b = [];
+			for(var i = 2; i < 10; i++) {
+				for(var j = 1; j < 10; j++) {
+					a.push(i*j);
+				};
+				b.push(a);
+				a = [];
+			}; 
+			for(let i = 0; i < b.length; i++) {
+				examObj4.append(`<p>[${b[i]}]</p>`);	
+			} 	
+			console.log(b)
+		});
+		// Q5. 배열에 숫자 0 ~ 9까지 담아보세요. (for문 사용)
+		examObj5.find('button').on('click', function() {
+			var ex5 = [];
+			for(var i = 0; i < 10; i++) {
+				ex5.push(i);
+			};
+			console.log(ex5)
+			examObj5.append(`<p>${ex5}</p>`);	
+		});	
+		// Q6. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 6개 담아보세요. (for문 사용)
+		examObj6.find('button').on('click', function() {
+			var ex6 = [];
+
+			for(var i=0; i<6; i++) {
+				var newEx6 = Math.floor(Math.random() * 6);
+				ex6[i] = newEx6;
+			}
+			
+			console.log(ex6)
+			examObj6.append(`<p>${ex6}</p>`);	
+		});
+		
+		// Q7. 배열에 숫자 0 ~ 9까지 담고, 버튼 클릭시 랜덤한 숫자를 하나씩 빼주세요.
+		// var nArr7 = [];
+		// var ex7 = [];
+		// 위처럼 각각 선언을 해줘야한다. (참조형 데이터는 주솟값을 바라보고 있기 때문에 a,b,c = [] 이렇게 선언할 경우 같은 것을 바라본다.)
+		// 혹은 아래처럼 destructuring assignment 를 이용한다.
+		var [ex7, nArr7] = [[],[]];
+		
+		// 1. 0-9까지 배열에 담는다.
+		for(let i = 0; i < 10; i++) {
+			ex7.push(i);
+		};
+		
+		// 2. 버튼을 누를 때 마다 난수 생성 -> 해당 난수가 있는지 배열에 확인한 후에 제거한다.
+		examObj7.find('button').on('click', function() {
+			// 2-1. 난수를 생성한다. 
+			var rn = Math.floor(Math.random() * 10);
+
+			// 2-2. 배열의 갯수만큼 for문을 돌아서 난수와 같은 인덱스가 있는지 찾는다.
+			for(let i = 0; i < ex7.length; i++) {
+				if(ex7[i] === rn) {
+					// 해당 인덱스에서 숫자 1개를 뺸다.
+					ex7.splice(i, 1);
+					// 그리고 해당 인덱스에서 하나가 빠졌으니, 인덱스-1을 해준다.
+					i--;
+				}
+			}
+			
+			examObj7.append(`<p>${rn}(을)를 배열에서 뺍니당 : [${ex7}]</p>`);	
+		});
+
+		// Q8. 배열에 숫자 0 ~ 5 사이의 랜덤한 숫자를 중복되는 값이 없도록 6개 담아보세요. (for/if문 사용) 
+		examObj8.find('button').on('click', function() {
+			var ex8 = [];
+	
+			for(let i = 0; i < 6; i++) { // i = 0,1,2,3,4,5
+				var n = Math.floor(Math.random() * 6); 
+				// n = 0,1,2,3,4,5 ( 0 ~ 1미만의 수에서 floor를 하면 반내림이므로 5가 아니라 6이어야함.)
+
+				if(!ex8.includes(n)) { // ex8에서 뽑은 난수 n에 해당하는 숫자가 없다면 
+					ex8.push(n); // ex8 배열에 해당 숫자를 넣어주세요.
+				} else { // 있다면
+					i--; // 증가된 인덱스를 -1 해주고 for문을 나온다.
+				}
+			};
+			examObj8.append(`<p>${ex8}</p>`);	
+		})
+	});
+</script>
+<!-- wrapper [e] -->
+</body>
+</html>
