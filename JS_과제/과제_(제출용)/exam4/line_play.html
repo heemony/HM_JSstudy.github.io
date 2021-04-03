@@ -187,7 +187,7 @@
             this.deletedNum = deletedNum;
         },
         overlapCheckFunc: function() { 
-            this.initArrFunc(); // 배열 초기화
+            this.initArrFunc(); // 순회를 다 돌았을 경우의 배열 초기화. 
             this.setRandomFunc(); // randomNum, deletedNum 가져옴
             this.tmpArr = this.tmpArr.filter((item, idx) => { 
                 if( idx === this.randomNum) {  // randomNum - 인덱스, item - 삭제될 요소
