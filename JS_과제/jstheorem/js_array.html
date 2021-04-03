@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../asset/jstheorem.css">
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 <!-- shades-of-purple rainbow 
@@ -13,26 +14,14 @@ atom-one-dark-reasonable
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/atom-one-dark-reasonable.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
-<style>
-    .upbtn {position: fixed; bottom: 20px; right: 20px; width: 28px; height: 28px; border-radius: 50%; text-align: center; font-size: 20px;}
-    .upbtn.active { animation: blink 3s linear infinite; }
-    ul, li {padding: 0;}
-    a {text-decoration: none; color: rgb(112, 110, 98)}
-    @keyframes blink {
-        0% { background-color: rgba(205, 205, 205, 0.666);}
-        25% { background-color: rgb(187, 244, 152);}
-        50% { background-color: rgb(252, 227, 0); bottom: 25px;}
-        75% {background-color: rgba(85, 142, 211, 0.461)}
-        100% {background-color: rgb(237, 186, 242);}
-    }
-</style>
 <title>JS - Array</title>
 </head>
 <body>
-    <h1>JS - Array (정리중)</h1>
+    <h1 class="title">#3 JS</h1>
+    <h1 class="title2">Array</h1>
     <hr>
     <div class="pageIndex">
-        <h2 id="startpoint">목차</h2>
+        <h3 id="startpoint" class="title3">목차</h3>
         <ul class="lists">
         <li class="list"><a href="#content1">#1. Array</a></li>
         <li class="list"><a href="#content2">#2. 자바스크립트 배열은 배열이 아니다.</a></li>
@@ -41,9 +30,9 @@ atom-one-dark-reasonable
         <li class="list"><a href="#content4">##4-1. 배열 생성</a></li>
         <li class="list"><a href="#content5">##4-2. 배열 요소의 참조</a></li>
         <li class="list"><a href="#content6">##4-3. 배열 요소의 추가와 갱신</a></li>
-        <li class="list"><a href="#content7">##4-4. 배열 요소의 삭제</a></li>
-        <li class="list"><a href="#content8">##4-5. 배열 메서드</a></li>
-        <li class="list"><a href="#content9">##4-6. 배열 고차 함수</a></li>
+        <li class="list"><a href="#content6">##4-4. 배열 요소의 삭제</a></li>
+        <li class="list"><a href="#content7">##4-5. 유용한 빌트인 메서드 - 배열 메서드</a></li>
+        <li class="list"><a href="#content8">##4-6. 배열 고차 함수</a></li>
         <li class="list"><a href="#content10">❤️ 재밌는 예제❤️ </a></li>
         </ul>
     </div>
@@ -80,8 +69,8 @@ for(let i = 0; i < arr.length; i++) {
 }
 
 
-✨1-5. 배열은 객체이다. 타입이 따로 존재하지 않는다.
-typeof arr // -> object
+✨1-5. 배열은 '객체'이다. 타입이 따로 존재하지 않는다.
+typeof arr // -> 'object'
 
 
 1-6. 배열의 생성
@@ -324,63 +313,136 @@ undefined
 이때 length 프로퍼티 값은 자동 갱신된다.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1) 
+1) 배열에 요소 추가
 
+const arr = [0];
+arr[1] = 1; // 배열에 요소 추가
+console.log(arr); // [0, 1]
+
+
+👉 만약 배열의 length 프로퍼티 값보다 큰 인덱스로 새로운 요소를 추가하면 희소 배열이 됨.
+
+arr[100] = 100;
+console.log(arr); // [0, 1, empty*98, 100]
+
+
+👉 주의) 
+- 배열은 '인덱스'로 요소에 '접근'하여 '명시적으로 값을 할당'해야만 요소가 생성된다!
+- 이미 요소가 존재하는 요소에 값을 재할당하면 갱신된다.
+
+arr[1] = 10; // 요소값 갱신
+
+console.log(arr); // [0, 10, empty*98, 100]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#4. 배열의 함수 정리
+##4-4. 배열 요소의 삭제
+
+배열은 사실 객체이기 때문에 배열의 특정 요소를 삭제하기 위해서는 delete 연산자 사용이 가능 ( delete는 객체의 프로퍼티를 삭제한다. )
+희소 배열을 만들지 않으면서 '배열의 특정 요소를 완전히 삭제'하려면 'Array.prototype.splice'를 사용한다.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2) 
+2) 배열 요소의 삭제
+const arr = [1, 2, 3];
 
+// Array.prototype.splice(삭제를 시작할 인덱스, 삭제할 요소 수)
+// arr[2]부터 1개의 요소를 제거
+arr.splice(2, 1); // [1, 2]
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// 원본이 손상되었고 length 프로퍼티는 자동 갱신된다.
+console.log(arr.length); // 2
 
-3) 
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-4) 
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-5) 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 </code></pre>
 <pre id="content7"><code class="javascript">
 #4. 배열의 함수 정리
-##4-2. 배열 요소의 참조
+##4-5. 빌트인 배열 메서드 정리
 
+Array 생성자 함수는 '정적 메서드' 제공
+배열 객체의 프로토타입인 Array.prototype은 '프로토타입 메서드' 제공
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+⚠️ 배열 메서드는 결과물을 반환하는 패턴이 두 가지 이므로 주의해야함.
+첫 번째 패턴. '원본 배열을 직접 변경'하는 메서드
+두 번째 패턴. 원본 배열을 직접 변경하지 않고 '새로운 배열을 생성'하여 반환하는 메서드
 
-1) 
+(원본 배열 : 배열 메서드를 호출한 배열, 즉 배열 메서드의 구현체 내부에서 this가 가리키는 객체)
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-2) 
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-3) 
-
+에를 들면 push는 원본 배열을 변경하고, concat은 새로운 배열을 생성한다.
+원본 배열을 직접 변경하는 메서드는 외부 상태를 직접 변경하는 사이트 이펙트가 있기에 주의해야한다. 
+가급적이면 원본을 변경하지 않는 메서드를 사용하는 편이 좋다.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-4) 
+1) Array.isArray
+    리턴값) 전달된 인수가 배열이면 - true, 배열이 아니면 - false
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2) Array.prototype.indexOf(찾을 요소, (검색을 시작할 index))
+    리턴값) '인덱스'
+    - 원본 배열에 인수로 전달한 요소와 중복되는 요소가 여러 개 있다면, 첫 번째로 검색된 요소의 인덱스를 반환한다.
+    - 원본 배열에 인수로 전달한 요소가 존재하지 않으면 -1 반환.
 
-5) 
+
+    const arr = [1, 2, 2, 3];
+    arr.indexOf(2); // 배열 arr에서 요소 2를 검색하여 첫 번째로 검색된 요소의 인덱스를 반환.
+    arr.indexOf(4); // 배열 arr에서 요소 4가 없으므로 -1 반환
+    arr.indexOf(2, 2); // 두 번째 인수는 검색을 시작할 인덱스. 생략하면 처음부터 검색.
+
+
+3) Array.prototype.includes 
+    리턴값) true, false
+    indexOf()보다 가독성이 좋다
+
+    예시)
+    // indexOf 는 배열에 특정 요소가 존재하는지 확인할 떄 유용하다.
+    const foods = ['apple', 'coffee', 'cake', 'chicken'];
+
+    // foods 배열 'coffee' 요소가 존재하는지 확인한다.
+    if (foods.indexOf('coffee') === -1) {
+        // foods 배열에 'coffee' 요소가 존재하지 않으면 추가해라.
+        foods.push('coffee');
+    }
+    console.log(foods)
+
+    // indexOf 보다 includes가 더 가독성이 좋다.
+    // foods 배열에서 'pizza'요소가 존재하는지 확인한다.
+    if ( !foods.includes('pizza') ) {
+        // foods 배열에 'pizza'요소가 존재하지 않으면 'pizza'요소를 추가한다.
+        foods.push('pizza');
+    }
+    console.log(foods)  
+
+
+4) Array.prototype.push
+    리턴값) 요소 추가로 인한 변경된 length 프로퍼티 값. (길이 값)
+
+    인수로 전달받은 모든 값을 원본 배열이 마지막 요소로 추가하고, 변경된 length 프로퍼티 값반환.
+    원본 배열을 직접 변경한다. 
+
+    // push는 length 프로퍼티 값을 반환한다.
+    const arr = [1, 2];
+    let result = arr.push(3, 4);
+    console.log(result); // 4
+
+    // push 는 원본 배열을 직접 변경한다.
+    console.log(arr); // [1, 2, 3, 4]
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 </code></pre>
+<script>
+    const arr = [1, 2];
+    let result = arr.push(3, 4);
+    console.log(result)
+    console.log(arr)
 
-<pre><code class="javascript"></code></pre>
+</script>
+<pre><code class="javascript">
+
+</code></pre>
 
 <pre><code class="javascript"></code></pre>
 <script>
@@ -389,14 +451,17 @@ undefined
             btnBox: '.btnBox',
             targetObj: '.upbtn',
             activeClass: 'active',
-            changePoint: 250,
+            pageIndexH: '.pageIndex',
+            bannerH: 90,
             currenHeight: null,
             win: window,
             init: function() {
                 this.setElements();
                 this.bindEvents();
+                console.log(this.pageIndexH.innerHeight())
             },
             setElements: function() {
+                this.pageIndexH = $(this.pageIndexH);
                 this.btnBox = $(this.btnBox);
                 this.targetObj = this.btnBox.find(this.targetObj);
                 this.win = window;
@@ -409,9 +474,9 @@ undefined
                 this.activeScroll();
             },
             activeScroll: function() { 
-                if(this.currenHeight < this.changePoint) {
+                if(this.currenHeight < this.pageIndexH.innerHeight() + this.bannerH) {
                     this.removeActive();
-                } else if (this.currenHeight >= this.changePoint) {
+                } else if (this.currenHeight >= this.pageIndexH.innerHeight() + this.bannerH) {
                     this.addActive();
                 }
             },

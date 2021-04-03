@@ -1,7 +1,9 @@
 @charset "utf-8";
-*{margin:0;padding:0}
+*{margin:0;padding:0; text-decoration: none; list-style: none;}
 body{font-size:14px;line-height:1.5;color:rgb(0,0,0); padding: 0 2%; font-family: 'DGM';}
 h1,h2,h3,h4,h5,h6{text-align:left}
+ul, li {padding: 0; text-decoration: none;}
+a {text-decoration: none; color: rgb(112, 110, 98)}
 button,label{cursor:pointer}
 button::-moz-focus-inner{padding:0;border:0}
 /* hr{display:none} */
@@ -15,5 +17,15 @@ button::-moz-focus-inner{padding:0;border:0}
 .blur {font-size: 10px; font-style: italic; color: rgb(102, 102, 102); position:absolute; bottom: 0;}
 .card {padding: 20px 0; font-size: 16px;}
 .date {font-size: 18px;}
-pre {font-size: 14px; width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden;}
-a {color: rgb(71, 71, 71);}
+pre {font-size: 14px; width: 100%; margin: 0 auto; border-radius: 15px; overflow: hidden; margin-bottom: 20px;}
+
+.list {padding-bottom: 5px;}
+.upbtn {position: fixed; bottom: 20px; right: 50px; width: 28px; height: 28px; border-radius: 50%; text-align: center; font-size: 20px;}
+.upbtn.active { animation: blink 3s linear infinite; }
+@keyframes blink {
+    0% { background-color: rgba(205, 205, 205, 0.666);}
+    25% { background-color: rgb(187, 244, 152);}
+    50% { background-color: rgb(252, 227, 0); bottom: 25px;}
+    75% {background-color: rgba(85, 142, 211, 0.461)}
+    100% {background-color: rgb(237, 186, 242);}
+}
