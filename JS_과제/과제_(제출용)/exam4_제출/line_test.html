@@ -124,8 +124,15 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            originalArr : [],
-            tmpArr : []
+            itemArr: [],
+            randomArr: [],
+            originalArr : [
+                0,1,2,3,4,5,6,7,8,9,10,11
+            ],
+            tmpArr : [
+                0,1,2,3,4,5,6,7,8,9,10,11
+            ]
+
         };
         this.opts = $.extend(defParams, args || {});
         if (!(this.obj = $(this.opts.obj)).length) return;
@@ -133,13 +140,9 @@
     };
     exam.prototype = {
         init : function () {
-            this.setElements();
-            this.initArray();
+            this.setElements(); // 선택자
             this.bindEvent();
-            this.activeFunc();
-        },
-        initOpts: function() {
-            this.checkstate = false;
+            this.playGame();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -147,69 +150,64 @@
             this.objWrap = this.objCont.find(this.opts.objWrap);
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
+            this.itemArr = this.opts.itemArr;
+            this.randomArr = this.opts.randomArr;
             this.tmpArr = this.opts.tmpArr;
             this.originalArr = this.opts.originalArr;
-        },    
+        },
         bindEvent: function() {
-            this.btn.on('click', this.activeFunc.bind(this));
+            this.btn.on('click', this.playGame.bind(this));
         },
-        activeFunc: function() {     
-            this.deleteFunc(); // 
-            this.showItemFunc(); // 스타일
-        },
-        initArray: function() { // 초기 배열
-            for (let index = 0; index < this.objItem.length; index++) {
-                this.originalArr[index] = index;
-            };
-            this.temp = [...this.originalArr];
-        },
-        setArrFunc: function() { // 순회를 마치고 나서의 배열
-            this.checkstate = false;
-            if(this.tmpArr.length === 0) { // tmpArr가 0이 되면~
-                this.checkstate = true; 
-                this.tmpArr = [...this.originalArr]; // 배열 채워주기
-                // console.log('사이클의 마지막 인덱스', this.deletedNum)
+        setRandNumFunc: function() { // 중복되지 않는 랜덤수 뽑.
+            let TF = false;
+
+            if(this.tmpArr.length === 0) { // 배열이 0일 때
+                console.log('한바퀴 다 돎', this.deletedNum)
+                TF = true;
+                this.tmpArr = [...this.originalArr]; // 복사해서
             }
-            // console.log(this.tmpArr)
-        },
-        setRandomFunc: function() { 
+
             var maxIndex = this.tmpArr.length;
-            var tmpRandom; 
-            var randomNum; 
-            var deletedNum;
-            if( this.checkstate ){ // 마지막과 비교
-                for (;;) { // 처음과 마지막이 같으면 안되기 때문에
-                    tmpRandom = Math.floor(Math.random() * maxIndex);    
-                    if(this.deletedNum === tmpRandom) { continue; } // 계속 뽑기
-                    randomNum = tmpRandom; // 아닌경우 골라내기
+            var randomNum;   
+
+            if(TF){ // 순회를 마치고 배열이 0 될 때 
+                for (;;) { // 랜덤 수를 뽑는데, 
+                    var tmpRandom = Math.floor(Math.random() * maxIndex);    
+                    if(this.deletedNum === tmpRandom) { // 마지막 지워진 애랑 같으면 안되니까 
+                        continue; // 컨티뉴
+                    }
+                    randomNum = tmpRandom; // 같지 않을 경우의 랜덤수를 저장
                     break;
                 }
-            } else {
-                randomNum = Math.floor(Math.random() * maxIndex); 
+            }else {
+                randomNum = Math.floor(Math.random() * maxIndex); // 걍 랜덤수
             }
-            
-            this.randomNum = randomNum;
+
+            let deletedNum;
+            this.tmpArr = this.tmpArr.filter( function(item, idx) {
+                if( idx === randomNum) {
+                    deletedNum = item; // 삭제할 요소
+                }
+                return idx!==randomNum; // 랜덤 숫자를 제외한 idx만 리턴
+            })
+
             this.deletedNum = deletedNum;
-        },
-        deleteFunc: function() { 
-            this.setArrFunc(); // 순회 후 배열
-            this.setRandomFunc(); // randomNum, deletedNum 가져옴
-            this.tmpArr = this.tmpArr.filter(function (item, idx) { 
-                if( idx === this.randomNum) {  // randomNum - 인덱스, item - 삭제될 요소
-                    this.deletedNum = item;
-                } 
-                return idx !== this.randomNum; 
-            })  
-            
-            // 확인용 콘솔
-            if( this.checkstate ) {
-                console.log('사이클 순회 후 처음 지워질 인덱스', this.deletedNum)
-            }
+            this.randomNum = randomNum;
+
+            // if(TF) {
+            //     console.log('this.deletedNum', this.deletedNum)
+            // }
         },
         showItemFunc: function() {
-            this.objItem.hide().eq(this.deletedNum).show();
+            this.objItem.hide().eq(this.deletedNum).show(); // 삭제
+        },
+        playGame: function() {     
+            this.setRandNumFunc(); // 버튼을 클릭하면 랜덤 숫자를 뽑느다.
+           
+            this.showItemFunc(); // 보여줌.
         },
     };
+
     $(function () {
         var randomPlay = new exam();
     })

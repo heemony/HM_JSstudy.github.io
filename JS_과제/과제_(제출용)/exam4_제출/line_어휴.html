@@ -154,7 +154,7 @@
             this.btn.on('click', this.activeFunc.bind(this));
         },
         activeFunc: function() {     
-            this.deleteFunc(); // 
+            this.overlapCheckFunc(); // 
             this.showItemFunc(); // 스타일
         },
         initArray: function() { // 초기 배열
@@ -168,20 +168,30 @@
             if(this.tmpArr.length === 0) { // tmpArr가 0이 되면~
                 this.checkstate = true; 
                 this.tmpArr = [...this.originalArr]; // 배열 채워주기
-                // console.log('사이클의 마지막 인덱스', this.deletedNum)
             }
-            // console.log(this.tmpArr)
+        },
+        overlapCheckFunc: function() { 
+            this.setArrFunc(); // 순회 후 배열
+            this.setRandomFunc(); // randomNum, deletedNum 가져옴
+            this.tmpArr = this.tmpArr.filter((item, idx) => { 
+                if( idx === this.randomNum) {  // randomNum - 인덱스, item - 삭제될 요소
+                    this.deletedNum = item;
+                } 
+                return idx !== this.randomNum; 
+            })  
         },
         setRandomFunc: function() { 
             var maxIndex = this.tmpArr.length;
-            var tmpRandom; 
-            var randomNum; 
-            var deletedNum;
+            var tmpRandom; // 
+            var randomNum; // 랜덤
+            var deletedNum; // 삭제할 애
             if( this.checkstate ){ // 마지막과 비교
-                for (;;) { // 처음과 마지막이 같으면 안되기 때문에
+                for (;;) {
                     tmpRandom = Math.floor(Math.random() * maxIndex);    
-                    if(this.deletedNum === tmpRandom) { continue; } // 계속 뽑기
-                    randomNum = tmpRandom; // 아닌경우 골라내기
+                    if(this.deletedNum === tmpRandom) {
+                        continue;
+                    }
+                    randomNum = tmpRandom; 
                     break;
                 }
             } else {
@@ -190,21 +200,6 @@
             
             this.randomNum = randomNum;
             this.deletedNum = deletedNum;
-        },
-        deleteFunc: function() { 
-            this.setArrFunc(); // 순회 후 배열
-            this.setRandomFunc(); // randomNum, deletedNum 가져옴
-            this.tmpArr = this.tmpArr.filter(function (item, idx) { 
-                if( idx === this.randomNum) {  // randomNum - 인덱스, item - 삭제될 요소
-                    this.deletedNum = item;
-                } 
-                return idx !== this.randomNum; 
-            })  
-            
-            // 확인용 콘솔
-            if( this.checkstate ) {
-                console.log('사이클 순회 후 처음 지워질 인덱스', this.deletedNum)
-            }
         },
         showItemFunc: function() {
             this.objItem.hide().eq(this.deletedNum).show();
