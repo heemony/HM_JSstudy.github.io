@@ -32,8 +32,9 @@ atom-one-dark-reasonable
         <li class="list"><a href="#content6">##4-3. 배열 요소의 추가와 갱신</a></li>
         <li class="list"><a href="#content6">##4-4. 배열 요소의 삭제</a></li>
         <li class="list"><a href="#content7">##4-5. 유용한 빌트인 메서드 - 배열 메서드</a></li>
-        <li class="list"><a href="#content8">##4-6. 배열 고차 함수</a></li>
-        <li class="list"><a href="#content10">❤️ 재밌는 예제❤️ </a></li>
+        <li class="list"><a href="#content01">얕은 복사와 깊은 복사</a></li>
+        <li class="list"><a href="#content8">##4-6. 유용한 빌트인 메서드 - 배열 고차 함수</a></li>
+        <li class="list"><a href="#content9">❤️ 재밌는 예제❤️ </a></li>
         </ul>
     </div>
     <div class="btnBox"><a href="#startpoint"><span class="upbtn"><span>👆🏿</span></span></a></div>
@@ -190,7 +191,7 @@ console.log(linearSearch([1,3,5,7,9], 5)); // -> 2
 
 </code></pre>
 <pre id="content00"><code class="javascript">
-    유사 배열 객체와 이터러블 객체??
+    🌱 유사 배열 객체와 이터러블 객체??
     
     👉 유사 배열 객체 
     1) 마치 배열처럼 인덱스를 프로퍼티 값에 접근할 수 있고 length 프로퍼티를 갖는 객체를 말한다. 2) 배열 처럼 for문으로 순회할 수 있다.
@@ -375,23 +376,29 @@ console.log(linearSearch([1,3,5,7,9], 5)); // -> 2
     가급적이면 원본을 변경하지 않는 메서드를 사용하는 편이 좋다.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<div>
+    <a href="#isArray">isArray</a> <a href="#indexOf">indexOf</a> <a href="#includes">includes</a> <a href="#push">push</a> <a href="#pop">pop</a> 
+    <a href="#unshift">unshift</a> <a href="#shift">shift</a> <a href="#concat">concat</a> <a href="#splice">splice</a> <a href="#slice">slice</a> 
+    <a href="#join">join</a> <a href="#reverse">reverse</a> <a href="#fill">fill</a> <a href="#includes">includes</a> <a href="#flat">flat</a> 
+</div>
 
+<div id="isArray">
 1) Array.isArray
     리턴값) 전달된 인수가 배열이면 - true, 배열이 아니면 - false
-
-
+</div>
+<div id="indexOf">
 2) Array.prototype.indexOf(찾을 요소, (검색을 시작할 index))
     리턴값) '인덱스'
-    - 원본 배열에 인수로 전달한 요소와 중복되는 요소가 여러 개 있다면, 첫 번째로 검색된 요소의 인덱스를 반환한다.
-    - 원본 배열에 인수로 전달한 요소가 존재하지 않으면 -1 반환.
+    - 원본 배열에 인수로 전달한 요소와 중복되는 요소가 여러 개 있다면, 첫 번째로 검색된 요소의 '인덱스'를 반환한다.
+    - 원본 배열에 인수로 전달한 요소가 '존재하지 않으면 -1 반환'.
 
 
     const arr = [1, 2, 2, 3];
     arr.indexOf(2); // 배열 arr에서 요소 2를 검색하여 첫 번째로 검색된 요소의 인덱스를 반환.
     arr.indexOf(4); // 배열 arr에서 요소 4가 없으므로 -1 반환
     arr.indexOf(2, 2); // 두 번째 인수는 검색을 시작할 인덱스. 생략하면 처음부터 검색.
-
-
+</div>
+<div id="includes">
 3) Array.prototype.includes 
     리턴값) true, false
     indexOf()보다 가독성이 좋다
@@ -414,61 +421,485 @@ console.log(linearSearch([1,3,5,7,9], 5)); // -> 2
         foods.push('pizza');
     }
     console.log(foods)  
-
-
+</div>
+<div id="push"></div>
 4) Array.prototype.push
-    리턴값) 요소 추가로 인한 변경된 length 프로퍼티 값. (길이 값)
+    - 인수로 전달받은 모든 값을 원본 배열의 마지막 요소로 추가한다.
 
-    인수로 전달받은 모든 값을 원본 배열이 마지막 요소로 추가하고, 변경된 length 프로퍼티 값반환.
-    원본 배열을 직접 변경한다. 
+    리턴값) 요소 추가로 인한 변경된 length 프로퍼티 값. (길이 값)
+        원본 배열을 직접 변경한다. 
 
     // push는 length 프로퍼티 값을 반환한다.
     const arr = [1, 2];
     let result = arr.push(3, 4);
     console.log(result); // 4
-
     // push는 원본 배열을 직접 변경한다.
     console.log(arr); // [1, 2, 3, 4]
+</div>
+<div id="pop">
+5) Array.prototype.pop
+    - 원본 배열의 마지막 요소를 제거한다.
+    
+    리턴값) 제거한 요소를 반환.
+        빈 배열이라면 undefined 반환.
+        원본 배열을 직접 변경한다.
+    
+    const arr = [1, 2];
+    let result = arr.pop();
+    // 원본 배열의 마지막 요소를 제거하고 제거한 요소를 반환.
+    console.log(result); // 2
+    // pop 메서드는 원본 배열을 직접 변경.
+    consoel.log(arr); // [1]
 
 
-    👉  '스트레드 문법' 사용하면 함수 호출 없이 표현식으로 요소를 추가할 수 있고 사이드 이펙트도 없다.
+    👉  push와 pop을 사용하면 스택을 구현할 수 있다. 511 (LIFO)
+</div>
+<div id="unshift">
+6) Array.prototype.unshift
+    - 전달 받은 인수를 배열의 선두에 요소로 추가.
+
+    리턴값) 변경된 length값 반환.
+        원본 배열을 직접 변경한다.
+
+    const arr = [1, 2];
+    let result = arr.unshift(3, 4);
+    // 변경된 legnth값 반환.
+    console.log(result); // 4
+    // 원본 배열을 직접 변경.
+    console.log(arr); // [3, 4, 1, 2]
+</div>
+<div id="shift">
+7) Array.prototype.shift
+    - 원본 배열에서 첫 번째 요소를 제거한다.
+
+    리턴값) 제거한 요소를 반환.
+        원본 배열이 빈 배열이라면 undefined 반환.
+        원본 배열을 직접 변경한다.
+
+    const arr = [1, 2];
+    let result = arr.shift();
+    // 제거한 요소 반환.
+    console.log(result); // 1
+    // 원본 배열을 직접 변경.
+    console.log(arr); // [2]
+
+
+    👉  shift를 push를 사용하면 큐를 구현할 수 있다. 515 (FIFO)
+
+
+👉  배열의 마지막에 추가하는 'push'나 선두에 추가하는 'unshift' 메서드보다는  
+    '스트레드 문법' 사용하면 함수 호출 없이 표현식으로 요소를 추가할 수 있고 사이드 이펙트도 없다.
     '[...array]'
 
     const arr = [1, 2];
     const newArr = [...arr, 3];
     console.log(newArr); // [1, 2, 3]
 
-
-    
-5) Array.prototype.pop
-    리턴값) 원본 배열의 마지막 요소를 제거하고 제거한 요소를 반환.
-            빈 배열이라면 undefined 반환.
-            원본 배열을 직접 변경한다.
-    
-    const arr = [1, 2];
-    let result = arr.pop();
-    // 원본 배열의 마지막 요소를 제거하고 제거한 요소를 반환
-    console.log(result); // 2
-    // pop 메서드는 원본 배열을 직접 변경.
-    consoel.log(arr); // [1]
-
-
-👉  push와 pop을 사용하면 스택을 구현할 수 있다. 511
+    const arr2 = [1, 2];
+    const newArr2 = [3, ...arr];
+    console.log(newArr2); // [3, 1, 2]
+</div>
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+8) Array.prototype.concat
+    
+    concat 메서드는 인수로 전달된 값들을 원본 배열의 '마지막 요소'로 추가하여 새로운 배열을 반환.
+    원본 배열 변경되지 않는다.
+
+    리턴값) 새로운 배열
+
+    👉  push와 unshift 메서드는 concat으로 대체 가능.
+    - push와 unshift는 원본 배열을 직접 변경하므로 '원본 배열'을 반드시 변수에 저장해두어야 한다.
+    - concat은 새로운 배열을 반환해주므로 '반환값'을 반드시 변수에 할당받아야 한다.
+
+
+    const arr1 = [1, 2];
+    const arr2 = [3, 4];
+
+    let result = arr1.concat(arr2); // 새로운 배열을 반환해주므로 반환값을 변수에 할당받아야 한다.
+    console.log(result); // [1, 2, 3, 4]
+    console.log(arr1); // [1, 2] 원본은 유지가 된다.
+
+    result = arr1.concat(3);
+    console.log(result) // [1, 2, 3]
+    console.log(arr1) // [1, 2] 원본은 유지가 된다. 
+
+    result = arr1.concat(arr2, 5);
+    console.log(result); // [1, 2, 3, 4, 5]
+    console.log(arr1) // [1, 2] 원본은 유지가 된다.
+
+
+    👉  push, unshift는 배열 자체로 마지막 / 첫 번째 요소로 추가
+        contcat은 배열을 해체하여 새로운 배열의 마지막 요소로 추가
+    
+        const arr = [3, 4];
+
+        // push와 unshift 메서드는 인수로 전달받은 배열 그대로를 원본 배열의 요소로 추가합니다.
+        arr.unshfit([1, 2]);
+        arr.push([5, 6]);
+
+        consoel.log(arr); // [[1, 2], 3, 4, [5, 6]]
+
+        // concat 메서드는 인수로 전달받은 배열을 해체하여 새로운 배열의 요소로 추가합니다.
+        let result = [1, 2].concat([3, 4]);
+        result = result.concat([5, 6]);
+
+        console.log(result); // [1, 2, 3, 4, 5, 6]
+
+        
+9) Array.prototype.splice(start, deleteCount, items)
+    
+    원본 배열을 직접 수정하는 메서드 : pop, push, shift, unshift (맨앞, 맨뒤)
+    원본 배열의 중간에 요소를 추가하거나 제거하는 경우 : splice
+    * 원본 배열이 변경이 된다. (arr)
+    * 제거된 요소가 반환된다. (result)
+
+    splice의 매개변수
+    - start : 제거하기 시작할 인덱스. 위치지정.
+    - deleteCount : start위치부터 제거할 갯수. (옵션)
+    - items : 제거한 위치에 삽입할 요소의 목록. 없다면 제거만 함. (옵션)
+
+
+    const arr = [1, 2, 3, 4];
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        1) 매개변수 세 개
+        // 원본 배열의 인덱스 1부터 2개의 요소를 제거하고, 그 자리에 새로운 요소 20, 30 삽입
+        const result = arr.splice(1, 2, 20, 30);
+
+        // 제거한 요소가 배열로 반환
+        console.log(result); // [2, 3]
+
+        // splice 원본 배열을 직접 변경한다.
+        console.log(arr); // [1, 20, 30, 4]
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        2) 제거할 갯수 0
+        // 제거하지 않고 요소 삽입 splice(start, 0, item1, item2, ...)
+        const result = arr.splice(1, 0, 100, 200);
+        console.log(arr); // [1, 100, 200, 2, 3, 4]
+
+        * start 인덱스에서 추가.
+        * deleteCount에 0이 포인트.
+        * 원본 배열이 변경이 된다. (arr)
+        * 제거된 요소가 반환된다. (result)
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        3) 위치만 지정
+        // 추가할 요소의 목록을 전달하지 않으면 원본 배열에서 지정된 요소를 제거만 함
+        const result = arr.splice(1);
+        console.log(arr); // [1];
+
+
+    ✅ 특정 요소를 찾아서 제거하고 싶다면 
+    👉 'indexOf'와 'splice'사용 - 제거할 요소가 여러개라면 첫 번째 요소만 제거한다.
+        const arr = [1, 2, 3, 4, 2, 3];
+
+        // 배열 array에서 item요소를 제거한다. item요소가 여럿 존재하면 첫 번째 요소만 제거한다.
+        function remove(array, item) {
+            // 'indexOf'를 통해 제거할 item 요소의 인덱스를 취득한다.
+            const index = array.indexOf(item);
+
+            // 제거할 item 요소가 있다면 제거한다.
+            if( index !== -1 ) array.splice(index, 1);
+
+            return array;
+        }
+
+        console.log(remove(arr, 2)); // [1, 3, 4, 2, 3]
+        console.log(remove(arr, 10)); // [1, 3, 4, 2, 3]
+
+
+    👉 'filter'를 사용하면 중복된 요소들도 모두 제거된다.
+        filter는 자신을 호출한 배열의 모든 요소를 순회하면서 인수로 전달받은 콜백 함수를 반복 호출한다.
+        그리고 콜백 함수의 반환값이 true인 요소로만 구성된 새로운 배열을 반환한다.
+        원본 배열은 변경되지 않는다. 
+
+        const arr = [1, 2, 3, 1, 2];
+
+        // 배열 array에서 모든 item 요소를 제거한다.
+        function removeAll(array, item) {
+            return array.filter(v => v !== item);
+        }
+
+        console.log(removeAll(arr, 2)); // [1, 3, 1]
+       
+10) Array.prototype.slice
+    인수로 전달된 범위의 요소들을 복사하여 배열로 반환.
+    원본 배열은 변경되지 않는다.
+    (splice는 원본이 변경된다.)
+
+    매개변수 2개
+    - start : 복사를 시작할 인덱스, 음수의 경우 배열의 끝에서의 인덱스
+    - end : 복사를 종료할 인덱스. 생략 가능. 기본값은 length 프로퍼티 값. (end는 미포함)
+
+    const arr = [1, 2, 3];
+
+    // arr[0]부터 arr[1] 이전까지 복사하여 반환. (arr[1] 미포함)
+    arr.slice(0, 1); // [1]
+
+    // arr[1]부터 arr[2] 이전까지 복사하여 반환. (arr[2] 미포함)
+    arr.slice(1, 2); // [2]
+
+    console.log(arr); // [1, 2, 3] 원본은 변경되지 않는다.
+
+    'shallow copy'
+    // 인수를 생략하면 원본 배열의 복사본을 생성하여 반환한다. 
+    const copy = arr.slice();
+    console.log(copy); // [1, 2, 3]
+    console.log(copy === arr); // false, copy와 arr는 참조값이 다른 별개의 객체이다.
+    console.log(copy[0] === arr[0]) // true, 배열 요소의 참조값은 같다.
+
+    👉  slice 메서드가 복사본을 생성하는 것을 이용하여 arguments, HTMLCollection, NodeList 같은 유사 배열 객체를 배열로 변환할 수 있다.
+        function sum() {
+            // 유사 배열 객체를 배열로 변환(ES5)
+            var arr = Array.prototype.slice.call(arguments);
+            console.log(arr);
+
+            return arr.reduce(function (pre, cur) {
+                return pre + cur;
+            }, 0);
+        }
+        console.log(sum(1, 2, 3));
+
+    👉  Array.from 메서드를 사용하면 더욱 간단하게 유사 배열(or 이터러블 객체) -> '배열'로 변환할 수 있다.
+    👉👉 function sum() {
+            // 유사 배열 객체를 배열로 변환(ES5)
+            var arr = Array.prototype.slice.call(arguments);
+            console.log(arr);
+
+            return arr.reduce(function (pre, cur) {
+                return pre + cur;
+            }, 0);
+        }
+        console.log(sum(1, 2, 3));
+
+    👉👉 function sum1() {
+            const arr = Array.from(arguments);
+            console.log(arr);
+
+            return arr.reduce((pre, cur) => pre + cur, 0);
+        }
+        console.log(sum1(1, 2, 3));
+
+    👉👉 function sum2() {
+            // 이터러블을 배열로 변환(ES6)
+            const arr = [...arguments];
+            console.log(arr); // [1, 2, 3]
+
+            return arr.reduce((pre, cur) => pre + cur, 0)
+        }
+        console.log(sum2(1, 2, 3));
+
+        // 결과
+        // [1, 2, 3]
+        // 6
+
+       
+11) Array.prototype.join
+    배열의 요소를 문자열로 변환하여, 인수로 전달받은 문자열(구분자)과 연결한 문자열로 반환.
+
+12) Array.prototype.reverse
+    원본 배열의 순서를 반대로 뒤집는다. 원본 배열이 변경된다. 변경된 배열을 반환한다.
+
+13) Array.prototype.fill
+    전달받은 값을 배열의 처음부터 끝까지 요소로 채운다. 원본 배열이 변경된다.
+
+
+14) Array.prototype.includes
+    리턴값) 포함되어 있으면 true, 포함되어 있지 않으면 false
+
+15) Array.prototype.flat
+    인수로 전달한 깊이만큼 재귀적으로 배열을 평탄화한다.
+
+</code></pre>
+<pre id="content01"><code class="javascript">
+    🌱  얕은 복사와 깊은 복사
+    
+        객체를 프로퍼티 값으로 갖는 객체의 경우, 얕은 복사는 한 단계까지만 복사하고 깊은 복사는 객체에 중첩되어 있는 객체까지 모두 복사한다.
+        'slice', '스프레드 문법', 'Object.assign' 메서드 모두 '얕은 복사'를 수행한다.
+        '깊은 복사'를 위해서는 Lodash 라이브러리의 'cloneDeep 메서드'를 사용한다.
+
+</code></pre>
+<pre id="content8"><code class="javascript">
+#4. 배열의 함수 정리
+##4-6. 빌트인 배열 메서드 정리 - 배열 고차 함수
+
+    고차 함수는 '함수를 인수로 전달'받거나 '함수를 반환'하는 '함수'를 말한다.
+
+        * 자바스크립트의 함수는 일급 객체이므로 함수를 값처럼 인수로 전달, 반환 가능
+
+    고차 함수는 외부 상태의 변경이나 가변 데이터를 피하고 불변성을 지향하는 함수형 프로그래밍에 기반한다.
+
+        * 함수형 프로그래밍이란?
+        순수 함수와 보조 함수의 조합을 통해 로직 내에 존재하는 조건문과 반복문을 제거하여 복잡성을 해결하고, 
+        변수의 사용을 억제하여 상태 변경을 피하려는 프로그래밍 패러다임이다.   
+        순수 함수를 통해 부수 효과를 최대한 억제하여 프로그램의 안정성을 높이려는 노력의 일환.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<div>
+    <a href="#sort">sort</a> <a href="#forEach">forEach</a> <a href="#map">map</a> <a href="#filter">filter</a> <a href="#reduce">reduce</a> 
+    <a href="#some">some</a> <a href="#every">every</a> <a href="#find">find</a> <a href="#findIndex">findIndex</a> <a href="#flatMap">flatMap</a> 
+</div>
+<div id="sort">
+1) Array.prototype.sort
+    원본 배열을 직접 변경하여 정렬된 배열을 반환한다.
+    기본적으로 오름차순으로 정렬한다.
+
+
+1-1) 문자열 정렬
+
+    const fruits = ['Banana', 'Oragne', 'Apple'];
+    
+    // 기본적으로 오름차순 정렬이다.
+    fruits.sort(); 
+    console.log(fruits); // ["Apple", "Banana", "Oragne"]
+
+    // 내림차순 정렬을 하고싶다면 reverse 해주면 된다.
+    fruits.reverse();
+    console.log(fruits); // ["Oragne", "Banana", "Apple"]
+
+   
+1-2) 숫자 정렬
+
+[⚠️] 숫자열을 정렬할 땐 주의가 필요하다.
+    
+    // 의도한 대로 정렬되지 않는 예시.
+    // -> 유니코드 포인트 순서를 따르기 때문
+    const points = [40, 100, 1, 5, 2, 25, 10];
+    points.sort();
+    console.log(points); // [1, 10, 100, 2, 25, 40, 5] 
+
+[✅] 정렬 순서를 정의하는 비교 함수를 인수로 전달해야 한다.
+    비교 함수는 양수나 음수 또는 0을 반환해야 한다.
+
+    // 비교 함수의 반환값 < 0 : 비교 함수의 첫 번째 인수(a)를 우선 정렬
+    // 비교 함수의 반환값 = 0 : 정렬하지 않는다.
+    // 비교 함수의 반환값 > 0 : 비교 함수의 두 번쨰 인수(b)를 우선 정렬
+
+    // sort 매서드에 정렬 순서를 정의하는 비교 함수를 전달.
+    const points = [40, 100, 1, 5, 2, 25, 10];
+
+    // 숫자 배열의 오름차순 정렬. 비교 함수의 반환값 < 0, a를 우선한다.
+    points.sort((a, b) => a - b);
+    console.log(points); //  [1, 2, 5, 10, 25, 40, 100]
+
+    // 숫자 배열에서 최소/최대값 취득.
+    console.log(points[0], points[points.length - 1]); // 1 100
+
+    // 숫자 배열의 내림차순 정렬. 비교 함수의 반환값 > 0
+    points.sort((a, b) => b - a);
+    console.log(points); // [100, 40, 25, 10, 5, 2, 1]
+
+    // 숫자 배열에서의 최대/최소값 취득.
+    console.log(points[0], points[points.length - 1]); // 100 1
+
+1-3) 객체 정렬
+    const todos = [
+        { id: 4, content: 'JS' },
+        { id: 1, content: 'HTML' },
+        { id: 2, content: 'CSS' }
+    ];
+
+    // 비교 함수, 매개변수 key는 프로퍼티 키다.
+    function compare(key) {
+        // 프로퍼티 값이 문자열인 경우 
+        // - 산술연산자를 쓰면 NaN
+        // - 비교연산자를 쓴다. (양수/음수/0을 반환하면 되니까)
+        return (a, b) => (a[key] > b[key] ? 1 : (a[key] < b[key] ? -1 : 0)); 
+    }
+
+    todos.sort(compare('id'));
+    console.log(todos);
+    // 0: {id: 1, content: "HTML"}
+    // 1: {id: 2, content: "CSS"}
+    // 2: {id: 4, content: "JS"}
+
+    todos.sort(compare('content'));
+    console.log(todos); 
+    // 0: {id: 2, content: "CSS"}
+    // 1: {id: 1, content: "HTML"}
+    // 2: {id: 4, content: "JS"}
+</div></div>
+<div id="forEach">
+2) Array.prototype.forEach
+    for문을 대체하는 고차 함수이다.
+
+    const numbers = [1, 2, 3];
+    const pows = [];
+
+
+    // for문으로 배열 순회
+    for( let i = 0; i < numbers.length; i++) {
+        pows.push(numbers[i] ** 2);
+    }
+    console.log(pows);
+
+
+    // forEach로 for문을 대체할 수 있다.
+    // 반복문을 통해 자신을 호출한 배열을 순회하면서 수행해야 할 처리를 콜백 함수로 전달받아 반복 호출한다. 
+    // forEach 메서드로 numbers 배열의 모든 요소를 순회하면서 콜백 함수를 반복 호출.
+    numbers.forEach(item => pows.push(item ** 2));
+    console.log(pows);
+
+    // forEach 메서드는 콜백 함수를 호출하면서 3개 (요소값, 인덱스, this)의 인수를 전달한다.
+    [1, 2, 3].forEach((item, index, arr) => {
+        console.log( `요소값: ${item}, 인덱스: ${index}, this: ${JSON.stringify(arr)}` );
+    });
+    
+</div>
+<div id="map">
+3) Array.prototype.map
+
+</div>
+<div id="filter">
+4) Array.prototype.filter
+
+</div>
+<div id="reduce">
+5) Array.prototype.reduce
+
+</div>
+<div id="reduce_sub">
+    5-1) reduce 평균구하기
+
+    5-2) reduce 최대값 구하기
+    
+    5-3) reduce 요소의 중복 횟수 구하기
+    
+    5-4) reduce 중첩 배열 평탄화
+    
+    5-5) reduce 중복 요소 제거  
+</div>
+<div id="some">
+6) Array.prototype.some
+
+</div>
+<div id="every">
+7) Array.prototype.every
+
+</div>
+<div id="find">
+8) Array.prototype.find
+
+</div>
+<div id="findIndex">
+9) Array.prototype.findIndex
+
+</div>
+<div id="flatMap">
+10) Array.prototype.flatMap
+
+</div>
 </code></pre>
 <script>
-    const arr = [1, 2];
-    let result = arr.pop(2);
-    console.log(result)
-    console.log(arr)
-
+   
 </script>
-<pre><code class="javascript">
 
-</code></pre>
 
-<pre><code class="javascript"></code></pre>
+
+
 <script>
     (function() {
         var upbtn = {
@@ -515,3 +946,4 @@ console.log(linearSearch([1,3,5,7,9], 5)); // -> 2
 </script>
 </body>
 </html>
+
