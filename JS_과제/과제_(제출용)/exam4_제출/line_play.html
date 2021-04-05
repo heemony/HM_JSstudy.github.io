@@ -144,9 +144,10 @@
             if(this.tmpArr.length === 0) { // tmpArr가 0이 되면~
                 this.checkstate = true; 
                 this.tmpArr = [...this.originalArr]; // 배열 채워주기
-            }
+            } 
         },
         setDeleteFunc: function() { 
+            console.log(this.tmpArr)
             this.setArrFunc(); // 순회 후 배열
             this.setRandomFunc(); // randomNum, deletedNum 가져옴
             this.tmpArr = this.tmpArr.filter((item, idx) => { 
@@ -158,7 +159,7 @@
         },
         setRandomFunc: function() { 
             var maxIndex = this.tmpArr.length;
-            var tmpRandom; // 
+            var tmpRandom; 
             var randomNum; // 랜덤
             var deletedNum; // 삭제할 애
             if( this.checkstate ){ // 마지막과 비교
@@ -173,7 +174,6 @@
             } else {
                 randomNum = Math.floor(Math.random() * maxIndex); 
             }
-            
             this.randomNum = randomNum;
             this.deletedNum = deletedNum;
         },
