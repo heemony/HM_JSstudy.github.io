@@ -124,8 +124,6 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            // itemArr: [],
-            // randomArr: [],
             originalArr : [],
             tmpArr : []
         };
@@ -146,8 +144,6 @@
             this.objWrap = this.objCont.find(this.opts.objWrap);
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
-            // this.itemArr = this.opts.itemArr;
-            // this.randomArr = this.opts.randomArr;
             this.tmpArr = this.opts.tmpArr;
             this.originalArr = this.opts.originalArr;
         },
@@ -167,19 +163,18 @@
                 if( this.tmpArr[i] !== randomNum ) {
                     newArr[newArr.length] = this.tmpArr[i];
                     console.log(typeof this.tmpArr[i]);
-                    // console.log(newArr.length)
                 }
             } 
             this.newArr = newArr;
             this.tmpArr = this.newArr
             console.log(this.tmpArr)
         },
-        setRandNum: function() { // 중복되지 않는 랜덤수 뽑.
+        setRandNum: function() { 
             let randomNum  = this.getRandNum();
             console.log(typeof randomNum);
             if( this.tmpArr.length === 0) {
                 this.setArray();
-                this.setNoneOverlap(randomNum);
+                this.setNoneOverlap(randomNum); // 이전과 비교.
             }
             this.randomNum = randomNum;
             this.setNoneOverlap(randomNum);
@@ -187,14 +182,14 @@
         getRandNum: function() {
             let maxIndex = this.tmpArr.length;
             let tmpRandom = Math.floor(Math.random() * maxIndex);
-            return Number(this.tmpArr.splice(tmpRandom, 1));
+            return Number(this.tmpArr.splice(tmpRandom, 1)); // splice object 리턴
         },
         showItem: function() {
-            this.objItem.hide().eq(this.randomNum).show(); // 삭제
+            this.objItem.hide().eq(this.randomNum).show(); 
         },
         playGame: function() {     
-            this.setRandNum(); // 버튼을 클릭하면 랜덤 숫자를 뽑느다.
-            this.showItem(); // 보여줌.
+            this.setRandNum(); 
+            this.showItem(); 
         },
     };
 
