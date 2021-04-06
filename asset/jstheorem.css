@@ -7,12 +7,16 @@ a {text-decoration: none; color: rgb(112, 110, 98)}
 button,label{cursor:pointer}
 button::-moz-focus-inner{padding:0;border:0}
 /* hr{display:none} */
+.title2, .title3, .sub-title {display: inline-block; padding: 0 5px; margin-bottom: 5px;}
 .title {font-size: 38px; color: gray;}
-.title2 {font-size: 25px; background: linear-gradient(to top, rgba(164, 208, 255, 0.749) 50%, transparent 50%); color: rgb(0, 0, 0); display: inline-block; padding: 0 5px; margin-bottom: 5px;}
-.title3 {font-size: 18px; background: linear-gradient(to top, rgba(247, 178, 245, 0.749) 50%, transparent 50%); font-weight: 700; display: inline-block; padding: 0 5px; margin-bottom: 5px;}
+.title2 {font-size: 25px; background: linear-gradient(to top, rgba(164, 208, 255, 0.749) 50%, transparent 50%); color: rgb(0, 0, 0); }
+.title3 {font-size: 18px; background: linear-gradient(to top, rgba(247, 178, 245, 0.749) 50%, transparent 50%); font-weight: 700; }
+.sub-title {font-size: 18px; background: linear-gradient(to top, rgba(138, 148, 255, 0.55), rgba(229, 192, 255, 0.625), 50%, transparent 50%); }
+.sub-list {text-indent: 25px;}
+.목차 {background-color: rgba(255, 183, 0, 0.208); padding: 30px; display: inline-block;}
 .code {font-size: 18px; background: linear-gradient(to top, rgba(99, 123, 43, 0.324) 50%, transparent 50%); font-weight: 700; display: inline-block; padding: 0 5px; margin-bottom: 5px;}
-.desc {font-size: 14px; color: black;}
-.hl {background: linear-gradient(to top,rgb(255, 239, 149) 50%, transparent 50%); font-weight: 900;}
+.sub-desc {font-size: 14px; color: rgb(93, 77, 97); background: linear-gradient(to top,rgba(102, 249, 205, 0.317) 30%, transparent 50%); font-weight: 900; display:inline-block;}
+.hl {background: linear-gradient(to top,rgb(255, 239, 149) 50%, transparent 50%); font-weight: 900; display:inline-block;}
 .point {background: linear-gradient(to top,rgb(244, 119, 91) 50%, transparent 50%); font-weight: 900;}
 .blur {font-size: 10px; font-style: italic; color: rgb(102, 102, 102); position:absolute; bottom: 0;}
 .card {padding: 20px 0; font-size: 16px;}
