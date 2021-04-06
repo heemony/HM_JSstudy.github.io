@@ -124,8 +124,8 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            itemArr: [],
-            randomArr: [],
+            // itemArr: [],
+            // randomArr: [],
             originalArr : [],
             tmpArr : []
         };
@@ -135,7 +135,7 @@
     };
     exam.prototype = {
         init : function () {
-            this.setElements(); 
+            this.setElements(); // 선택자
             this.setArray();
             this.bindEvent();
             this.playGame();
@@ -146,8 +146,8 @@
             this.objWrap = this.objCont.find(this.opts.objWrap);
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
-            this.itemArr = this.opts.itemArr;
-            this.randomArr = this.opts.randomArr;
+            // this.itemArr = this.opts.itemArr;
+            // this.randomArr = this.opts.randomArr;
             this.tmpArr = this.opts.tmpArr;
             this.originalArr = this.opts.originalArr;
         },
@@ -164,7 +164,7 @@
             console.log(randomNum)
             let newArr = [];
             for(let i = 0; i < this.tmpArr.length; i++) {
-                if( this.tmpArr[i] !== randomNum ) { // 타입체크
+                if( this.tmpArr[i] !== randomNum ) {
                     newArr[newArr.length] = this.tmpArr[i];
                     console.log(typeof this.tmpArr[i]);
                     // console.log(newArr.length)
@@ -174,12 +174,12 @@
             this.tmpArr = this.newArr
             console.log(this.tmpArr)
         },
-        setRandNum: function() { 
+        setRandNum: function() { // 중복되지 않는 랜덤수 뽑.
             let randomNum  = this.getRandNum();
             console.log(typeof randomNum);
             if( this.tmpArr.length === 0) {
                 this.setArray();
-                this.setNoneOverlap(randomNum); // 0되면 중복 제거
+                this.setNoneOverlap(randomNum);
             }
             this.randomNum = randomNum;
             this.setNoneOverlap(randomNum);
@@ -187,14 +187,14 @@
         getRandNum: function() {
             let maxIndex = this.tmpArr.length;
             let tmpRandom = Math.floor(Math.random() * maxIndex);
-            return Number(this.tmpArr.splice(tmpRandom, 1)); // splice 함수는 object 리턴
+            return Number(this.tmpArr.splice(tmpRandom, 1));
         },
         showItem: function() {
-            this.objItem.hide().eq(this.randomNum).show(); 
+            this.objItem.hide().eq(this.randomNum).show(); // 삭제
         },
         playGame: function() {     
-            this.setRandNum(); 
-            this.showItem();
+            this.setRandNum(); // 버튼을 클릭하면 랜덤 숫자를 뽑느다.
+            this.showItem(); // 보여줌.
         },
     };
 
