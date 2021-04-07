@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<title>JS 5</title>
+</head>
+<body>
+<script>
+// 탭과 이전/다음 버튼 동시에 동작하도록
+// (2번째 과제에서 인덱스 조절한거)
+// n / 8 <- n은 이벤트가 일어날 때 마다 바꿔줘야하고, 8은 걍..
+// 스크립트가 안된다면 마크업이 잘 못 됐을 수도 있으니 그런 부분도 잘 체크해서 ..
+(function (win, $) {
+    'use strict';
+    function tabComponent(containers, args) {
+        var defParams = {
+            // key값은 카멜케이스로 써주삼.
+            obj : container,
+            castTab : '.cast_tab',
+            castTabParent : 'ul',
+            castCont : '.cast_cont',
+            activeClass : '.active',
+        };
+        this.opts = $extend(defParams, (args || {}));
+        if(!(this.obj = $(this.opts.agrs)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
+        this.init();
+    };
+
+    tabComponent.prototype = {
+        init : function() {
+            console.log('init');
+            this.setElements();
+            this.initOpts();
+            this.initLayout();
+            this.bindEvents();
+        },
+        setElements : function() {
+            this.castTab = this.obj.find(this.opts.castTab);
+            this.castTabParent = this.castTab.find(this.opts.castTabParent);
+            this.castTabChild = this.castTabParent.children();
+            this.castCont = this.obj.find();
+
+        },
+        initOpts : function() {
+            var _this = this; // 함수 안에서 window를 바라보기 때문에 여기서 this를 저장해서 쓴다
+            var filterCount = castTabChild.filter(function (idx, item) { // 현재 활성화 인덱스ㅇㅇ
+                if ($(item).hasClass(_this.opts.activeClass)) {
+                    return true;
+                }
+            }); // active가 한개가 있다는 가정하에... 
+            this.currentIndex = (filterCount.lenght) ? filterCount.index() : 0; // 있으면 count, 없으면 0 
+        },
+        initLayout : function() {
+            this.castArticle.removeClass(this.opts.activeClass); // 일단 모두 다 빼주고
+            this.contViewFunc();//하나 넣는거 살행
+        },
+        bindEvents : function() {
+            this.castTabChild.on('click', '>a', this.onTabClickFunc(this));
+        },
+        onTabClickFunc : function(e) {
+            e.preventDefault();
+            
+            var target = $(e.delegateTarget),
+                targetIndex = target.index();
+            this.currentIndex = targetIndex;
+            this.contViewFunc();
+            //클릭ㅇㄹ 했을 때 li를 바라볼텐데,, 이전에 선택한걸 알아야하니까 변수에 저장을 해준다.
+        },
+        // 처음에 액티브가 있는 초기값 
+        // 액티브를 가지고 있다면 걔가 처음이 되는거고, 없다면 0으로 인덱스를 바꿔줘라 뭐라고???엥..ㅠㅠ팀쟝님 너무 빨라요...
+    
+        contViewFunc : function() {
+            this.castArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            this.castTabChild.eq(this.oldIndex).removeClass(this.opts.activeClass);
+
+            this.castArticle.eq(this.currentIndex).addClass(this.opts.activeClass);
+            this.castTabChild.eq(this.currentIndex).addClass(this.opts.activeClass);
+            
+            this.oldIndex = this.currentIndex;
+        
+        },
+    };
+
+    function slideComponent(container, agrs) {
+        var defParams = {
+            // key값은 카멜케이스로 써주삼.
+            obj : container,
+            slideCont : '.slide_cont',
+            prevBtn : '.prev',
+            nextBtn : '.next',
+            // 이전과 다음버튼의 방향이 다르기 때문에... (slide 모양)
+            direction: 'left', // default
+            initalSlide: 0,
+            
+            // 굳이 안넣어도 되지만 넣어주는게 맞다. 
+            type : 'false', // 조건1. 타입
+            autoplay : false // 조건2. 오토플레이 
+            // 조건3. 마우스오버시 멈추기
+        };
+        this.opts = $extend(defParams, (args || {}));
+        if(!(this.obj = $(this.opts.agrs)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
+        this.init();
+    };
+
+    slideComponent.prototype = {
+        init : function () {
+            this.setElement();
+        },
+        initLayout : function() {
+            this.currentIndex = this.opts.initalSlide;
+            this.slideArticle.hide();
+            this.slideArticle.eq(this.currentIndex).show();
+            this.oldIndex = this.currentIndex;
+        },
+        setElement : function() {
+            this.clideCont = this.obj.find(this.opts.slideCount);
+            this.slideArticle = this.slideCont.find(this.opts.slideArticle);
+            this.prevBtn = this.obj.find(this.opts.prevBtn);
+            this.nextBtn = this.obj.find(this.opts.nextBtn);
+        },
+        bindEvents : function() {
+            this.prevBtn.on('click', this.onPrevClickFunc(this));
+            this.nextBtn.on('click', this.onNextClickFunc(this));
+        },
+        onPrevClickFunc : function() {
+            this.currentIndex--;
+            this.opts.direction = 'right';
+            this.animateFunc();
+        },
+        onNextClickFunc : function() {
+            this.currentIndex++;
+            this.opts.direction = 'left';
+            this.animateFunc();
+        }, 
+        animateFunc : function() {
+            var _this = this;
+            if (this.opts.direction === 'left') {
+                this.slideArticle.eq(this.currentIndex).stop().css({
+                    'display' : 'block',
+                    'left': '-100%'
+                }) 
+                this.slideArticle.eq(this.oldIndex).stop().animate({
+                    'left': '100%'
+                }, {
+                        complete : function() {
+                        this.slideArticle.eq(this.oldIndex).css({
+
+                        })
+                    } 
+                }) 
+                this.slideArticle.eq(this.currentIndex).stop().animate({
+                    'left': '-100%'
+                }) 
+            } else {
+
+            }
+
+        }
+    },
+
+    $(function () {
+        var tabComponentCall = new tabComponent('.cast_box'); // 변수에 담아 호출하여도 된다.
+        var slideComponentCall = new slideComponent('.slide_box', {
+            type : 'slide',
+            autoplay : true,
+        });
+    })
+})(window, window.jQuery);
+
+
+            // this.currentIndex++ 하면 next
+            // this.currentIndex-- 하면 prev
+            // innerHTML, innerText... 로 숫자 넣어주고
+            
+
+            // slide : fade-in type(opaticy) - absolute인 이유는 사라지고 보여질 때 그래야 보일 수 있음 마크업적인 요소!, slide type(animation) 
+            // indicator : 해당하는 슬라이드로 넘어가기
+</script>
+</body>
+</html>
