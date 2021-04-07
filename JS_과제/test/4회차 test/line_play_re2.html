@@ -34,7 +34,7 @@
                 <img src="img/avatar_02.jpg" alt="avatar image" class="img_avatar">
             </span>
         </li>
-        <!-- <li class="swiper-slide">
+       <li class="swiper-slide">
             <span class="avatar_box">
                 <img src="img/avatar_03.jpg" alt="avatar image" class="img_avatar">
             </span>
@@ -83,7 +83,7 @@
             <span class="avatar_box">
                 <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
             </span>
-        </li> -->
+        </li> 
         </ul>
     </div>
     <button type="button" class="btn_random"><span>다른 아바타 보기</span></button>
@@ -91,32 +91,8 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-
-    // 과제 조건
-    // 1. 새로고침 할 때 마다 '랜덤한 캐릭터'가 노출된다. 
-    // 2. [다른 아바타 보기 버튼]을 누르면 '이 전에 보여지지 않았던' 랜덤한 캐릭터가 보여진다.  (같은 캐릭터 중복되면 안 됨.)
-    // 3. 모든 캐릭터가 다 노출이 됐으면, 다시 시작하는거.. 
-    // 3-1. ex) 다람쥐가 마지막에 노출이 되었다 다시 시작됐을 때 또 다람쥐가 나오면 안됨. 
-    //          마지막과 첫번째가 중복되면 안 됨!
-    // 4. li는 무조건 Jquery의 show, hide로 컨트롤한다.
-    // 5. 배열 사용해라 math.random
-    
-    // -> 어떤 배열의 형태로 만들것인가?
-    // --> 배열 형태 2가지
-    // -----> 1. [0, 1, 2, 3, 4, 5, 6, ..] 11개를 푸시해서 랜덤으로 뽑을 것인가. <- 이 방법으로 하세요. 여기서 랜덤으로 뽑는 방법을 사용.
-    // -----> 2. [5, 7,2, 3, 1, ,2 ,5, 11,] 애초에 랜덤으로 해서 뽑을 것인가. <- 일단 랜덤으로 배열이 만들어지면, 예상이 가능하기 때문에 맞지 않음.
-
-    // 랜덤으로 5가 뽑혔다? 원본 배열에서 지워줘야겟죠? 
-    // '뽑힌 값'과 '인덱스'를 헷갈리지 말 것!! 
-    // 뽑힌 값 != 인덱스 라는 거
-    
-
-    // 검수할떄 나머지 li 다 주석해놓고 2개로만 검수해 볼 것.
-
-</script>
-<script>
 (function () {
-    'use strict';
+    'use strict'; 
     function exam (container, args) {
         var defParams = {
             obj : container || '.js-play-wrap',
@@ -124,7 +100,7 @@
             objWrap: '.swiper-wrapper',
             objItem: '.swiper-slide',
             btn: '.btn_random',
-            originalArr : [],
+            originArr : [],
             tmpArr : []
         };
         this.opts = $.extend(defParams, args || {});
@@ -133,10 +109,12 @@
     };
     exam.prototype = {
         init : function () {
-            this.setElements(); // 선택자
-            this.setArray();
-            this.bindEvent();
-            this.playGame();
+            this.setElements();
+            this.setArray(); // 배열 초기화
+            this.clickBtn(); // 버튼
+            this.getRanNum(); // 랜덤
+            this.showItemFunc(); // 쇼
+            this.noneOverlapFunc();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -144,52 +122,51 @@
             this.objWrap = this.objCont.find(this.opts.objWrap);
             this.objItem = this.objWrap.find(this.opts.objItem);
             this.btn = this.obj.find(this.opts.btn);
-            this.tmpArr = this.opts.tmpArr;
-            this.originalArr = this.opts.originalArr;
-        },
-        setArray: function() {
-            for(var i = 0; i < this.objItem.length; i++) {
-                this.originalArr[i] = i;
-            }
-            this.tmpArr = this.originalArr;
-        },
-        bindEvent: function() {
+            this.copyArr = this.opts.copyArr;
+            this.originArr = this.opts.originArr;
+            this.prevNum = null;
+        }, 
+        clickBtn: function() {
             this.btn.on('click', this.playGame.bind(this));
         },
-        setNoneOverlap: function(randomNum) {
-            var newArr = [];
-            for(var i = 0; i < this.tmpArr.length; i++) {
-                if( this.tmpArr[i] !== randomNum ) {
-                    console.log('제외될 랜덤수', randomNum)
-                    newArr[newArr.length] = this.tmpArr[i];
-                }
+        playGame: function() {
+            this.totalLogic();
+            this.showItemFunc();
+        },
+        setArray: function() {
+            for(let i = 0; i < this.objItem.length; i++) {
+                this.originArr[i] = i;
             } 
-            this.tmpArr = newArr;
-            console.log(this.tmpArr);
+            this.copyArr = [...this.originArr]; 
         },
-        setRandNum: function() { 
-            var randomNum  = this.getRandNum();
-            if( this.tmpArr.length === 0) {
-                this.setArray();
-                this.setNoneOverlap(randomNum); // 이전과 비교.
+        getRanNum: function() {
+            let maxIndex = this.originArr.length;
+            let ranNum = Math.floor(Math.random() * maxIndex);
+            let pickNum = Number(this.copyArr.splice(ranNum, 1)); 
+            this.pickNum = pickNum; 
+            return this.pickNum;
+        },
+        showItemFunc: function() {
+            this.objItem.hide().eq(this.pickNum).show();
+        },
+        noneOverlapFunc: function(pickNum) {
+            let tmpArr = []; 
+            for( let i = 0; i < this.copyArr.length; i++) {
+                if ( this.copyArr[i] !== pickNum ) {
+                    tmpArr[tmpArr.length] = this.copyArr[i];
+                }
             }
-            this.randomNum = randomNum;
-            this.setNoneOverlap(randomNum);
+            this.copyArr = tmpArr;
         },
-        getRandNum: function() {
-            var maxIndex = this.tmpArr.length;
-            var tmpRandom = Math.floor(Math.random() * maxIndex);
-            return Number(this.tmpArr.splice(tmpRandom, 1)); 
-        },
-        showItem: function() {
-            this.objItem.hide().eq(this.randomNum).show(); 
-        },
-        playGame: function() {     
-            this.setRandNum(); // 랜덤을 뽑고
-            this.showItem(); // 그 해당 랜덤의 이미지를 보여줌.
-        },
-    };
-
+        totalLogic: function() {
+            let pickNum = this.getRanNum();
+            if (this.copyArr.length === 0) {
+                this.setArray();
+                this.noneOverlapFunc(pickNum);
+            }
+            this.noneOverlapFunc(pickNum);
+        }
+    }
     $(function () {
         var randomPlay = new exam();
     })
