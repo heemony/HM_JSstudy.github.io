@@ -34,7 +34,7 @@
                 <img src="img/avatar_02.jpg" alt="avatar image" class="img_avatar">
             </span>
         </li>
-        <li class="swiper-slide">
+        <!-- <li class="swiper-slide">
             <span class="avatar_box">
                 <img src="img/avatar_03.jpg" alt="avatar image" class="img_avatar">
             </span>
@@ -83,7 +83,7 @@
             <span class="avatar_box">
                 <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
             </span>
-        </li>
+        </li>  -->
         </ul>
     </div>
     <button type="button" class="btn_random"><span>다른 아바타 보기</span></button>
@@ -134,9 +134,9 @@
     exam.prototype = {
         init : function () {
             this.setElements(); // 선택자
-            this.setArray(); // 배열을 초기화해준다.
-            this.bindEvent(); 
-            this.playGame(); // 랜덤 숫자 -> 해당 랜덤 숫자로 이미지 보여줌.
+            this.setArray();
+            this.bindEvent();
+            this.playGame();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -148,7 +148,7 @@
             this.originalArr = this.opts.originalArr;
         },
         setArray: function() {
-            for(var i = 0; i < this.objItem.length; i++) {
+            for(let i = 0; i < this.objItem.length; i++) {
                 this.originalArr[i] = i;
             }
             this.tmpArr = this.originalArr;
@@ -156,39 +156,48 @@
         bindEvent: function() {
             this.btn.on('click', this.playGame.bind(this));
         },
-        setNoneOverlap: function(randomNum) { // 랜덤수를 제외한 배열
-            var newArr = [];
-            for(var i = 0; i < this.tmpArr.length; i++) {
+        setNoneOverlap: function(randomNum) {
+            // 새 배열에다가
+           var newArr = [];
+            // 뽑힌 랜덤수를 제외한 새로운 배열 만들기..
+            for(let i = 0; i < this.tmpArr.length; i++) {
                 if( this.tmpArr[i] !== randomNum ) {
+                    console.log('제외될 랜덤수', randomNum)
                     newArr[newArr.length] = this.tmpArr[i];
                 }
             } 
             this.tmpArr = newArr;
-            console.log('랜덤수가 제외된 배열_v1 ', this.tmpArr);
-        },
-        getRandNum: function() {
-            var maxIndex = this.tmpArr.length;
-            var tmpRandom = Math.floor(Math.random() * maxIndex);
-            return Number(this.tmpArr.splice(tmpRandom, 1)); 
+            console.log(this.tmpArr);
         },
         setRandNum: function() { 
-            var randomNum  = this.getRandNum();
+           var randomNum  = this.getRandNum();
             if( this.tmpArr.length === 0) {
                 this.setArray();
-                this.setNoneOverlap(randomNum); // 이전과 비교. 
-                console.log('제외될 랜덤수_v1', randomNum)
             }
             this.randomNum = randomNum;
+            console.log(this.randomNum);
             this.setNoneOverlap(randomNum);
+        },
+        getRandNum: function() {
+           var maxIndex = this.tmpArr.length;
+           var tmpRandom = Math.floor(Math.random() * maxIndex);
+            return Number(this.tmpArr.splice(tmpRandom, 1)); 
         },
         showItem: function() {
             this.objItem.hide().eq(this.randomNum).show(); 
+            // 이전 숫자는 여기서 저장을 해야함.
+            this.prevNum = this.randomNum;
         },
         playGame: function() {     
-            this.setRandNum(); // 랜덤을 뽑고
-            this.showItem(); // 그 해당 랜덤의 이미지를 보여줌.
+            this.setRandNum(); 
+            // 이전 숫자와 다음 숫자를 비교하는 조건을 여기에 추가.
+            while ( this.prevNum === this.randomNum ) {
+                this.setRandNum(); 
+            }
+            this.showItem(); 
         },
     };
+
     $(function () {
         var randomPlay = new exam();
     })

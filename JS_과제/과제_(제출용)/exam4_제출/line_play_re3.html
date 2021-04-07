@@ -79,7 +79,7 @@
                 <img src="img/avatar_11.jpg" alt="avatar image" class="img_avatar">
             </span>
         </li>
-        <li class="swiper-slide">
+        <li class="swiper-slide"> 
             <span class="avatar_box">
                 <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
             </span>
@@ -148,7 +148,7 @@
             this.originalArr = this.opts.originalArr;
         },
         setArray: function() {
-            for(let i = 0; i < this.objItem.length; i++) {
+            for(var i = 0; i < this.objItem.length; i++) {
                 this.originalArr[i] = i;
             }
             this.tmpArr = this.originalArr;
@@ -160,14 +160,18 @@
             // 새 배열에다가
            var newArr = [];
             // 뽑힌 랜덤수를 제외한 새로운 배열 만들기..
-            for(let i = 0; i < this.tmpArr.length; i++) {
+            for(var i = 0; i < this.tmpArr.length; i++) {
                 if( this.tmpArr[i] !== randomNum ) {
-                    console.log('제외될 랜덤수', randomNum)
                     newArr[newArr.length] = this.tmpArr[i];
                 }
             } 
             this.tmpArr = newArr;
-            console.log(this.tmpArr);
+            console.log('랜덤수가 제외된 배열_v2 ', this.tmpArr);
+        },
+        getRandNum: function() {
+           var maxIndex = this.tmpArr.length;
+           var tmpRandom = Math.floor(Math.random() * maxIndex);
+            return Number(this.tmpArr.splice(tmpRandom, 1)); 
         },
         setRandNum: function() { 
            var randomNum  = this.getRandNum();
@@ -175,25 +179,20 @@
                 this.setArray();
             }
             this.randomNum = randomNum;
-            console.log(this.randomNum);
+            console.log('제외될 랜덤수_v2', randomNum);
             this.setNoneOverlap(randomNum);
-        },
-        getRandNum: function() {
-           var maxIndex = this.tmpArr.length;
-           var tmpRandom = Math.floor(Math.random() * maxIndex);
-            return Number(this.tmpArr.splice(tmpRandom, 1)); 
         },
         showItem: function() {
             this.objItem.hide().eq(this.randomNum).show(); 
-            // 이전 숫자는 여기서 저장을 해야함.
-            this.prevNum = this.randomNum;
+            // 저장 한다면... 이전 숫자는 여기서 저장을 해야함.
+            // this.prevNum = this.randomNum;
         },
         playGame: function() {     
             this.setRandNum(); 
             // 이전 숫자와 다음 숫자를 비교하는 조건을 여기에 추가.
-            while ( this.prevNum === this.randomNum ) {
-                this.setRandNum(); 
-            }
+            // while ( this.prevNum === this.randomNum ) {
+            //     this.setRandNum(); 
+            // }
             this.showItem(); 
         },
     };
