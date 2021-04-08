@@ -34,7 +34,7 @@
                 <img src="img/avatar_02.jpg" alt="avatar image" class="img_avatar">
             </span>
         </li>
-        <!-- <li class="swiper-slide">
+        <li class="swiper-slide">
             <span class="avatar_box">
                 <img src="img/avatar_03.jpg" alt="avatar image" class="img_avatar">
             </span>
@@ -83,7 +83,7 @@
             <span class="avatar_box">
                 <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
             </span>
-        </li> -->
+        </li>
         </ul>
     </div>
     <button type="button" class="btn_random"><span>다른 아바타 보기</span></button>
@@ -101,9 +101,6 @@
             objItem : '.swiper-slide',
             btn : '.btn_random',
             itemArr : [], // 0-11까지 담을 배열
-            // ranIndex : null, // 랜덤넘버 담을 변수
-            // curNum : null, // 현재 뽑은 넘버
-            // preNum : null, // 이전에 뽑은 넘버
         };
         this.opts = $.extend(defParams, args || {});
         if (!(this.obj = $(this.opts.obj)).length) return;
@@ -114,8 +111,7 @@
             this.setElements();
             this.bindEvent();
             this.setArr();
-            this.setRanNum();
-            this.showItem();
+            this.playGame();
         },
         setElements: function() {
             this.obj = $(this.opts.obj);
@@ -140,26 +136,23 @@
         setRanNum : function() {
             var ranNum = this.itemArr[Math.floor(Math.random() * this.itemArr.length)],
                 index = this.itemArr.indexOf(ranNum);
-            this.itemArr.splice(index, 1);   
+            this.itemArr.splice(index, 1);  
             this.ranNum = ranNum;
             this.index = index;
-            // console.log('배열에서 삭제할 인덱스: ' + index,  '/ 보여질 캐릭터 인덱스: ' + ranNum);
-            if( !this.itemArr.length ) {
+            // console.log(this.itemArr);
+            // console.log(this.ranNum, this.index);
+            if( this.itemArr.length === 0 ) {
                 this.setArr();
-                // console.log('한 사이클을 다 돌았습니다.', this.itemArr);
             }
-            this.checkOverlap(); // 2개일 때 중복 체크
+            this.checkOverlap(); 
         },
         showItem : function() {
             this.objItem.hide().eq(this.ranNum).show();
-            var preNum = this.ranNum;
-            this.preNum = preNum;
+            this.preNum = this.ranNum;
         },
         checkOverlap : function() { 
-            while (this.preNum === this.index) {
-                // console.log('이전과 뽑은 수가 같아요', this.preNum, this.index)
+            while (this.preNum === this.ranNum) {
                 this.setRanNum();        
-                // console.log('다시 뽑았어요', this.preNum, this.index)
             }
         },
     };
