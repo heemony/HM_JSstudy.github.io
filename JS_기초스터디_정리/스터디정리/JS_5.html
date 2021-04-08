@@ -3,11 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <title>JS 5</title>
+<style>
+/* temporary css */
+*{margin:0;padding:0}
+body{font-size:14px;font-family:"나눔고딕",NanumGothic,"굴림",Gulim,Sans-serif;line-height:1.5}
+h1,h2,h3,h4,h5,h6{font-size:14px}
+ul,li{list-style:none}
+button{font-size:14px;font-family:"나눔고딕",NanumGothic,"굴림",Gulim,Sans-serif;line-height:1.5;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+.cast_box{width:880px;margin:0 auto;border:1px solid #ccc}
+.cast_tab{}
+.cast_tab ul{zoom:1}
+.cast_tab ul:after{display:block;clear:both;content:''}
+.cast_tab ul li{float:left;width:12.5%;text-align:center}
+.cast_tab ul li a{display:block;padding:10px;border-left:1px solid #ccc;background:#f3f3f3;color:#000;text-decoration:none}
+.cast_tab ul li:first-child a{border-left:0 none}
+.cast_tab ul li.active a{background:#ccc;color:#000}
+.cast_cont{border-top:1px solid #ccc}
+.cast_article{display:none;height:500px}
+.cast_article.active{display:block}
+.cast_setting{padding:10px;border-top:1px solid #ccc;zoom:1}
+.cast_setting:after{display:block;clear:both;content:''}
+.cast_setting .cast_btn{float:left}
+.cast_setting .cast_num{float:right;margin-right:5px}
+.cast_num .total{font-weight:bold}
+
+.slide_box{position:relative;width:880px;margin:0 auto}
+.slide_tab{position:absolute;left:0;bottom:0;right:0;z-index:30;padding:15px 0;font-size:0;line-height:0;text-align:center}
+.slide_tab ul{display:inline-block;vertical-align:top}
+.slide_tab ul li{float:left;margin:0 3px}
+.slide_tab ul li a{display:inline-block;width:12px;height:12px;border-radius:100%;background:#ccc;vertical-align:top}
+.slide_tab ul li.active a{background:#000}
+.slide_cont{overflow:hidden;position:relative;height:440px}
+.slide_article{display:block;position:absolute;left:0;top:0;width:100%;height:440px}
+.slide_article:nth-child(1){background:red}
+.slide_article:nth-child(2){background:orange}
+.slide_article:nth-child(3){background:yellow}
+.slide_article:nth-child(4){background:green}
+.slide_article:nth-child(5){background:blue;color:#fff}
+.slide_article:nth-child(6){background:skyblue;color:#fff}
+.slide_article:nth-child(7){background:navy;color:#fff}
+.slide_article:nth-child(8){background:black;color:#fff}
+.slide_setting{font-size:0;line-height:0}
+.slide_setting .slide_btn button{position:absolute;top:50%;z-index:30;margin:0 20px}
+.slide_setting .slide_btn button:nth-child(1){left:0}
+.slide_setting .slide_btn button:nth-child(2){right:0}
+/* //temporary css */
+</style>
 </head>
 <body>
+<!-- wrapper [s] -->
+<div id="wrapper">
+    <!-- header [s] -->
+    <div id="header">@</div>
+    <!-- header [e] -->
+    <hr />
+    <!-- container [s] -->
+    <div id="container">
+        <div class="cast_box">
+            <div class="cast_tab">
+                <ul>
+                    <li><a href="#thema1">테마1</a></li>
+                    <li><a href="#thema2">테마2</a></li>
+                    <li><a href="#thema3">테마3</a></li>
+                    <li><a href="#thema4">테마4</a></li>
+                    <li><a href="#thema5">테마5</a></li>
+                    <li class="active"><a href="#thema6">테마6</a></li>
+                    <li><a href="#thema7">테마7</a></li>
+                    <li><a href="#thema8">테마8</a></li>
+                </ul>
+            </div>
+            <div class="cast_cont">
+                <div id="thema1" class="cast_article active">컨텐츠1</div>
+                <div id="thema2" class="cast_article">컨텐츠2</div>
+                <div id="thema3" class="cast_article">컨텐츠3</div>
+                <div id="thema4" class="cast_article">컨텐츠4</div>
+                <div id="thema5" class="cast_article">컨텐츠5</div>
+                <div id="thema6" class="cast_article">컨텐츠6</div>
+                <div id="thema7" class="cast_article">컨텐츠7</div>
+                <div id="thema8" class="cast_article">컨텐츠8</div>
+            </div>
+            <div class="cast_setting">
+                <div class="cast_btn">
+                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
+                </div>
+                <div class="cast_num"><span class="current">1</span> / <span class="total">8</span></div>
+            </div>
+        </div>
+
+        <div class="slide_box">
+            <div class="slide_tab">
+                <ul>
+                    <li class="active"><a href="#slide1">테마1</a></li>
+                    <li><a href="#slide2">테마2</a></li>
+                    <li><a href="#slide3">테마3</a></li>
+                    <li><a href="#slide4">테마4</a></li>
+                    <li><a href="#slide5">테마5</a></li>
+                    <li><a href="#slide6">테마6</a></li>
+                    <li><a href="#slide7">테마7</a></li>
+                    <li><a href="#slide8">테마8</a></li>
+                </ul>
+            </div>
+            <div class="slide_cont">
+                <div id="slide1" class="slide_article active">컨텐츠1</div>
+                <div id="slide2" class="slide_article">컨텐츠2</div>
+                <div id="slide3" class="slide_article">컨텐츠3</div>
+                <div id="slide4" class="slide_article">컨텐츠4</div>
+                <div id="slide5" class="slide_article">컨텐츠5</div>
+                <div id="slide6" class="slide_article">컨텐츠6</div>
+                <div id="slide7" class="slide_article">컨텐츠7</div>
+                <div id="slide8" class="slide_article">컨텐츠8</div>
+            </div>
+            <div class="slide_setting">
+                <div class="slide_btn">
+                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container [e] -->
+    <hr />
+    <!-- footer [s] -->
+    <div id="footer">@</div>
+    <!-- footer [e] -->
+<!-- [ Javascript Area ] -->
+<!-- Libs -->    
 <script>
 // 탭과 이전/다음 버튼 동시에 동작하도록
 // (2번째 과제에서 인덱스 조절한거)
@@ -15,7 +137,7 @@
 // 스크립트가 안된다면 마크업이 잘 못 됐을 수도 있으니 그런 부분도 잘 체크해서 ..
 (function (win, $) {
     'use strict';
-    function tabComponent(containers, args) {
+    function tabComponent(container, args) {
         var defParams = {
             // key값은 카멜케이스로 써주삼.
             obj : container,
@@ -24,7 +146,7 @@
             castCont : '.cast_cont',
             activeClass : '.active',
         };
-        this.opts = $extend(defParams, (args || {}));
+        this.opts = $.extend(defParams, (args || {}));
         if(!(this.obj = $(this.opts.agrs)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
         this.init();
     };
@@ -42,7 +164,6 @@
             this.castTabParent = this.castTab.find(this.opts.castTabParent);
             this.castTabChild = this.castTabParent.children();
             this.castCont = this.obj.find();
-
         },
         initOpts : function() {
             var _this = this; // 함수 안에서 window를 바라보기 때문에 여기서 this를 저장해서 쓴다
@@ -62,7 +183,6 @@
         },
         onTabClickFunc : function(e) {
             e.preventDefault();
-            
             var target = $(e.delegateTarget),
                 targetIndex = target.index();
             this.currentIndex = targetIndex;
@@ -86,21 +206,20 @@
 
     function slideComponent(container, agrs) {
         var defParams = {
-            // key값은 카멜케이스로 써주삼.
             obj : container,
             slideCont : '.slide_cont',
+            slideArticle : '.slide_article',
             prevBtn : '.prev',
             nextBtn : '.next',
             // 이전과 다음버튼의 방향이 다르기 때문에... (slide 모양)
             direction: 'left', // default
             initalSlide: 0,
-            
             // 굳이 안넣어도 되지만 넣어주는게 맞다. 
             type : 'false', // 조건1. 타입
             autoplay : false // 조건2. 오토플레이 
             // 조건3. 마우스오버시 멈추기
         };
-        this.opts = $extend(defParams, (args || {}));
+        this.opts = $.extend(defParams, (args || {}));
         if(!(this.obj = $(this.opts.agrs)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
         this.init();
     };
@@ -138,21 +257,21 @@
         animateFunc : function() {
             var _this = this;
             if (this.opts.direction === 'left') {
-                this.slideArticle.eq(this.currentIndex).stop().css({
+                this.slideArticle.eq(this.currentIndex).css({
                     'display' : 'block',
                     'left': '-100%'
                 }) 
                 this.slideArticle.eq(this.oldIndex).stop().animate({
                     'left': '100%'
                 }, {
-                        complete : function() {
+                    complete : function() {
                         this.slideArticle.eq(this.oldIndex).css({
 
                         })
                     } 
                 }) 
                 this.slideArticle.eq(this.currentIndex).stop().animate({
-                    'left': '-100%'
+                    'left': '0ㄴ'
                 }) 
             } else {
 
@@ -163,21 +282,21 @@
 
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box'); // 변수에 담아 호출하여도 된다.
-        var slideComponentCall = new slideComponent('.slide_box', {
-            type : 'slide',
-            autoplay : true,
-        });
+        // var slideComponentCall = new slideComponent('.slide_box', {
+        //     type : 'slide',
+        //     autoplay : true,
+        // });
     })
 })(window, window.jQuery);
 
 
-            // this.currentIndex++ 하면 next
-            // this.currentIndex-- 하면 prev
-            // innerHTML, innerText... 로 숫자 넣어주고
-            
+// this.currentIndex++ 하면 next
+// this.currentIndex-- 하면 prev
+// innerHTML, innerText... 로 숫자 넣어주고
 
-            // slide : fade-in type(opaticy) - absolute인 이유는 사라지고 보여질 때 그래야 보일 수 있음 마크업적인 요소!, slide type(animation) 
-            // indicator : 해당하는 슬라이드로 넘어가기
+
+// slide : fade-in type(opaticy) - absolute인 이유는 사라지고 보여질 때 그래야 보일 수 있음 마크업적인 요소!, slide type(animation) 
+// indicator : 해당하는 슬라이드로 넘어가기
 </script>
 </body>
 </html>

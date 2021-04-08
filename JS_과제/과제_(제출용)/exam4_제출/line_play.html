@@ -83,7 +83,7 @@
             <span class="avatar_box">
                 <img src="img/avatar_12.jpg" alt="avatar image" class="img_avatar">
             </span>
-        </li>
+        </li> 
         </ul>
     </div>
     <button type="button" class="btn_random"><span>다른 아바타 보기</span></button>
@@ -175,8 +175,9 @@
             var randomNum  = this.getRandNum();
             if( this.tmpArr.length === 0) {
                 this.setArray();
-                this.setNoneOverlap(randomNum); // 이전과 비교. 
                 console.log('제외될 랜덤수_v1', randomNum)
+                // this.setNoneOverlap(randomNum); // 이전과 비교. 
+                console.log('제외된 랜덤배열', this.tmpArr)
             }
             this.randomNum = randomNum;
             this.setNoneOverlap(randomNum);
