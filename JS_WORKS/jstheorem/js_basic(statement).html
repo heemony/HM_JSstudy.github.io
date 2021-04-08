@@ -167,9 +167,49 @@ atom-one-dark-reasonable
     // 일단 기본적인 논리 연산의 규칙을 따르고, 값을 반환한다는 거!
 </code></pre>
 
-<p class="sub-title">얕은 복사와 깊은 복사 (개념 위주로 정리만)</p>
+<p class="sub-title">얕은 복사와 깊은 복사</p>
 <pre><code id="content4" class="javascript">
-  
+  1. 공통점) 
+    얕은 복사와 깊은 복사로 생성된 객체는 원본과는 다른 객체이다. 
+    즉 원본과 복사본은 참조값이 다른 별개의 객체.
+
+  2. 차이점)
+    2-1) 객체를 프로퍼티 값으로 갖는 객체의 경우...
+
+    const o = {
+      x : {
+        y : 1
+      }
+    };
+    
+    '얕은 복사' : 한 단계까지만 복사. 객체에 중첩되어 있는 객체의 경우 '참조 값'을 복사한다. 
+    '깊은 복사' : 중첩된 객체까지 모두 복사. '객체에 중첩되어 있는 객체까지 모두 복사'해서 원시 값처럼 '완전한 복사본'을 만듦.
+
+    // 얕은 복사
+    const c1 = { ...o }; // 스프레드 문법
+    console.log(c1 === o); // false, 얕은 복사도 원본과는 다른 객체이다.
+    console.log(c1.x === o.x) // true, 중첩된 객체의 경우 '참조 값'을 복사한다.
+
+    // lodash의 cloneDeep을 사용한 깊은 복사
+    const _ = require('lodash'); 
+    // 깊은 복사
+    const c2 = _.cloneDeep(o);
+    console.log(c2 === o); // false
+    console.log(c2.x === o.x); // false
+
+  2-2) 또 다른 경우
+    원시 값을 할당한 변수를 다른 변수에 할당하는 것 = 깊은 복사
+    객체를 할당한 변수를 다른 변수에 할당하는 것 = 얕은 복사
+    라고도 한다.
+
+    // '깊은 복사'라고도 한다.
+    const v = 1;
+    const c1 = v;
+    
+    // '얕은 복사'라고도 한다.
+    const o = { x : 1 };
+    const c2 = o;
+    
 </code></pre>
 <p id="content5" class="sub-title">5. 제어문</p>
 <div>
