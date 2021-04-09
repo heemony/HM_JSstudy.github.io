@@ -329,7 +329,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 }, this.opts.delay );
                 this.slideArticle.eq(this.currentIndex).stop().animate({
                     'left': '0px'
-                });
+                }, this.opts.delay);
             } else if (this.opts.direction === 'right') {
                 console.log('오른쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
                 this.slideArticle.eq(this.currentIndex).css({
@@ -338,10 +338,14 @@ button::-moz-focus-inner{padding:0;border:0}
                 });
                 this.slideArticle.eq(this.oldIndex).stop().animate({
                     'left': '0'
-                }, this.opts.delay);
+                }, this.opts.delay, {
+                    // complete: function() {
+                        // console.log('gsdgsd')
+                    // }
+                });
                 this.slideArticle.eq(this.currentIndex).stop().animate({
                     'left': '0'
-                });
+                }, this.opts.delay);
                 this.checkStateFunc();
             }
         },

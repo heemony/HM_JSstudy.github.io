@@ -4,7 +4,7 @@
     font-family: DGM;
 }
 *{margin:0;padding:0}
-body{font-size:14px;line-height:1.5;color:rgb(0,0,0); font-family: 'DGM'; box-sizing: border-box;}
+body{font-size:12px;line-height:1.5;color:rgb(0,0,0); font-family: 'DGM'; box-sizing: border-box;}
 h1,h2,h3,h4,h5,h6{text-align:left}
 button,label{cursor:pointer}
 button::-moz-focus-inner{padding:0;border:0}
@@ -12,7 +12,7 @@ a {color: rgb(71, 71, 71); text-decoration: none;}
 /* hr{display:none} */
 #wrapper{padding:0 10px}
 .exam_wrap{padding:10px 0}
-.exam_wrap h1{margin:5px 0;font-size:1em}
+.exam_wrap h1{margin:5px 0;font-size:rem;}
 .exam_wrap div div,
 .exam_wrap div p,
 .exam_wrap div span,
@@ -20,14 +20,14 @@ a {color: rgb(71, 71, 71); text-decoration: none;}
 .exam_wrap .point{color:blue}
 
 .container {padding: 0 2%;}
-.title {font-size: 38px; color: gray;}
-.title2 {font-size: 25px; background: linear-gradient(to top, rgb(255, 239, 149) 50%, transparent 50%); color: rgb(0, 0, 0); display: inline-block; padding: 5px;}
-.title3 {font-size: 18px; font-weight: 700; color: gray;}
-.desc {font-size: 14px; color: black;}
+.title {font-size: 30px; color: gray;}
+.title2 {font-size: 20px; background: linear-gradient(to top, rgb(255, 239, 149) 50%, transparent 50%); color: rgb(0, 0, 0); display: inline-block; padding: 5px;}
+.title3 {font-size: 16px; font-weight: 700; color: gray;}
+.desc {font-size: 12px; color: black;}
 .hl {background: linear-gradient(to top,rgb(255, 239, 149) 50%, transparent 50%); font-weight: 900;}
 .blur {font-size: 10px; font-style: italic; color: rgb(102, 102, 102); position:absolute; bottom: 0;}
-.card {padding: 20px 0; font-size: 16px;}
-.date {font-size: 18px;}
+.card {padding: 20px 0; font-size: 14px;}
+.date {font-size: 16px;}
 .footer {position: fixed; right: 0; bottom: 0; box-sizing: border-box; padding: 10px 2%;}
 .footer .jsworks {background-color: rgb(120, 120, 120); padding: 5px 10px; border-radius: 25px; } 
 pre {display: block; background-color: rgba(172, 194, 179, 0.63); border-radius: 10px; margin: 10px; color: #666; page-break-inside: avoid; font-size: 15px; line-height: 1.6; margin-bottom: 1.6em; max-width: 100%; overflow: auto; padding: 1em 1.5em; word-wrap: break-word; }
