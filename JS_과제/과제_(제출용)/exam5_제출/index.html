@@ -249,13 +249,16 @@ button::-moz-focus-inner{padding:0;border:0}
             obj: container || '.slide_box',
             slideTab: '.slide_tab', // 인디케이터
             slideCont: '.slide_cont', // 컨텐츠 bg
+            slideArticle: '.slide_article',
             prevBtn : '.prev',
             nextBtn : '.next',
+            activeClass: 'active',
             initialSlide: 0,
+            direction: null,
             type: null,
             autoplay: false,
-            mouseEnter: false,
-          
+            onMouseEnter: false,
+            delay: 1000,
         };
         this.opts = $.extend(defParams, args || {});
         if(!(this.obj = $(this.opts.obj)).length) return;
@@ -270,28 +273,77 @@ button::-moz-focus-inner{padding:0;border:0}
         },
         initLayout: function() {
             this.currentIndex = this.opts.initialSlide;
-            console.log(this.slideArticle)
+            this.slideArticle.hide().eq(this.currentIndex).show();
+            this.oldIndex = this.currentIndex; 
         },
         setElements: function() {
             this.slideCont = this.obj.find(this.opts.slideCont);
             this.slideArticle = this.slideCont.find(this.opts.slideArticle);
             this.nextBtn = this.obj.find(this.opts.nextBtn);
             this.prevBtn = this.obj.find(this.opts.prevBtn);
+            this.maxLength = this.slideArticle.length; 
         },
         bindEvents : function() {
             this.prevBtn.on('click', this.onPrevClickFunc.bind(this));
             this.nextBtn.on('click', this.onNextClickFunc.bind(this));
         },
         onPrevClickFunc: function() {
-            console.log('prevBtn');
-
+            this.opts.direction = 'left';
+            this.currentIndex--;
+            this.animateFunc();
+            this.contViewFunc();
+            console.log('prev', this.currentIndex, this.opts.direction);
         },
         onNextClickFunc: function() {
-            console.log('nextBtn');
-
+            this.opts.direction = 'right';
+            this.currentIndex++;
+            this.animateFunc();
+            this.contViewFunc();
+            console.log('next', this.currentIndex, this.opts.direction);
+        },
+        contViewFunc : function() {
+            this.slideArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            this.slideArticle.eq(this.currentIndex).addClass(this.opts.activeClass);
+            
+            this.oldIndex = this.currentIndex;
+        },
+        checkStateFunc: function() {
+            if(this.currentIndex < 0) {
+                console.log('0보다 작당')
+                this.currentIndex = this.maxLength - 1;
+            } else if (this.currentIndex > this.maxLength - 1) {
+                console.log('0보다 크당')
+                this.currentIndex = 0;
+            }
         },
         animateFunc: function() {
-
+            if(this.opts.direction === 'left') {
+                this.checkStateFunc();
+                console.log('왼쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
+                this.slideArticle.eq(this.currentIndex).css({
+                    'display': 'block',
+                    'left': '0px'
+                });
+                this.slideArticle.eq(this.oldIndex).stop().animate({
+                    'left': '100%'
+                }, this.opts.delay );
+                this.slideArticle.eq(this.currentIndex).stop().animate({
+                    'left': '0px'
+                });
+            } else if (this.opts.direction === 'right') {
+                console.log('오른쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
+                this.slideArticle.eq(this.currentIndex).css({
+                    'display': 'block',
+                    'left': '100%'
+                });
+                this.slideArticle.eq(this.oldIndex).stop().animate({
+                    'left': '0'
+                }, this.opts.delay);
+                this.slideArticle.eq(this.currentIndex).stop().animate({
+                    'left': '0'
+                });
+                this.checkStateFunc();
+            }
         },
 
 
