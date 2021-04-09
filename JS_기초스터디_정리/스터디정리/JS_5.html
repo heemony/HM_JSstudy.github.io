@@ -147,7 +147,7 @@ button::-moz-focus-inner{padding:0;border:0}
             activeClass : '.active',
         };
         this.opts = $.extend(defParams, (args || {}));
-        if(!(this.obj = $(this.opts.agrs)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
+        if(!(this.obj = $(this.opts.args)).length) return; // 유효성 검사 : 밑에 cast_box가 있기 때문에 실행이 되고, 이게 없다면 실행이 되지 ㅏㄴㅎ음.
         this.init();
     };
 
@@ -172,7 +172,7 @@ button::-moz-focus-inner{padding:0;border:0}
                     return true;
                 }
             }); // active가 한개가 있다는 가정하에... 
-            this.currentIndex = (filterCount.lenght) ? filterCount.index() : 0; // 있으면 count, 없으면 0 
+            this.currentIndex = (filterCount.length) ? filterCount.index() : 0; // 있으면 count, 없으면 0 
         },
         initLayout : function() {
             this.castArticle.removeClass(this.opts.activeClass); // 일단 모두 다 빼주고
@@ -190,8 +190,7 @@ button::-moz-focus-inner{padding:0;border:0}
             //클릭ㅇㄹ 했을 때 li를 바라볼텐데,, 이전에 선택한걸 알아야하니까 변수에 저장을 해준다.
         },
         // 처음에 액티브가 있는 초기값 
-        // 액티브를 가지고 있다면 걔가 처음이 되는거고, 없다면 0으로 인덱스를 바꿔줘라 뭐라고???엥..ㅠㅠ팀쟝님 너무 빨라요...
-    
+        // 액티브를 가지고 있다면 걔가 처음이 되는거고, 없다면 0으로 인덱스를 바꿔줘라 뭐라고???엥..ㅠㅠ팀쟝님 너무 빨라요...   
         contViewFunc : function() {
             this.castArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
             this.castTabChild.eq(this.oldIndex).removeClass(this.opts.activeClass);
@@ -204,7 +203,7 @@ button::-moz-focus-inner{padding:0;border:0}
         },
     };
 
-    function slideComponent(container, agrs) {
+    function slideComponent(container, args) {
         var defParams = {
             obj : container,
             slideCont : '.slide_cont',
@@ -235,7 +234,7 @@ button::-moz-focus-inner{padding:0;border:0}
             this.oldIndex = this.currentIndex;
         },
         setElement : function() {
-            this.clideCont = this.obj.find(this.opts.slideCount);
+            this.clideCont = this.obj.find(this.opts.slideCont);
             this.slideArticle = this.slideCont.find(this.opts.slideArticle);
             this.prevBtn = this.obj.find(this.opts.prevBtn);
             this.nextBtn = this.obj.find(this.opts.nextBtn);
@@ -295,7 +294,8 @@ button::-moz-focus-inner{padding:0;border:0}
 // innerHTML, innerText... 로 숫자 넣어주고
 
 
-// slide : fade-in type(opaticy) - absolute인 이유는 사라지고 보여질 때 그래야 보일 수 있음 마크업적인 요소!, slide type(animation) 
+// slide : - fade-in type(opaticy) - absolute인 이유는 사라지고 보여질 때 그래야 보일 수 있음 마크업적인 요소! 
+//         - slide type(animation) 
 // indicator : 해당하는 슬라이드로 넘어가기
 </script>
 </body>

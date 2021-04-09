@@ -72,6 +72,8 @@ button::-moz-focus-inner{padding:0;border:0}
                     <li class="active"><a href="#thema6">테마6</a></li>
                     <li><a href="#thema7">테마7</a></li>
                     <li><a href="#thema8">테마8</a></li>
+                    <!-- <li><a href="#thema9">테마9</a></li>
+                    <li><a href="#thema10">테마10</a></li> -->
                 </ul>
             </div>
             <div class="cast_cont">
@@ -83,6 +85,8 @@ button::-moz-focus-inner{padding:0;border:0}
                 <div id="thema6" class="cast_article">컨텐츠6</div>
                 <div id="thema7" class="cast_article">컨텐츠7</div>
                 <div id="thema8" class="cast_article">컨텐츠8</div>
+                <!-- <div id="thema9" class="cast_article">컨텐츠9</div>
+                <div id="thema10" class="cast_article">컨텐츠10</div> -->
             </div>
             <div class="cast_setting">
                 <div class="cast_btn">
@@ -135,14 +139,173 @@ button::-moz-focus-inner{padding:0;border:0}
     'use strict';
     function tabComponent(container, args) {
         var defParams = {
-            obj : container || '.container',
-            castTabWrap : 'ul',
-            castTab : '.cast_tab',
-            castSetting : '.cast_setting',
+            obj: container || '.cast_box',
+            castTab: '.cast_tab',
+            castTabWrap: 'ul',
+            castCont: '.cast_cont',
+            castArticle: '.cast_article',
+            castSetting: '.cast_setting',
+            castBtn: '.cast_btn',
+            castNum: '.cast_num',
+            activeClass: 'active'
         };
-    }
+        this.opts = $.extend(defParams, args || {});
+        if(!(this.obj = $(this.opts.obj)).length) return;
+        this.init();
+    };
+    tabComponent.prototype = {
+        init: function() {
+            console.log('init');
+            this.setElements();
+            this.initOpts();
+            this.initLayout();
+            this.bindEvents();
+            this.stateBar();
+        },
+        setElements: function() {
+            // cast_tab 
+            this.castTab = this.obj.find(this.opts.castTab);
+            this.castTabWrap = this.castTab.find(this.opts.castTabWrap);
+            this.castTabChild = this.castTabWrap.children(); 
+            // cast_cont
+            this.castCont = this.obj.find(this.opts.castCont);
+            this.castArticle = this.castCont.children(); 
+            // cast_setting
+            this.castSetting = this.obj.find(this.opts.castSetting);
+            this.castBtn = this.castSetting.find(this.opts.castBtn);
+            this.castNum = this.castSetting.find(this.opts.castNum);
+            this.castNumChild = this.castNum.children();
+            this.maxLength = this.castTabChild.length;
+        },
+        initOpts: function() {
+            var _this = this;
+            var filterCount = this.castTabChild.filter(function (idx, item) {
+                console.log(idx, item); 
+                if($(item).hasClass(_this.opts.activeClass)) {
+                    return true;
+                }
+            });
+            this.currentIndex = (filterCount.length) ? filterCount.index() : 0;
+            console.log(this.currentIndex)
+        },
+        initLayout: function() {
+            this.castArticle.removeClass(this.opts.activeClass);
+            this.contViewFunc();
+        },
+        bindEvents: function() {
+            this.castTabChild.on('click', '> a', this.onTabClickFunc.bind(this));
+            this.castBtn.on('click', '> button', this.onBtnClickFunc.bind(this)); 
+        },
+        onTabClickFunc: function(e) {
+            e.preventDefault();
+            var target =  $(e.delegateTarget),
+                targetIndex = target.index();
+                
+            this.currentIndex = targetIndex;
+            this.contViewFunc();
+        },
+        onBtnClickFunc: function(e) {
+            var target =  $(e.currentTarget),
+                prevBtn = target.index(),
+                btnDirection = prevBtn ? 1 : -1;
+            if ( btnDirection < 0) { //prev
+                this.currentIndex--;
+                this.stateBar();
+                this.contViewFunc();
+                if(this.currentIndex < 0) {
+                    this.currentIndex = this.maxLength - 1;
+                    this.stateBar();
+                    this.contViewFunc(); 
+                }
+            } else { // next
+                this.currentIndex++;
+                this.stateBar();
+                this.contViewFunc(); 
+                if(this.currentIndex > this.maxLength - 1) {
+                    this.currentIndex = 0;
+                    this.stateBar();
+                    this.contViewFunc(); 
+                }
+            }
+        },
+        contViewFunc: function() {
+            this.castTabChild.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            this.castArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            
+            this.castTabChild.eq(this.currentIndex).addClass(this.opts.activeClass);
+            this.castArticle.eq(this.currentIndex).addClass(this.opts.activeClass);
+            
+            this.oldIndex = this.currentIndex; 
+        },
+        stateBar: function() { 
+            this.currentPageNum = this.currentIndex + 1;
+            this.castNumChild.eq(0)[0].innerHTML = this.currentPageNum;
+            this.castNumChild.eq(1)[0].innerHTML = this.maxLength;
+        }
+    };
+
+    function slideComponent(container, args) {
+        var defParams = {
+            obj: container || '.slide_box',
+            slideTab: '.slide_tab', // 인디케이터
+            slideCont: '.slide_cont', // 컨텐츠 bg
+            prevBtn : '.prev',
+            nextBtn : '.next',
+            initialSlide: 0,
+            type: null,
+            autoplay: false,
+            mouseEnter: false,
+          
+        };
+        this.opts = $.extend(defParams, args || {});
+        if(!(this.obj = $(this.opts.obj)).length) return;
+        this.init();
+    };
+    slideComponent.prototype = {
+        init: function() {
+            console.log('---------side---------');
+            this.setElements();
+            this.initLayout();
+            this.bindEvents();
+        },
+        initLayout: function() {
+            this.currentIndex = this.opts.initialSlide;
+            console.log(this.slideArticle)
+        },
+        setElements: function() {
+            this.slideCont = this.obj.find(this.opts.slideCont);
+            this.slideArticle = this.slideCont.find(this.opts.slideArticle);
+            this.nextBtn = this.obj.find(this.opts.nextBtn);
+            this.prevBtn = this.obj.find(this.opts.prevBtn);
+        },
+        bindEvents : function() {
+            this.prevBtn.on('click', this.onPrevClickFunc.bind(this));
+            this.nextBtn.on('click', this.onNextClickFunc.bind(this));
+        },
+        onPrevClickFunc: function() {
+            console.log('prevBtn');
+
+        },
+        onNextClickFunc: function() {
+            console.log('nextBtn');
+
+        },
+        animateFunc: function() {
+
+        },
 
 
+    };
+    $(function () {
+        var tabComponentCall = new tabComponent('.cast_box');
+        var slideComponentCall = new slideComponent('.slide_box', {
+            type: 'slide',
+            // type: 'fade-in',
+            autoplay: false,
+            // autoplay: true,
+            
+        });
+    });
 })(window, window.jQuery);
 </script>
 </div>
