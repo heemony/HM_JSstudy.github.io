@@ -99,8 +99,68 @@ button::-moz-focus-inner{padding:0;border:0}
                 <div class="cast_num"><span class="current">1</span> / <span class="total">8</span></div>
             </div>
         </div>
-
-        <div class="slide_box">
+        <br>
+        <div class="slide_box slide_box_1">
+            <div class="slide_tab">
+                <ul>
+                    <li class="active"><a href="#slide1">테마1</a></li>
+                    <li><a href="#slide2">테마2</a></li>
+                    <li><a href="#slide3">테마3</a></li>
+                    <li><a href="#slide4">테마4</a></li>
+                    <li><a href="#slide5">테마5</a></li>
+                    <li><a href="#slide6">테마6</a></li>
+                    <li><a href="#slide7">테마7</a></li>
+                    <li><a href="#slide8">테마8</a></li>
+                </ul>
+            </div>
+            <div class="slide_cont">
+                <div id="slide1" class="slide_article active">컨텐츠1</div>
+                <div id="slide2" class="slide_article">컨텐츠2</div>
+                <div id="slide3" class="slide_article">컨텐츠3</div>
+                <div id="slide4" class="slide_article">컨텐츠4</div>
+                <div id="slide5" class="slide_article">컨텐츠5</div>
+                <div id="slide6" class="slide_article">컨텐츠6</div>
+                <div id="slide7" class="slide_article">컨텐츠7</div>
+                <div id="slide8" class="slide_article">컨텐츠8</div>
+            </div>
+            <div class="slide_setting">
+                <div class="slide_btn">
+                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="slide_box slide_box_2">
+            <div class="slide_tab">
+                <ul>
+                    <li class="active"><a href="#slide1">테마1</a></li>
+                    <li><a href="#slide2">테마2</a></li>
+                    <li><a href="#slide3">테마3</a></li>
+                    <li><a href="#slide4">테마4</a></li>
+                    <li><a href="#slide5">테마5</a></li>
+                    <li><a href="#slide6">테마6</a></li>
+                    <li><a href="#slide7">테마7</a></li>
+                    <li><a href="#slide8">테마8</a></li>
+                </ul>
+            </div>
+            <div class="slide_cont">
+                <div id="slide1" class="slide_article active">컨텐츠1</div>
+                <div id="slide2" class="slide_article">컨텐츠2</div>
+                <div id="slide3" class="slide_article">컨텐츠3</div>
+                <div id="slide4" class="slide_article">컨텐츠4</div>
+                <div id="slide5" class="slide_article">컨텐츠5</div>
+                <div id="slide6" class="slide_article">컨텐츠6</div>
+                <div id="slide7" class="slide_article">컨텐츠7</div>
+                <div id="slide8" class="slide_article">컨텐츠8</div>
+            </div>
+            <div class="slide_setting">
+                <div class="slide_btn">
+                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="slide_box slide_box_3">
             <div class="slide_tab">
                 <ul>
                     <li class="active"><a href="#slide1">테마1</a></li>
@@ -247,7 +307,6 @@ button::-moz-focus-inner{padding:0;border:0}
             this.castNumChild.eq(1)[0].innerHTML = this.maxLength;
         }
     };
-
     function slideComponent(container, args) {
         var defParams = {
             obj: container || '.slide_box',
@@ -260,11 +319,9 @@ button::-moz-focus-inner{padding:0;border:0}
             activeClass: 'active',
             initialSlide: 0,
             direction: null,
-            type: 'default', // 'fadeIn' 'slide'
-            indicator: true,
+            type: null, // 'fadeIn' 'slide' 
             delay: 1000,
-            // slideTab: '.slide_tab', // 인디케이터
-            // autoplay: false,
+            autoplay: false,
             // onMouseEnter: false,
         };
         this.opts = $.extend(defParams, args || {});
@@ -300,12 +357,9 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideArticle = this.slideCont.find(this.opts.slideArticle);
             this.slideIndiWrap = this.obj.find(this.opts.slideIndiWrap);
             this.slideIndicaotr = this.slideIndiWrap.children();
-            
             this.clickBtnWrap = this.obj.find(this.opts.slideBtn);
             this.nextBtn = this.clickBtnWrap.find(this.opts.nextBtn);
             this.prevBtn = this.clickBtnWrap.find(this.opts.prevBtn);
-            // this.nextBtn = this.clickBtnWrap.find('button').eq(1);
-            // this.prevBtn = this.clickBtnWrap.find('button').eq(0);
             this.maxLength = this.slideArticle.length; 
         },
         bindEvents : function() {
@@ -317,14 +371,14 @@ button::-moz-focus-inner{padding:0;border:0}
             this.opts.direction = 'left';
             this.currentIndex--;
             this.checkStateFunc();
-            this.animateFunc();
+            this.viewType();
             this.slideViewFunc();
         },
         onNextClickFunc: function() {
             this.opts.direction = 'right';
             this.currentIndex++;
             this.checkStateFunc();
-            this.animateFunc();
+            this.viewType();
             this.slideViewFunc();
         },
         onIndicatorClickFunc: function(e) {
@@ -332,7 +386,7 @@ button::-moz-focus-inner{padding:0;border:0}
             var target =  $(e.delegateTarget),
                 targetIndex = target.index();
             this.currentIndex = targetIndex;
-            this.animateFunc();
+            this.viewType();
             this.slideViewFunc();
         },
         slideViewFunc : function() {
@@ -352,7 +406,19 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.currentIndex = 0;
             }
         },
-        animateFunc: function() {
+        viewType: function() {
+            if(this.opts.type === 'slide') {
+                this.animateSlide();
+            } else if (this.opts.type === 'fadeIn') {
+                this.animateFadeIn();
+            }
+
+            // 2) 인터벌 안되자너....
+            if(this.opts.autoplay === true) { 
+                setInterval(this.animateSlide(), 1000);
+            }
+        },
+        animateSlide: function() {
             var slideDir = 0;
             if(this.opts.direction === 'left') {
                 slideDir = -1;
@@ -371,20 +437,35 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideArticle.eq(this.currentIndex).stop().animate({
                 'left': '0px'
             });
-        },
-        viewType: function() {
 
-        }
+            // 1) 요거슨 내일~ 그 인디케이터 ㅇㅇ 슬라이드...
+            // 이전 인덱스 < 현재 
+            // Dir : right
+
+            // 이전  > 현재
+            // Dir : left 
+        },
+        animateFadeIn: function() {
+            this.slideArticle.hide().eq(this.currentIndex).fadeIn();
+        },
     };
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box');
-        var slideComponentCall = new slideComponent('.slide_box', {
+        var slideComponentCall = new slideComponent('.slide_box_1', {
+            // 1) 인디케이터 슬라이드 테스트할 box_1
             type: 'slide',
-            // type: 'fade-in',
-            autoplay: false,
-            // autoplay: true,
-            
+            autoplay: false,                                   
         });
+        var slideComponentCall = new slideComponent('.slide_box_2', {
+            type: 'fadeIn',
+            autoplay: false,                                   
+        });
+        var slideComponentCall = new slideComponent('.slide_box_3', {
+            type: 'slide',
+            autoplay: true,                                   
+        });
+        // 3) 추가적으로 시간 되면 mouseEnter도 구현해보기...
+        // console.dir(slideComponentCall);
     });
 })(window, window.jQuery);
 </script>
