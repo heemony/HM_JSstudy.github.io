@@ -257,19 +257,22 @@ button::-moz-focus-inner{padding:0;border:0}
             if (this.opts.direction === 'left') {
                 this.slideArticle.eq(this.currentIndex).css({
                     'display' : 'block',
-                    'left': '-100%'
+                    // 'left': '-100%',
+                    'left': '100%'
                 }) 
                 this.slideArticle.eq(this.oldIndex).stop().animate({
-                    'left': '100%'
+                    'left': '-100%'
                 }, {
                     complete : function() {
+                        console.log('complete');
                         this.slideArticle.eq(this.oldIndex).css({
-
+                            // 
                         })
                     } 
                 }) 
                 this.slideArticle.eq(this.currentIndex).stop().animate({
-                    'left': '100%'
+                    // 'left': '100%',
+                    'left': '0'
                 }) 
             } else {
 

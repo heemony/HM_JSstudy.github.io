@@ -72,8 +72,10 @@ button::-moz-focus-inner{padding:0;border:0}
                     <li class="active"><a href="#thema6">테마6</a></li>
                     <li><a href="#thema7">테마7</a></li>
                     <li><a href="#thema8">테마8</a></li>
-                    <!-- <li><a href="#thema9">테마9</a></li>
-                    <li><a href="#thema10">테마10</a></li> -->
+                    <li><a href="#thema9">테마9</a></li>
+                    <li><a href="#thema10">테마10</a></li>
+                    <li><a href="#thema11">테마11</a></li>
+                    <li><a href="#thema12">테마12</a></li>
                 </ul>
             </div>
             <div class="cast_cont">
@@ -85,8 +87,10 @@ button::-moz-focus-inner{padding:0;border:0}
                 <div id="thema6" class="cast_article">컨텐츠6</div>
                 <div id="thema7" class="cast_article">컨텐츠7</div>
                 <div id="thema8" class="cast_article">컨텐츠8</div>
-                <!-- <div id="thema9" class="cast_article">컨텐츠9</div>
-                <div id="thema10" class="cast_article">컨텐츠10</div> -->
+                <div id="thema9" class="cast_article">컨텐츠9</div>
+                <div id="thema10" class="cast_article">컨텐츠10</div>
+                <div id="thema11" class="cast_article">컨텐츠11</div>
+                <div id="thema12" class="cast_article">컨텐츠12</div>
             </div>
             <div class="cast_setting">
                 <div class="cast_btn">
@@ -180,13 +184,13 @@ button::-moz-focus-inner{padding:0;border:0}
         initOpts: function() {
             var _this = this;
             var filterCount = this.castTabChild.filter(function (idx, item) {
-                console.log(idx, item); 
+                // console.log(idx, item); 
                 if($(item).hasClass(_this.opts.activeClass)) {
                     return true;
                 }
             });
             this.currentIndex = (filterCount.length) ? filterCount.index() : 0;
-            console.log(this.currentIndex)
+            // console.log(this.currentIndex) // 5
         },
         initLayout: function() {
             this.castArticle.removeClass(this.opts.activeClass);
@@ -247,18 +251,21 @@ button::-moz-focus-inner{padding:0;border:0}
     function slideComponent(container, args) {
         var defParams = {
             obj: container || '.slide_box',
-            slideTab: '.slide_tab', // 인디케이터
             slideCont: '.slide_cont', // 컨텐츠 bg
             slideArticle: '.slide_article',
+            slideIndiWrap: 'ul',
+            slideBtn: '.slide_btn',
             prevBtn : '.prev',
             nextBtn : '.next',
             activeClass: 'active',
             initialSlide: 0,
             direction: null,
-            type: null,
-            autoplay: false,
-            onMouseEnter: false,
+            type: 'default', // 'fadeIn' 'slide'
+            indicator: true,
             delay: 1000,
+            // slideTab: '.slide_tab', // 인디케이터
+            // autoplay: false,
+            // onMouseEnter: false,
         };
         this.opts = $.extend(defParams, args || {});
         if(!(this.obj = $(this.opts.obj)).length) return;
@@ -268,46 +275,75 @@ button::-moz-focus-inner{padding:0;border:0}
         init: function() {
             console.log('---------side---------');
             this.setElements();
+            this.initClass();
             this.initLayout();
             this.bindEvents();
         },
         initLayout: function() {
             this.currentIndex = this.opts.initialSlide;
             this.slideArticle.hide().eq(this.currentIndex).show();
-            this.oldIndex = this.currentIndex; 
+            this.slideIndicaotr.eq(this.currentIndex).addClass(this.opts.activeClass);
+            this.oldIndex = this.currentIndex; // 이거 왜 이렇게 해놓은거지? 다시 생각
+        },
+        initClass: function() { // li 클래스 붙은거 일단 싹 초기화하는거..
+            console.log(this.slideIndicaotr);
+            var _this = this;
+            var rmvClass = this.slideIndicaotr.filter(function (idx, item) {
+                console.log(idx, item); 
+                if($(item).hasClass(_this.opts.activeClass)) {
+                    $(item).removeClass(_this.opts.activeClass);
+                }
+            });
         },
         setElements: function() {
             this.slideCont = this.obj.find(this.opts.slideCont);
             this.slideArticle = this.slideCont.find(this.opts.slideArticle);
-            this.nextBtn = this.obj.find(this.opts.nextBtn);
-            this.prevBtn = this.obj.find(this.opts.prevBtn);
+            this.slideIndiWrap = this.obj.find(this.opts.slideIndiWrap);
+            this.slideIndicaotr = this.slideIndiWrap.children();
+            
+            this.clickBtnWrap = this.obj.find(this.opts.slideBtn);
+            this.nextBtn = this.clickBtnWrap.find(this.opts.nextBtn);
+            this.prevBtn = this.clickBtnWrap.find(this.opts.prevBtn);
+            // this.nextBtn = this.clickBtnWrap.find('button').eq(1);
+            // this.prevBtn = this.clickBtnWrap.find('button').eq(0);
             this.maxLength = this.slideArticle.length; 
         },
         bindEvents : function() {
             this.prevBtn.on('click', this.onPrevClickFunc.bind(this));
             this.nextBtn.on('click', this.onNextClickFunc.bind(this));
+            this.slideIndicaotr.on('click', '> a',this.onIndicatorClickFunc.bind(this));
         },
         onPrevClickFunc: function() {
             this.opts.direction = 'left';
             this.currentIndex--;
+            this.checkStateFunc();
             this.animateFunc();
-            this.contViewFunc();
-            console.log('prev', this.currentIndex, this.opts.direction);
+            this.slideViewFunc();
         },
         onNextClickFunc: function() {
             this.opts.direction = 'right';
             this.currentIndex++;
+            this.checkStateFunc();
             this.animateFunc();
-            this.contViewFunc();
-            console.log('next', this.currentIndex, this.opts.direction);
+            this.slideViewFunc();
         },
-        contViewFunc : function() {
+        onIndicatorClickFunc: function(e) {
+            e.preventDefault();
+            var target =  $(e.delegateTarget),
+                targetIndex = target.index();
+            this.currentIndex = targetIndex;
+            this.animateFunc();
+            this.slideViewFunc();
+        },
+        slideViewFunc : function() {
             this.slideArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
             this.slideArticle.eq(this.currentIndex).addClass(this.opts.activeClass);
-            
+            this.slideIndicaotr.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            this.slideIndicaotr.eq(this.currentIndex).addClass(this.opts.activeClass);
             this.oldIndex = this.currentIndex;
         },
         checkStateFunc: function() {
+            console.log(this.currentIndex);
             if(this.currentIndex < 0) {
                 console.log('0보다 작당')
                 this.currentIndex = this.maxLength - 1;
@@ -317,40 +353,28 @@ button::-moz-focus-inner{padding:0;border:0}
             }
         },
         animateFunc: function() {
+            var slideDir = 0;
             if(this.opts.direction === 'left') {
-                this.checkStateFunc();
-                console.log('왼쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
-                this.slideArticle.eq(this.currentIndex).css({
-                    'display': 'block',
-                    'left': '0px'
-                });
-                this.slideArticle.eq(this.oldIndex).stop().animate({
-                    'left': '100%'
-                }, this.opts.delay );
-                this.slideArticle.eq(this.currentIndex).stop().animate({
-                    'left': '0px'
-                }, this.opts.delay);
+                slideDir = -1;
             } else if (this.opts.direction === 'right') {
-                console.log('오른쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
-                this.slideArticle.eq(this.currentIndex).css({
-                    'display': 'block',
-                    'left': '100%'
-                });
-                this.slideArticle.eq(this.oldIndex).stop().animate({
-                    'left': '0'
-                }, this.opts.delay, {
-                    // complete: function() {
-                        // console.log('gsdgsd')
-                    // }
-                });
-                this.slideArticle.eq(this.currentIndex).stop().animate({
-                    'left': '0'
-                }, this.opts.delay);
-                this.checkStateFunc();
+                slideDir = 1;
             }
+            this.slideArticle.eq(this.currentIndex).css({
+                'display': 'block',
+                'left': '100' * slideDir + '%'
+            });
+            this.slideArticle.eq(this.oldIndex).stop().animate({
+                'left': '100' * -slideDir + '%'
+            }, {
+                complete: function() { $(this).hide().css('left', ''); }
+            });
+            this.slideArticle.eq(this.currentIndex).stop().animate({
+                'left': '0px'
+            });
         },
+        viewType: function() {
 
-
+        }
     };
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box');
@@ -363,6 +387,39 @@ button::-moz-focus-inner{padding:0;border:0}
         });
     });
 })(window, window.jQuery);
+</script>
+<script>
+    // animateFunc: function() {
+    //     if(this.opts.direction === 'left') {
+    //         console.log('왼쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
+    //         this.slideArticle.eq(this.currentIndex).css({
+    //             'display': 'block',
+    //             'left': '-100%'
+    //         });
+    //         this.slideArticle.eq(this.oldIndex).stop().animate({
+    //             'left': '100%',
+    //         }, {
+    //             complete: function() { $(this).hide().css('left', ''); }
+    //         });
+    //         this.slideArticle.eq(this.currentIndex).stop().animate({
+    //             'left': '0px'
+    //         });
+    //     } else if (this.opts.direction === 'right') {
+    //         console.log('오른쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
+    //         this.slideArticle.eq(this.currentIndex).css({
+    //             'display': 'block',
+    //             'left': '100%'
+    //         });
+    //         this.slideArticle.eq(this.oldIndex).stop().animate({
+    //             'left': '-100%',
+    //         }, {
+    //             complete: function() { $(this).hide().css('left', ''); }
+    //         });
+    //         this.slideArticle.eq(this.currentIndex).stop().animate({
+    //             'left': '0'
+    //         });
+    //     }
+    // }
 </script>
 </div>
 </body>

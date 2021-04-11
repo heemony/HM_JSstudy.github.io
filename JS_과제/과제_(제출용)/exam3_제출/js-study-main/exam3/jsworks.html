@@ -17,7 +17,7 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
 <title>Document</title>
 </head>
 <body>
-    <p class="title2">[함수 - 1급 객체]</p>
+<p class="title2">[함수 - 1급 객체]</p>
 <pre><code class=javascript>
 [일급 객체]
 
@@ -30,8 +30,8 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
     - '함수의 반환값'으로 사용할 수 있다. 
 
 </code></pre>
-    <br>
-    <p class="title2">[실행 컨텍스트]</p>
+<br>
+<p class="title2">[실행 컨텍스트]</p>
 <pre><code class="javascript">
 [실행 컨텍스트]
 
@@ -47,14 +47,51 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
 4. 함수 실행이 마무리 되면 해당 컨텍스트는 사라진다. (클로저 제외)
 
 </pre></code>
-    <a href="#"></a>
-    <br>    
-    <p class="title2">[Closure]</p>
+<a href="#"></a>
+<br>    
+<p class="title2">[Closure]</p>
 <pre><code class=javascript>
+클로저? 이미 생명주기가 끝난 외부 함수의 변수를 참조하는 함수를 클로저라고 한다.
+        -> 자유 변수에 엮여있는 함수
 
+    function outerFunc() {
+        var x = 1; // 자유 변수
+
+        return function() {
+            /* x와 arguments를 활용한 로직... */ 
+        } // <- 요것이 클로저 
+    }
+
+    var new_func = outerFunc();
+    /* outerFunc의 실행컨텍스트는 끝이 났다. */
+
+    new_func(); // 반환된 클로저가 새로운 함수로 사용된다.
+
+코드 설명
+    위와 같은 패턴이 전형적인 클로저 패턴.
+    외부 함수의 호출이 이루어지고, 외부 함수에서 새로운 함수가 반환된다. 
+    반환된 함수가 클로저이다. 
+    이 클로저는 자유 변수를 묶고 있다. 반환된 클로저는 새로운 함수로 사용이 된다. 
+
+클로저의 활용
+    1. 특정 함수에 사용자가 정의한 객체의 메서드 연결하기
+    //예제
+    function Hellofunc(func) {
+        this.greeting = "hello";
+    }
+    Hellofunc.prototype.call = function(func) {
+        func ? func(this.greeting) : this.func(this.greeting);
+    }
+    var userFunc = function(greeting) {
+        console.log(greeting);
+    }
+    var objHello = new Hellofunc();
+    objHello.func = userFunc;
+    objHello.call();
+    
 </code></pre>
-    <br>
-    <p class="title2">[리터럴과 생성자 함수]</p>
+<br>
+<p class="title2">[리터럴과 생성자 함수]</p>
 <pre><code class=javascript>
 1. 리터럴와 생성자 함수의 차이.
 1-1. 리터럴 
@@ -105,8 +142,8 @@ pre {font-size: 12px; width: 100%; margin: 0 auto; border-radius: 10px; overflow
         person.age // Undefined -> 객체에 존재하지 않기 때문에 undefined
         
 </code></pre>
-    <br>
-    <p class="title2">[함수와 메서드]</p>
+<br>
+<p class="title2">[함수와 메서드]</p>
 <pre><code class=javascript>
 ✅ 예제 코드
     var obj = {
