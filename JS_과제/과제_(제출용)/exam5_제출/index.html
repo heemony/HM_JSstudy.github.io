@@ -343,7 +343,7 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideIndicator.eq(this.currentIndex).addClass(this.opts.activeClass);
             this.oldIndex = this.currentIndex;
         },
-        initClass: function() { // li 클래스 붙은거 일단 싹 초기화하는거..
+        initClass: function() {
             console.log(this.slideIndicator);
             var _this = this;
             var rmvClass = this.slideIndicator.filter(function (idx, item) {
@@ -367,8 +367,7 @@ button::-moz-focus-inner{padding:0;border:0}
             this.prevBtn.on('click', this.onPrevClickFunc.bind(this));
             this.nextBtn.on('click', this.onNextClickFunc.bind(this));
             this.slideIndicator.on('click', '> a',this.onIndicatorClickFunc.bind(this));
-             // 3) mouseEnter true일 때만 바인드 해줘.. 근데 이걸 여기다 해도 대까??
-             if(this.opts.onMouseEnter === true) {
+            if(this.opts.onMouseEnter === true) {
                 this.slideCont.on('mouseenter', this.mouseEnterFunc.bind(this));
             }
         },
@@ -426,7 +425,7 @@ button::-moz-focus-inner{padding:0;border:0}
         },
         animateSlide: function() {
             var slideDir = 1; // default - right
-            if(this.opts.direction === 'left') { 
+            if(this.opts.direction === 'left' || this.currentIndex < this.oldIndex) { 
                 slideDir = -1;
             }
             this.slideArticle.eq(this.currentIndex).css({
@@ -441,13 +440,6 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideArticle.eq(this.currentIndex).stop().animate({
                 'left': '0px'
             });
-
-            // 1) 요거슨 내일~ 그 인디케이터 ㅇㅇ 슬라이드...
-            // 이전 인덱스 < 현재 
-            // Dir : right
-
-            // 이전  > 현재
-            // Dir : left 
         },
         animateFadeIn: function() {
             this.slideArticle.hide().eq(this.currentIndex).fadeIn();
