@@ -320,9 +320,9 @@ button::-moz-focus-inner{padding:0;border:0}
             initialSlide: 0,
             direction: null,
             type: null, // 'fadeIn' 'slide' 
-            delay: 1000,
-            autoplay: false,
-            // onMouseEnter: false,
+            delay: 2000,
+            autoplay: false, // true, false
+            onMouseEnter: false,
         };
         this.opts = $.extend(defParams, args || {});
         if(!(this.obj = $(this.opts.obj)).length) return;
@@ -335,17 +335,18 @@ button::-moz-focus-inner{padding:0;border:0}
             this.initClass();
             this.initLayout();
             this.bindEvents();
+            this.viewType();
         },
         initLayout: function() {
             this.currentIndex = this.opts.initialSlide;
             this.slideArticle.hide().eq(this.currentIndex).show();
-            this.slideIndicaotr.eq(this.currentIndex).addClass(this.opts.activeClass);
-            this.oldIndex = this.currentIndex; // 이거 왜 이렇게 해놓은거지? 다시 생각
+            this.slideIndicator.eq(this.currentIndex).addClass(this.opts.activeClass);
+            this.oldIndex = this.currentIndex;
         },
         initClass: function() { // li 클래스 붙은거 일단 싹 초기화하는거..
-            console.log(this.slideIndicaotr);
+            console.log(this.slideIndicator);
             var _this = this;
-            var rmvClass = this.slideIndicaotr.filter(function (idx, item) {
+            var rmvClass = this.slideIndicator.filter(function (idx, item) {
                 console.log(idx, item); 
                 if($(item).hasClass(_this.opts.activeClass)) {
                     $(item).removeClass(_this.opts.activeClass);
@@ -356,7 +357,7 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideCont = this.obj.find(this.opts.slideCont);
             this.slideArticle = this.slideCont.find(this.opts.slideArticle);
             this.slideIndiWrap = this.obj.find(this.opts.slideIndiWrap);
-            this.slideIndicaotr = this.slideIndiWrap.children();
+            this.slideIndicator = this.slideIndiWrap.children();
             this.clickBtnWrap = this.obj.find(this.opts.slideBtn);
             this.nextBtn = this.clickBtnWrap.find(this.opts.nextBtn);
             this.prevBtn = this.clickBtnWrap.find(this.opts.prevBtn);
@@ -365,7 +366,11 @@ button::-moz-focus-inner{padding:0;border:0}
         bindEvents : function() {
             this.prevBtn.on('click', this.onPrevClickFunc.bind(this));
             this.nextBtn.on('click', this.onNextClickFunc.bind(this));
-            this.slideIndicaotr.on('click', '> a',this.onIndicatorClickFunc.bind(this));
+            this.slideIndicator.on('click', '> a',this.onIndicatorClickFunc.bind(this));
+             // 3) mouseEnter true일 때만 바인드 해줘.. 근데 이걸 여기다 해도 대까??
+             if(this.opts.onMouseEnter === true) {
+                this.slideCont.on('mouseenter', this.mouseEnterFunc.bind(this));
+            }
         },
         onPrevClickFunc: function() {
             this.opts.direction = 'left';
@@ -392,8 +397,8 @@ button::-moz-focus-inner{padding:0;border:0}
         slideViewFunc : function() {
             this.slideArticle.eq(this.oldIndex).removeClass(this.opts.activeClass);
             this.slideArticle.eq(this.currentIndex).addClass(this.opts.activeClass);
-            this.slideIndicaotr.eq(this.oldIndex).removeClass(this.opts.activeClass);
-            this.slideIndicaotr.eq(this.currentIndex).addClass(this.opts.activeClass);
+            this.slideIndicator.eq(this.oldIndex).removeClass(this.opts.activeClass);
+            this.slideIndicator.eq(this.currentIndex).addClass(this.opts.activeClass);
             this.oldIndex = this.currentIndex;
         },
         checkStateFunc: function() {
@@ -407,23 +412,22 @@ button::-moz-focus-inner{padding:0;border:0}
             }
         },
         viewType: function() {
+            // 슬라이드 타입  1.slide, 2.fadeIn
             if(this.opts.type === 'slide') {
                 this.animateSlide();
             } else if (this.opts.type === 'fadeIn') {
                 this.animateFadeIn();
             }
 
-            // 2) 인터벌 안되자너....
+            // 2) 인터벌 
             if(this.opts.autoplay === true) { 
-                setInterval(this.animateSlide(), 1000);
+                setInterval(this.autoplayFunc.bind(this), this.opts.delay);
             }
         },
         animateSlide: function() {
-            var slideDir = 0;
-            if(this.opts.direction === 'left') {
+            var slideDir = 1; // default - right
+            if(this.opts.direction === 'left') { 
                 slideDir = -1;
-            } else if (this.opts.direction === 'right') {
-                slideDir = 1;
             }
             this.slideArticle.eq(this.currentIndex).css({
                 'display': 'block',
@@ -448,26 +452,51 @@ button::-moz-focus-inner{padding:0;border:0}
         animateFadeIn: function() {
             this.slideArticle.hide().eq(this.currentIndex).fadeIn();
         },
+        autoplayFunc: function () { // autoplay는 오른쪽으로만
+            this.currentIndex++;
+            if (this.currentIndex > this.maxLength - 1) {
+                this.currentIndex = 0;
+            }
+            this.animateSlide();  
+            this.slideViewFunc();
+        },
+        mouseEnterFunc: function(e) {
+            console.log('마우스가 올라왔어요 clearinterval을 해줘도 멈추질 않네영');
+            console.log(e.currentTarget);
+            clearInterval(this.autoplayFunc);
+        }
+
     };
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box');
         var slideComponentCall = new slideComponent('.slide_box_1', {
             // 1) 인디케이터 슬라이드 테스트할 box_1
             type: 'slide',
-            autoplay: false,                                   
+            autoplay: false,
+            onMouseEnter: false,                             
         });
         var slideComponentCall = new slideComponent('.slide_box_2', {
             type: 'fadeIn',
-            autoplay: false,                                   
+            autoplay: false,         
+            onMouseEnter: false,                          
         });
         var slideComponentCall = new slideComponent('.slide_box_3', {
             type: 'slide',
-            autoplay: true,                                   
+            autoplay: true,     
+            onMouseEnter: true,                              
         });
-        // 3) 추가적으로 시간 되면 mouseEnter도 구현해보기...
-        // console.dir(slideComponentCall);
+
     });
 })(window, window.jQuery);
+/**
+ *  추가적으로 정리할 것.
+ *  JS_WORKS\jstheorem\js_5_event.html
+ * 
+ *  4. e.target, e.currentTarget, e.delegation..? / 버블링 캡쳐링 
+ *  5. mouseenter, mouseover 차이
+ *  6. 헉 더 중요한  preventDefault / stopPropagation 이것도
+ * 
+ */
 </script>
 <script>
     // animateFunc: function() {
