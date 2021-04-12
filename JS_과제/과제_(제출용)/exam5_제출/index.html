@@ -369,6 +369,8 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideIndicator.on('click', '> a',this.onIndicatorClickFunc.bind(this));
             if(this.opts.onMouseEnter === true) {
                 this.slideCont.on('mouseenter', this.mouseEnterFunc.bind(this));
+                this.slideCont.on('mouseleave', this.mouseLeaveFunc.bind(this));
+                // this.slideCont.on('hover', this.mouseEnterFunc.bind(this), this.mouseLeaveFunc.bind(this));
             }
         },
         onPrevClickFunc: function() {
@@ -417,15 +419,20 @@ button::-moz-focus-inner{padding:0;border:0}
             } else if (this.opts.type === 'fadeIn') {
                 this.animateFadeIn();
             }
-
-            // 2) 인터벌 
+            // 2) 인터벌
             if(this.opts.autoplay === true) { 
-                setInterval(this.autoplayFunc.bind(this), this.opts.delay);
+                this.mouseLeaveFunc();
             }
         },
         animateSlide: function() {
             var slideDir = 1; // default - right
-            if(this.opts.direction === 'left' || this.currentIndex < this.oldIndex) { 
+            // if(this.opts.direction === 'left' || this.currentIndex < this.oldIndex) {  
+                /**
+                 * this.currentIndex < this.oldIndex
+                 * 인디케이터 누르면 좌우로 슬라이딩되는 걸 구현하고 싶었는데, 
+                 * 오토플레이에서 인디케이서 클릭으로 컨트롤하면 슬라이더가 폭주하면서 꼬임. 뭐가 문젠지 모르게따..
+                 */
+            if(this.opts.direction === 'left') { 
                 slideDir = -1;
             }
             this.slideArticle.eq(this.currentIndex).css({
@@ -453,11 +460,14 @@ button::-moz-focus-inner{padding:0;border:0}
             this.slideViewFunc();
         },
         mouseEnterFunc: function(e) {
-            console.log('마우스가 올라왔어요 clearinterval을 해줘도 멈추질 않네영');
-            console.log(e.currentTarget);
-            clearInterval(this.autoplayFunc);
+            console.log('마우스가 올라왔어요.');
+            clearInterval(this.intervalId); 
+        },
+        mouseLeaveFunc: function() {
+            console.log('마우스가  article을 떠났어요..');
+            var intervalId = setInterval(this.autoplayFunc.bind(this), this.opts.delay);
+            this.intervalId = intervalId;
         }
-
     };
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box');
@@ -481,13 +491,17 @@ button::-moz-focus-inner{padding:0;border:0}
     });
 })(window, window.jQuery);
 /**
- *  추가적으로 정리할 것.
- *  JS_WORKS\jstheorem\js_5_event.html
+ *  추가적으로 정리할 개념.
+ *
+ *  1> e.target, e.currentTarget, e.delegation..? / 버블링 캡쳐링 
+ *  2> mouseenter, mouseover 차이
+ *  3> 헉 더 중요한  preventDefault / stopPropagation 이것도
+ *   -> JS_WORKS\jstheorem\js_5_event.html
  * 
- *  4. e.target, e.currentTarget, e.delegation..? / 버블링 캡쳐링 
- *  5. mouseenter, mouseover 차이
- *  6. 헉 더 중요한  preventDefault / stopPropagation 이것도
  * 
+ *  4> setInterval과 clearInterval 사용시 주의할 점. 
+ *  정수값을 반환하므로 변수에 담아서 처리한다. 
+ *  그냥 메서드 식별자를 넣어서는 제어가 안돼씀.
  */
 </script>
 <script>
