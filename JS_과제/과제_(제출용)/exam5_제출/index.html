@@ -49,6 +49,7 @@ button::-moz-focus-inner{padding:0;border:0}
 .slide_setting .slide_btn button{position:absolute;top:50%;z-index:30;margin:0 20px}
 .slide_setting .slide_btn button:nth-child(1){left:0}
 .slide_setting .slide_btn button:nth-child(2){right:0}
+.desc {margin: 0 auto; width: 880px; background-color: rgba(65, 65, 65, 0.146);}
 /* //temporary css */
 </style>
 </head>
@@ -72,10 +73,6 @@ button::-moz-focus-inner{padding:0;border:0}
                     <li class="active"><a href="#thema6">테마6</a></li>
                     <li><a href="#thema7">테마7</a></li>
                     <li><a href="#thema8">테마8</a></li>
-                    <li><a href="#thema9">테마9</a></li>
-                    <li><a href="#thema10">테마10</a></li>
-                    <li><a href="#thema11">테마11</a></li>
-                    <li><a href="#thema12">테마12</a></li>
                 </ul>
             </div>
             <div class="cast_cont">
@@ -87,10 +84,6 @@ button::-moz-focus-inner{padding:0;border:0}
                 <div id="thema6" class="cast_article">컨텐츠6</div>
                 <div id="thema7" class="cast_article">컨텐츠7</div>
                 <div id="thema8" class="cast_article">컨텐츠8</div>
-                <div id="thema9" class="cast_article">컨텐츠9</div>
-                <div id="thema10" class="cast_article">컨텐츠10</div>
-                <div id="thema11" class="cast_article">컨텐츠11</div>
-                <div id="thema12" class="cast_article">컨텐츠12</div>
             </div>
             <div class="cast_setting">
                 <div class="cast_btn">
@@ -100,6 +93,7 @@ button::-moz-focus-inner{padding:0;border:0}
             </div>
         </div>
         <br>
+        <p class="desc">type: 'slide' / autoplay: false / onMouseEnter: false </p>
         <div class="slide_box slide_box_1">
             <div class="slide_tab">
                 <ul>
@@ -130,6 +124,7 @@ button::-moz-focus-inner{padding:0;border:0}
             </div>
         </div>
         <br>
+        <p class="desc">type: 'fadeIn' / autoplay: false / onMouseEnter: false </p>
         <div class="slide_box slide_box_2">
             <div class="slide_tab">
                 <ul>
@@ -160,6 +155,7 @@ button::-moz-focus-inner{padding:0;border:0}
             </div>
         </div>
         <br>
+        <p class="desc">type: 'slide' / autoplay: true / onMouseEnter: true </p>
         <div class="slide_box slide_box_3">
             <div class="slide_tab">
                 <ul>
@@ -227,14 +223,11 @@ button::-moz-focus-inner{padding:0;border:0}
             this.stateBar();
         },
         setElements: function() {
-            // cast_tab 
             this.castTab = this.obj.find(this.opts.castTab);
             this.castTabWrap = this.castTab.find(this.opts.castTabWrap);
             this.castTabChild = this.castTabWrap.children(); 
-            // cast_cont
             this.castCont = this.obj.find(this.opts.castCont);
             this.castArticle = this.castCont.children(); 
-            // cast_setting
             this.castSetting = this.obj.find(this.opts.castSetting);
             this.castBtn = this.castSetting.find(this.opts.castBtn);
             this.castNum = this.castSetting.find(this.opts.castNum);
@@ -244,13 +237,11 @@ button::-moz-focus-inner{padding:0;border:0}
         initOpts: function() {
             var _this = this;
             var filterCount = this.castTabChild.filter(function (idx, item) {
-                // console.log(idx, item); 
                 if($(item).hasClass(_this.opts.activeClass)) {
                     return true;
                 }
             });
             this.currentIndex = (filterCount.length) ? filterCount.index() : 0;
-            // console.log(this.currentIndex) // 5
         },
         initLayout: function() {
             this.castArticle.removeClass(this.opts.activeClass);
@@ -266,6 +257,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 targetIndex = target.index();
                 
             this.currentIndex = targetIndex;
+            this.stateBar();
             this.contViewFunc();
         },
         onBtnClickFunc: function(e) {
