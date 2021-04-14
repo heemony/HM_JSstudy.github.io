@@ -134,7 +134,8 @@ button::-moz-focus-inner{padding:0;border:0}
 (function (global, factory) {
     global.exam = global.exam || {};
     global.exam.TabComponent = factory();
-}(window, function () { 'use strict';
+}(window, function () { 
+    'use strict';
     var TabComponent = (function (isUndefined) {
         var win = window,
             $ = window.jQuery;
@@ -228,6 +229,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 }
                 this.hashUpdate();
             },
+            // 인덱스로 뷰로 변화하는 것은 없다.
             onTabClickFunc : function (e) {
                 e.preventDefault();
                 var target = $(e.delegateTarget),
@@ -235,20 +237,27 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.currentIndex = targetIndex;
                 this.hashUpdate();
             },
+            // 해쉬 체인지가 일어남으로써 뷰가 변하는 것이다. 클릭은 그냥 인덱스만 변화함.
             hachChangeFunc : function () {
+                // vue나 리액트에서 url을 다룰 때 구현할 수 있으니 꼭 구현해보세요.
+                // 뷰는 여기서 바뀌는 것.
                 if (this.oldIndex === this.currentIndex) return;
                 this.getHash();
                 this.activeTabFunc();
             },
             getHash : function () {
                 var getHash = win.location.hash.replace('_', ''),
+                // win -> BOM, 해쉬넘버가 있다면 가져와서 _ 제외하여 
                     hashTarget = this.castArticle.filter(getHash);
+                    // 타겟을 찾는다.
                 this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0;
+                // 0으로 하는 것은 사용자가 잘 못 쳤을 경우 유효성 검증을 위해 0을 넣음.
                 this.textUpdate();
             },
             hashUpdate : function () {
                 var hashName = this.castArticle.eq(this.currentIndex).attr('id');
                 win.location.hash = '#' + hashName + '_';
+                // id와 링크가 연결되어있는데, 그 id를 가져와서 해쉬 넘버를 업데이트 함.
             },
             textUpdate : function () {
                 this.castNumCurrent.text(this.currentIndex + 1);
