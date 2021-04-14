@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hashchange</title>
+</head>
+<body>
+    <p><a href="http://benalman.com/projects/jquery-hashchange-plugin/">hashchange</a> works in jquery</p>
+    <p id="nav">
+        <a href="#test1">test 1</a>
+        <a href="#test2">test 2</a>
+        <a href="#test3">test 3</a>
+        <a href="#test4">test 4</a>
+    </p>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    /** 
+     * 해시체인지 이벤트는 단독 사용보다는 Ajax와 접목했을 때 이상적이다.
+     * 예)
+     *      문서의 이동없이 다른 문서에 있는 내용을 그대로 가져올 수 있다.
+     *      웹브라우저 앵커를 활용하는 동적 페이지 이동 개념.
+     */
+    $(window).bind('hashchange', function() {
+        var hash = location.hash;
+        console.log(hash); // #test1 #test2 ...  과 같이 해쉬값을 가져온다. 
+
+        $('#nav a').each(function() {
+            var _this = $(this);
+            console.log(_this[_this.attr('href') === hash? 'addClass' : 'removeClass']('selected'));
+        });
+    });
+</script>
+</body>
+</html>
