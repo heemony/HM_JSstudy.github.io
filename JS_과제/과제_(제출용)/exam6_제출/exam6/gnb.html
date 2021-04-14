@@ -112,8 +112,26 @@
 
     var Util = win.Common.util,
         Responsive = win.Common.RESPONSIVE;
-
-})(window, window.jQuery)
+    
+    function gnbComponent (container, args) {
+        var defParams = {
+            obj: container,
+            menu: '.menu',
+            viewType: null,
+        }
+        this.opts = Util.def(defParams, (args || {}));
+        if(!(this.obj = $(this.opts.obj).length)) return;
+        this.init();
+    };
+    gnbComponent.prototype = {
+        init: function() {
+            console.log('init이 실행되었습니당');
+        }
+    };
+    $(function () {
+        var gnbComponentCall = new gnbComponent('#header');
+    });
+})(window, window.jQuery);
 </script>
 </body>
 </html>
