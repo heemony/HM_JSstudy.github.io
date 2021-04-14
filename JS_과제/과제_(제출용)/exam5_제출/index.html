@@ -464,7 +464,6 @@ button::-moz-focus-inner{padding:0;border:0}
     $(function () {
         var tabComponentCall = new tabComponent('.cast_box');
         var slideComponentCall = new slideComponent('.slide_box_1', {
-            // 1) 인디케이터 슬라이드 테스트할 box_1
             type: 'slide',
             autoplay: false,
             onMouseEnter: false,                             
@@ -482,52 +481,6 @@ button::-moz-focus-inner{padding:0;border:0}
 
     });
 })(window, window.jQuery);
-/**
- *  추가적으로 정리할 개념.
- *
- *  1> e.target, e.currentTarget, e.delegation..? / 버블링 캡쳐링 
- *  2> mouseenter, mouseover 차이
- *  3> 헉 더 중요한  preventDefault / stopPropagation 이것도
- *   -> JS_WORKS\jstheorem\js_5_event.html
- * 
- * 
- *  4> setInterval과 clearInterval 사용시 주의할 점. 
- *  정수값을 반환하므로 변수에 담아서 처리한다. 
- *  그냥 메서드 식별자를 넣어서는 제어가 안돼씀.
- */
-</script>
-<script>
-    // animateFunc: function() {
-    //     if(this.opts.direction === 'left') {
-    //         console.log('왼쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
-    //         this.slideArticle.eq(this.currentIndex).css({
-    //             'display': 'block',
-    //             'left': '-100%'
-    //         });
-    //         this.slideArticle.eq(this.oldIndex).stop().animate({
-    //             'left': '100%',
-    //         }, {
-    //             complete: function() { $(this).hide().css('left', ''); }
-    //         });
-    //         this.slideArticle.eq(this.currentIndex).stop().animate({
-    //             'left': '0px'
-    //         });
-    //     } else if (this.opts.direction === 'right') {
-    //         console.log('오른쪽으로 넘어가는 중', this.currentIndex, this.oldIndex);
-    //         this.slideArticle.eq(this.currentIndex).css({
-    //             'display': 'block',
-    //             'left': '100%'
-    //         });
-    //         this.slideArticle.eq(this.oldIndex).stop().animate({
-    //             'left': '-100%',
-    //         }, {
-    //             complete: function() { $(this).hide().css('left', ''); }
-    //         });
-    //         this.slideArticle.eq(this.currentIndex).stop().animate({
-    //             'left': '0'
-    //         });
-    //     }
-    // }
 </script>
 </div>
 </body>
