@@ -457,6 +457,7 @@ button::-moz-focus-inner{padding:0;border:0}
         },
         mouseLeaveFunc: function() {
             console.log('마우스가  article을 떠났어요..');
+            clearInterval(this.intervalId); 
             var intervalId = setInterval(this.autoplayFunc.bind(this), this.opts.delay);
             this.intervalId = intervalId;
         }

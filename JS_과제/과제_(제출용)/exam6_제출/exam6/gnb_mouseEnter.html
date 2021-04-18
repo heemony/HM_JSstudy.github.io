@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JS 6</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<title>JS 6_menu mouseenter</title>
 <link rel="stylesheet" type="text/css" href="css/common.css">
 </head>
 <body>
-반응형
+JS 6 mouseenter, mouseleave
 <!-- wrapper [s] -->
 <div id="wrap">
     <div id="header">
@@ -108,30 +108,6 @@
 <!-- <script src="../js/libs/jquery.ba-outside-events.min.js"></script> -->
 <script src="../js/apps/util.js"></script>
 <script>
-    // 해시체인지
-    // - url 주소 뒤에 #~어쩌구가 바뀜 이것을 해쉬라고 함.
-    //     주소창에서 바꿔도 탭이 바뀐다 (화면이 바뀐다.)
-    // - 히스토리가 저장이 된다. (뒤로/앞으로 가기)
-    // - 'hashchange'는 이벤트이다. 주소창에 해시체인지가 일어나면 이벤트가 발생함.
-    
-    
-    // 6과제 
-    // 메뉴 호버 시 언더라인과 메뉴 보임
-    // 모바일
-    // 열기버튼 -> 누르면 right 조절해서 나오게 (animate해도 되고 논블럭해도 되고)
-    // 열기 닫기 버튼 구현 / 기능 구현
-
-    // Util 설명
-    // def : 객체와 객체 머지  (깊은 복사)
-    // jquery는 얕은 복사 
-// []   // -> 객체 결과물에 차이가 있다. 기존 객체가 변하냐 안변하냐.. 의 테스트 함 해보기~
-        // 깊은 복사는 아예 복사본을 만드는 것, 얕은 복사는 객체의 한 DEPTH 까지만 복사를 한다.
-
-    
-    // 윈도우를 던지면 글로벌로 받음. window.common 이라는 이름으로 선언해 놓은것들을 저장한 상태 " 네임스페이스"
-    // 윈도우에 글로발로 받아서 커먼으로 저장 -> 
-    // RESPONSIVE -> 기기 너비값
-    // winSize (util) -> 
 (function (win, $) {
     'use strict';
     
@@ -142,6 +118,10 @@
         var defParams = {   
             obj: container,
             menu: '.menu',
+            menuBox: '.box',
+            gnbMenu: '#gnb',
+            gnbOpenBtn: '#btn_gnbopen',
+            gnbCloseBtn : '#btn_gnbclose',
             viewType: null,
         }
         this.opts = Util.def(defParams, (args ||{}));
@@ -150,83 +130,95 @@
     };
     gnbComponent.prototype = {
         init: function() {
-            console.log('init')
-            this.resizeFunc(); // 최초 실행시에도 실행시켜줘야한다. 어디서 어떻게 시작될지 모르므로 
-            this.bindGlobalEvents(true); // 트루이면
-            // this.bindEvents(true); //
+            this.setElements();
+            this.resizeFunc(); 
+            this.bindGlobalEvents(true); 
         },
         setElements: function() {
             this.menu = this.obj.find(this.opts.menu);
-            this.menuItem = this.menu.children();
+            this.menuList = this.menu.children();
+            this.menuBox = this.menuList.find(this.opts.menuBox);
+            this.gnbMenu = this.obj.find(this.opts.gnbMenu);
+            this.gnbOpenBtn = this.obj.find(this.opts.gnbOpenBtn);
+            this.gnbCloseBtn = this.obj.find(this.opts.gnbCloseBtn);
         },
-        // pc와 mo 이벤트는 구분된다. 
-        bindPcEvents: function(type) {
-            if (type) { // 여기 실행
-                this.menuItem.on('mouseenter mouseleave focusin focusout', this.onMouseFunc.bind(this));
-                // 같은 이벤트는 옆으로 띄어쓰기로 추가할 수있다. 근데 뭔지 구분을 해야하니까... 
-                // 아래와 같이 이프문으로 구분해준다.
-
-                // focusin focusout -> 접근성과 관련이 있다. 마우스가 아닌 키보드로 접근이 가능한 것.
-            } else { // False이면 여기
-                this.menuItem.off('mouseenter mouseleave');   
-                // 제이쿼리 이벤트 보면 마우스오버 아웃으로 나오게 됨.
-            }
-        },
-        bindMoEvents: function(type) {
-
-        },
-        onMouseFunc: function(e) {
-            if( e.type === 'mouseenter' || e.type === 'focusin') {
-                console.log('mouseenter');
-            } else if(e.type==='mouseleave' || e.type === 'focusout'){
-                console.log('mouseleave');
-            }
-            console.log('와따가따')
-        },
-        bindGlobalEvents: function() {
-            if (type) { // 여기 실행
+        bindGlobalEvents: function(type) {
+            if (type) { 
                 $(win).on('resize', this.resizeFunc.bind(this));
-                // 윈도우 이벤트 = 브라우저 이벤트
-            } else { // False이면 여기
+            } else { 
                 $(win).off('resize');
-                // 굳이 리사이즈를 나눈 이유는 분리하여야만 기능들이 구현되는 것들이 있기 때문
             }
         },
         resizeFunc: function() {
-            this.winWidth = Util.winSize().w; // 가로값을 계속 체크할 것임.
-            console.log('resize');
+            this.winWidth = Util.winSize().w;
+
             win.clearTimeout(this.resizeEndFunc);
             this.resizeEndFunc = win.setTimeout(this.onResizeEndFunc.bind(this), 150);
-            // 리사이즈가 되는 순간을 계속 찍으니까 셋타임아웅ㅅ을 사용함.
-            // 위에서 클리어를 계속 해주므로 계속 지우는 상태, 그러나 멈추면 150뒤에 실행을 해서 찍어주게 된다.
-            // -> 성능 최적화에 도움이 조금이나마 된다. 
         },
         onResizeEndFunc: function() {
-            console.log('resize end');
+            this.setLayout();
         },
         setLayout: function() { 
-            if (this.winWidth > MOBILE) { 
+            if (this.winWidth > Mobile) { 
                 if (this.opts.viewType != 'PC') {
                     this.opts.viewType = 'PC';
                     console.log('pc');
                     this.bindPcEvents(true);
-                    // this.bindMoEvents(false);
+                    this.bindMoEvents(false);
                 }
             } else {
                 if (this.opts.viewType != 'MO') {
                     this.opts.viewType = 'MO';
                     console.log('mo');
                     this.bindPcEvents(false);
-                    // this.bindMoEvents(true);
+                    this.bindMoEvents(true);
                 }
             }
         },
+        bindPcEvents: function(type) {
+            if (type) { 
+                this.menuList.on('mouseenter mouseleave focusin focusout', this.showMenuFunc.bind(this));
+            } else { 
+                this.menuList.off('mouseenter mouseleave focusin focusout'); 
+            }
+        },
+        showMenuFunc: function(e) {
+            e.preventDefault();
+            var target = $(e.delegateTarget),
+                targetBox = target.find(this.menuBox);
+            if( e.type === 'mouseenter' || e.type === 'focusin') {
+                targetBox.show();
+            } else if(e.type === 'mouseleave' || e.type === 'focusout'){
+                targetBox.hide();
+            }
+        },  
+        bindMoEvents: function(type) {
+            if (type) { 
+                this.gnbOpenBtn.on('click', this.onClickGnbOpenFunc.bind(this));
+                this.gnbCloseBtn.on('click', this.onClickGnbCloseFunc.bind(this));
+            } else { 
+                this.gnbOpenBtn.off('click'); 
+                this.gnbCloseBtn.off('click'); 
+            }
+        },
+        onClickGnbOpenFunc: function(e) {
+            this.gnbMenu.stop().animate({'left': '0'});
+        },
+        onClickGnbCloseFunc: function() {
+            var _this = this;
+            this.gnbMenu.stop().animate({'left': '-100%'}, {
+                complete: function() {
+                    _this.gnbMenu.css({'left' : ''});
+                }
+            });
+        },
     };
+   
     $(function() {
         var gnbComponentCall = new gnbComponent('#header');
     })
+    
 })(window, window.jQuery);
-
 </script>
 <script>
 

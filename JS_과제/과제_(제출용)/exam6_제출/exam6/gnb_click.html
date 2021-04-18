@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<title>JS 6_menu click</title>
+<link rel="stylesheet" type="text/css" href="css/common.css">
+</head>
+<body>
+JS 6 click
+<!-- wrapper [s] -->
+<div id="wrap">
+    <div id="header">
+        <h1 class="logo"><a href="#">로고</a></h1>
+        <div class="gnb_open"><button type="button" id="btn_gnbopen">열기</button></div>
+        <div id="gnb">
+            <div class="gnb_wrap">
+                <ul class="menu">
+                <li>
+                    <a href="#" class="btn">‘모노라움’ 학원 소개</a>
+                    <div class="box">
+                        <ul>
+                        <li><a href="#">설립배경</a></li>
+                        <li><a href="#">가치제안</a></li>
+                        <li><a href="#">교육철학 및 경영방침</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="btn">수강안내</a>
+                    <div class="box">
+                        <ul>
+                        <li><a href="#">접수중인 교육과정</a></li>
+                        <li><a href="#">강사소개</a></li>
+                        <li><a href="#">강사 포트폴리오</a></li>
+                        <li><a href="#">연간 교육일정</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="btn">수강문의</a>
+                    <div class="box">
+                        <ul>
+                        <li><a href="https://www.naver.com">수강문의</a></li>
+                        <li><a href="#">방문 상담 신청</a></li>
+                        <li><a href="#">모집 알림 신청</a></li>
+                        <li><a href="#">질문 게시판</a></li>
+                        <li><a href="#">이벤트 게시판</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="btn">수강신청</a>
+                    <div class="box">
+                        <ul>
+                        <li><a href="#">수강신청</a></li>
+                        </ul>
+                    </div>
+                </li>
+                </ul>
+                <div class="gnb_close"><button type="button" id="btn_gnbclose">닫기</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="container">
+        <div><a href="#">컨텐츠 들어오는 곳</a></div>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+        container<br>
+    </div>
+</div>
+<!-- wrapper [e] -->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<!-- <script src="../js/libs/jquery.ba-outside-events.min.js"></script> -->
+<script src="../js/apps/util.js"></script>
+<script>
+(function (win, $) {
+    'use strict';
+
+    var Util = win.Common.util,
+        Responsive_Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH;
+    
+    function gnbComponent (container, args) {
+        var defParams = {
+            obj: container,
+            menu: '.menu',
+            menuBox: '.box',
+            gnbMenu: '#gnb',
+            gnbOpenBtn: '#btn_gnbopen',
+            gnbCloseBtn : '#btn_gnbclose',
+            viewType: null,
+        }
+        this.opts = Util.def(defParams, (args || {})); 
+        if(!(this.obj = $(this.opts.obj)).length) return;
+        this.init();
+    };
+    gnbComponent.prototype = {
+        init: function() {
+            this.setElements();
+            this.resizeFunc(); 
+            this.bindGlobalEvents(true);
+        },
+        setElements: function() {
+            this.menu = this.obj.find(this.opts.menu);
+            this.menuList = this.menu.children();
+            this.menuBox = this.menuList.find(this.opts.menuBox);
+            this.gnbMenu = this.obj.find(this.opts.gnbMenu);
+            this.gnbOpenBtn = this.obj.find(this.opts.gnbOpenBtn);
+            this.gnbCloseBtn = this.obj.find(this.opts.gnbCloseBtn);
+        },
+        bindGlobalEvents: function(type) {
+            if (type) {
+                $(win).on('resize', this.resizeFunc.bind(this));
+            } else {
+                $(win).off('resize');
+            }
+        },
+        windowClick: function(e) {
+            if (this.opts.viewType === 'PC') {
+                if (e.target !== this.menuBox) {
+                    e.preventDefault();
+                    this.menuBox.hide();
+                }
+            } else {
+                console.log(e.target)
+                // if (e.target !== this.gnbMenu) {
+                //     console.log('gjffpd')
+                // }
+            }
+        },
+        resizeFunc: function() {
+            this.winWidth = Util.winSize().w;
+
+            win.clearTimeout(this.resizeEndFunc);
+            this.resizeEndFunc = win.setTimeout(this.onResizeEndFunc.bind(this), 150);
+        },
+        onResizeEndFunc: function() {
+            this.setLayout();
+        },
+        setLayout: function() {
+            if (this.winWidth > Responsive_Mobile) {
+                if (this.opts.viewType != 'PC') {
+                    this.opts.viewType = 'PC';
+
+                    this.bindPcEvents(true);
+                    this.bindMoEvents(false);
+                }
+            } else {
+                if (this.opts.viewType != 'MO') {
+                    this.opts.viewType = 'MO';
+
+                    this.bindPcEvents(false);
+                    this.bindMoEvents(true);
+                }
+            }
+        },
+        bindPcEvents: function(type) {
+            if (type) {
+                this.menuList.on('click', this.showBoxFunc.bind(this)); // 해당 클릭은 박스 보여주기 기능만을 수행. 
+                $(win).on('click', this.windowClick.bind(this));
+            } else {
+                this.menuList.off('click'); 
+                $(win).off('click');
+            }
+        },
+        bindMoEvents: function(type) {
+            if (type) {
+                this.gnbOpenBtn.on('click', this.showGnbMenuFunc.bind(this));
+                this.gnbCloseBtn.on('click', this.hideGnbMenuFunc.bind(this)); 
+                $(win).on('click', this.windowClick.bind(this));
+            } else {
+                this.gnbOpenBtn.off('click');
+                this.gnbCloseBtn.off('click');
+                $(win).off('click');
+            }
+        },
+        showBoxFunc: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var target = $(e.currentTarget),
+                targetIndex = target.index(),
+                showBox = this.menuBox.eq(targetIndex),
+                isVisible = showBox.css('display') !== 'none';
+            this.menuBox.hide();
+            showBox[isVisible ? 'hide' : 'show']();
+
+            this.target = target;
+            this.showBox = showBox;
+        },
+        showGnbMenuFunc: function(e) {
+            e.stopPropagation();
+            this.gnbMenu.stop().animate({'left': '0'});
+        },
+        hideGnbMenuFunc: function(e) {
+            e.stopPropagation();
+            var _this = this;
+            this.gnbMenu.stop().animate({'left': '-100%'},{
+                complete: function() {
+                    _this.gnbMenu.css('left', '');
+                }
+            });
+        }
+    };
+    $(function () {
+        var gnbComponentCall = new gnbComponent('#header');
+    });
+})(window, window.jQuery);
+</script>
+<script>
+    // 선택 영역 외에 바깥 영역을 '요소'로 만들어서 띄워서 할 수 있도 있고,
+    // body 에 클릭이벤트를 잡고 어떤 요소에서 클릭된건지 판별해서 팝엉ㅂ이나 메뉴 내부가 아니면 동작을 주기도 한다. 
+</script>
+</body>
+</html>
