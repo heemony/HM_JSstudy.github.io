@@ -149,19 +149,6 @@ JS 6 click
                 $(win).off('resize');
             }
         },
-        windowClick: function(e) {
-            if (this.opts.viewType === 'PC') {
-                if (e.target !== this.menuBox) {
-                    e.preventDefault();
-                    this.menuBox.hide();
-                }
-            } else {
-                console.log(e.target)
-                // if (e.target !== this.gnbMenu) {
-                //     console.log('gjffpd')
-                // }
-            }
-        },
         resizeFunc: function() {
             this.winWidth = Util.winSize().w;
 
@@ -175,14 +162,14 @@ JS 6 click
             if (this.winWidth > Responsive_Mobile) {
                 if (this.opts.viewType != 'PC') {
                     this.opts.viewType = 'PC';
-
+                    this.menuBox.css({'display':''});
                     this.bindPcEvents(true);
                     this.bindMoEvents(false);
                 }
             } else {
                 if (this.opts.viewType != 'MO') {
                     this.opts.viewType = 'MO';
-
+                    this.menuBox.css({'display':''});
                     this.bindPcEvents(false);
                     this.bindMoEvents(true);
                 }
@@ -191,7 +178,7 @@ JS 6 click
         bindPcEvents: function(type) {
             if (type) {
                 this.menuList.on('click', this.showBoxFunc.bind(this)); // 해당 클릭은 박스 보여주기 기능만을 수행. 
-                $(win).on('click', this.windowClick.bind(this));
+                $(win).on('click', this.winPcClickFunc.bind(this));
             } else {
                 this.menuList.off('click'); 
                 $(win).off('click');
@@ -201,11 +188,11 @@ JS 6 click
             if (type) {
                 this.gnbOpenBtn.on('click', this.showGnbMenuFunc.bind(this));
                 this.gnbCloseBtn.on('click', this.hideGnbMenuFunc.bind(this)); 
-                $(win).on('click', this.windowClick.bind(this));
+                // $(win).on('click', this.winMoClickFunc.bind(this)); // 함수 이름을 달리줘도 win클릭 안먹힘..
             } else {
                 this.gnbOpenBtn.off('click');
                 this.gnbCloseBtn.off('click');
-                $(win).off('click');
+                // $(win).off('click');
             }
         },
         showBoxFunc: function(e) {
@@ -230,9 +217,21 @@ JS 6 click
             var _this = this;
             this.gnbMenu.stop().animate({'left': '-100%'},{
                 complete: function() {
-                    _this.gnbMenu.css('left', '');
+                    _this.gnbMenu.css({'left' : ''});
                 }
             });
+        },
+        winPcClickFunc: function(e) {
+            if (this.opts.viewType === 'PC') {
+                if (e.target !== this.menuBox) {
+                    e.preventDefault();
+                    this.menuBox.hide();
+                }
+            } 
+        },
+        winMoClickFunc: function() {
+            // gnb외 영역 누르면 
+            // this.gnbMenu.hide();
         }
     };
     $(function () {

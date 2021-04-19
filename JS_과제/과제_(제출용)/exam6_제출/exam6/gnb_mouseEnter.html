@@ -112,7 +112,7 @@ JS 6 mouseenter, mouseleave
     'use strict';
     
     var Util = win.Common.util,
-        Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH;
+        Responsive_Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH;
 
     function gnbComponent(container, args) {
         var defParams = {   
@@ -159,17 +159,17 @@ JS 6 mouseenter, mouseleave
             this.setLayout();
         },
         setLayout: function() { 
-            if (this.winWidth > Mobile) { 
+            if (this.winWidth > Responsive_Mobile) { 
                 if (this.opts.viewType != 'PC') {
                     this.opts.viewType = 'PC';
-                    console.log('pc');
+                    this.menuBox.css({'display':''}); // 초기화
                     this.bindPcEvents(true);
                     this.bindMoEvents(false);
                 }
             } else {
                 if (this.opts.viewType != 'MO') {
                     this.opts.viewType = 'MO';
-                    console.log('mo');
+                    this.menuBox.css({'display':''}); // 초기화
                     this.bindPcEvents(false);
                     this.bindMoEvents(true);
                 }
@@ -201,7 +201,7 @@ JS 6 mouseenter, mouseleave
                 this.gnbCloseBtn.off('click'); 
             }
         },
-        onClickGnbOpenFunc: function(e) {
+        onClickGnbOpenFunc: function() {
             this.gnbMenu.stop().animate({'left': '0'});
         },
         onClickGnbCloseFunc: function() {
