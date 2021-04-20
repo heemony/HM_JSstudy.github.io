@@ -139,14 +139,18 @@ JS 6 click
             this.menuList = this.menu.children();
             this.menuBox = this.menuList.find(this.opts.menuBox);
             this.gnbMenu = this.obj.find(this.opts.gnbMenu);
+            this.gnbWrap = this.gnbMenu.children();
             this.gnbOpenBtn = this.obj.find(this.opts.gnbOpenBtn);
             this.gnbCloseBtn = this.obj.find(this.opts.gnbCloseBtn);
         },
         bindGlobalEvents: function(type) {
             if (type) {
                 $(win).on('resize', this.resizeFunc.bind(this));
+                $(win).on('click', this.winPcClickFunc.bind(this));
+                $(win).on('click', this.winMoClickFunc.bind(this));
             } else {
                 $(win).off('resize');
+                $(win).on('click');
             }
         },
         resizeFunc: function() {
@@ -177,26 +181,21 @@ JS 6 click
         },
         bindPcEvents: function(type) {
             if (type) {
-                this.menuList.on('click', this.showBoxFunc.bind(this)); // 해당 클릭은 박스 보여주기 기능만을 수행. 
-                $(win).on('click', this.winPcClickFunc.bind(this));
+                this.menuList.on('click', this.showBoxFunc.bind(this)); 
             } else {
                 this.menuList.off('click'); 
-                $(win).off('click');
             }
         },
         bindMoEvents: function(type) {
             if (type) {
                 this.gnbOpenBtn.on('click', this.showGnbMenuFunc.bind(this));
                 this.gnbCloseBtn.on('click', this.hideGnbMenuFunc.bind(this)); 
-                // $(win).on('click', this.winMoClickFunc.bind(this)); // 함수 이름을 달리줘도 win클릭 안먹힘..
             } else {
                 this.gnbOpenBtn.off('click');
                 this.gnbCloseBtn.off('click');
-                // $(win).off('click');
             }
         },
         showBoxFunc: function(e) {
-            e.preventDefault();
             e.stopPropagation();
             var target = $(e.currentTarget),
                 targetIndex = target.index(),
@@ -211,6 +210,7 @@ JS 6 click
         showGnbMenuFunc: function(e) {
             e.stopPropagation();
             this.gnbMenu.stop().animate({'left': '0'});
+            this.gnbMenu.addClass('open'); 
         },
         hideGnbMenuFunc: function(e) {
             e.stopPropagation();
@@ -220,21 +220,27 @@ JS 6 click
                     _this.gnbMenu.css({'left' : ''});
                 }
             });
+            this.gnbMenu.removeClass('open');
         },
         winPcClickFunc: function(e) {
             if (this.opts.viewType === 'PC') {
                 if (e.target !== this.menuBox) {
-                    e.preventDefault();
                     this.menuBox.hide();
                 }
             } 
         },
-        winMoClickFunc: function() {
-            // gnb외 영역 누르면 
-            // this.gnbMenu.hide();
+        winMoClickFunc: function(e) {
+            var exceptGnbMenu = document.querySelector('#container');
+            if (this.opts.viewType === 'MO') {
+                if (this.gnbMenu.hasClass('open') && e.target === exceptGnbMenu) {
+                    // 클래스를 넣음으로써 쓸모없이 style이 계속 돌지 않게 한다.
+                    // 다른 방법도 있을ㄹ까?
+                    this.hideGnbMenuFunc(e); 
+                }
+            } 
         }
     };
-    $(function () {
+    $(function () {1
         var gnbComponentCall = new gnbComponent('#header');
     });
 })(window, window.jQuery);
