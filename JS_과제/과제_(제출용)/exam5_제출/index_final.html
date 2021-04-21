@@ -245,7 +245,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 }
                 this.hashUpdate();
             },
-            // 인덱스로 뷰로 변화하는 것은 없다.
+            // 인덱스로 뷰를 변화시키는 것은 없다.
             onTabClickFunc : function (e) {
                 e.preventDefault();
                 var target = $(e.delegateTarget),
@@ -266,8 +266,9 @@ button::-moz-focus-inner{padding:0;border:0}
                 // win -> BOM, 해쉬넘버가 있다면 가져와서 _ 제외하여 
                     hashTarget = this.castArticle.filter(getHash);
                     // 타겟을 찾는다.
+                    console.log(getHash)
                 this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0;
-                // 0으로 하는 것은 사용자가 잘 못 쳤을 경우 유효성 검증을 위해 0을 넣음.
+                // 0으로 하는 것은 사용자가 url 링크를 잘못 입력하여 넣을 경우를 대비하여 유효성 검증을 위해 0을 넣음.
                 this.textUpdate();
             },
             hashUpdate : function () {

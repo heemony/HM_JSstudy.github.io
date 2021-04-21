@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>exam - thema</title>
+<title>thema test</title>
 <style>
 /* temporary css */
 *{margin:0;padding:0}
@@ -162,13 +162,13 @@ button::-moz-focus-inner{padding:0;border:0}
             this.init();
         }
         TabComponent.prototype = {
-            init: function () {
+            init: function() {
                 if(!(this.obj = $(this.opts.obj)).length) return;
                 this.setElements();
                 this.initLayout();
                 // this.bindEvents(true);
             },
-            setElements: function () {
+            setElements: function() {
                 this.castTab = this.obj.find(this.opts.castTab);
                 this.castTabParent = this.castTab.find(this.opts.castTabParent);
                 this.castTabChild = this.castTabParent.children();
@@ -186,15 +186,32 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.castNumTotal.text(tabTotal);
                 console.log(tabTotal)
             },
-            initLayout : function () {
+            initLayout : function() {
                 this.castTabChild.removeClass(this.opts.activeClass);
                 this.castArticle.removeClass(this.opts.activeClass);
                 // this.getHash();
                 // this.hachChangeFunc();
                 this.initTotalText();
             },
-            changeEvents: function (event) {
-                var 
+            changeEvents: function(event) {
+                var events = [],
+                    eventNames = event.split(' ');
+                for (var key in eventNames) {
+                    events.push(eventNames[key] + this.opts.customEvent);
+                }
+            },
+            bindEvents: function(type) {
+                if (type) {
+                    this.castTabChild.on(this.changeEvents('click'), '>a', this.onTabClickFunc.bind(this));
+                    this.castPrev.on(this.changeEvents('click'), this.onPrevFunc.bind(this));
+                    this.castNext.on(this.changeEvents('click'), this.onNextFunc.bind(this));
+                    $(win).on(this.changeEvents('hashchange'), this.hachChangeFunc.bind(this));
+                } else {
+                    this.castTabChild.off(this.changeEvents('click'));
+                    this.castPrev.off(this.changeEvents('click'));
+                    this.castNext.off(this.changeEvents('click'));
+                    $(win).off(this.changeEvents('hashchange'));
+                }
             }
         };
         return TabComponent;
@@ -205,7 +222,7 @@ button::-moz-focus-inner{padding:0;border:0}
     $(function () {
         factory();
     })
-}(window, function () {
+}(window, function () 
     var Component = (function (isUndefined) {
         var win = window;
 
