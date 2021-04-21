@@ -2,88 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JS_7</title>
+<title>코드를 이해해보자~~</title>
 </head>
 <body>
-    컴포넌트를 고려한 코드로 짠다.
-    같은 컴포넌트가 있는 것을 고려한 방식.
-
-    이전방식> 
-        이같은 기능을 하는 컴포넌트가 여럿 있을 경우 클래스명을 바꿔줬어야 했다.
-
-    현재방식>
-        비슷한 기능이 여럿 있을 경우 이것을 관장하는 함수를 각각 호출하게끔 만든다.
-
-
-    https://chanhuiseok.github.io/posts/js-5/
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="./js/apps/util.js"></script>
 <script>
-// 즉시실행함수를 표기하는 방법은 2가지가 있다. 아무거나 써도 됨.
-// 문체 작동 방식이 약간 다르다.
-    // 1. IIFE
-    // (function() {
-    //
-    // })(); 
-
-    // 2. IIFE
-    // (function() {
-    //
-    // }()); 
-
-    // 3. IIFE를 쓰는 이유
-    // 1. 외부에서는 접근할 수 없는 자체 scope를 형성한다.
-    // 2. 상위 scope에 접근할 수 있으면서도, 내부 변수를 외부로부터 보호해 privacy를 유지한다.
- 
-//  [ IIFE와 private변수 ]
-// 코드 밖에서 사용하지 않는 많은 변수와 함수를 전역에 만들면 전역 스코프를 오염시킨다. 
-// 그래서 이를 즉시실행함수로 감싸는데, IIFE 내부에서 정의된 어떤 변수라도 바깥에서는 보이지 않는다.
-(function() {
-    // IIFE 밖에서는 접근할 수 없는 Private 변수
-    var a;
-    var b;
-    init();
-    // IIFE 밖에서는 접근할 수 없는 Private 함수
-    function init() {
-        a = 5;
-        b = 100;
-    }
-}()); 
-
-// [ 값을 리턴하는 IIFE ]
-var layerComponent = (function () {
-    // do something..
-    return layerComponent;
-}());
-console.log(layerComponent); // 즉시 실행되고 반환값은 layerComponent 변수에 할당된다.
-
-// [ 파라미터가 있는 IIFE ]
-// IIFE는 호출될 때 인자를 받을 수 있다.
 (function(global, factory) {
-    // do something..
-}(window, function() {
-    // do something..
-}));
-// 호출할 때 'window'와 factory 인자에 들어올 'function() {}' 인수를 전달한다.
-// window인수는 global인자에, function() {}인수는 factory인자로 넘어간다.
-// JS는 항상 현재 함수의 스코프부터 식별자를 찾을 때 까지 높은 레벨의 스코프를 거슬러 올라가서 식별자를 찾게된다. 
-
-
-
-
-
-
-
-
-(function(global, factory) {
-    console.log(global);
-    console.log(factory);
-
     // 네임스페이스를 명시해준다.
     global = global; // 명시적으로 넣어준다.
+
     // 함수 실행하는 구문을 넣어줬다.
     global.layerComponent = factory();
+    
+    console.log(global); //  window를 넘겨받았기 때문에 window가 출력된다.
+    console.log(factory); // 함수이다.
 }(window, function() {  
     'use strict';
     var win = window,
@@ -93,7 +28,8 @@ console.log(layerComponent); // 즉시 실행되고 반환값은 layerComponent 
         console.log(isUndefined); // undefined
         /**
          * 언디파인드일 경우를 이용하는 경우가 있는데
-         * isUndefined로.. 굳이 이해할 필요는 없다. (OS차이) 나중에 깃 찾아봐도 좋다
+         * isUndefined로.. 굳이 이해할 필요는 없다. (OS차이) 
+         * 나중에 깃 찾아봐도 좋다.
          */
 
         // 내부에서 함수를 다시 호출한다.
@@ -111,7 +47,8 @@ console.log(layerComponent); // 즉시 실행되고 반환값은 layerComponent 
             this.init();
         };
         layerComponent.prototype = { 
-            // 얘는 클로저로 만들것이다. 일단 어디에 저장을 해두고 리턴해서 저장해놓는 방식으로 사용하는 것을 클로저 방식 중 하나이다. 리턴 방식으로 객체를 저장
+            // 얘는 클로저로 만들것이다. 일단 어디에 저장을 해두고 리턴해서 저장해놓는 방식으로 사용하는 것을 클로저 방식 중 하나이다. 
+            // 리턴 방식으로 객체를 저장
             init: function() {
                 console.log(init);
             },
@@ -179,11 +116,11 @@ console.log(layerComponent); // 즉시 실행되고 반환값은 layerComponent 
                 // js- prefix가 붙은 이유는 css와는 상관없이 js에서는 필요할 경우에 붙여준다.
             // 2. 다른데 클릭하면 다 닫히게 해주세요~ clickoutside 지정한 영역외를 감지하게 해주는 플러그인이다. 
         };
-        return layerComponent;  // 컴포넌트 안에 있는 애는 그냥 리턴을 해준다.
+        return layerComponent;  // 컴포넌트 안에 있는 애는 그냥 리턴을 해준다. 객체를 저장한다.
     })();
-    return layerComponent;
+    return layerComponent; 
 }));
-(function (global, factory) { // layerComponent() 함수를 호출하는 구문이다. 클로저로 저장만 해두었기 때문에 여기서 호출을 해준다.
+(function (global, factory) { // layerComponent() 함수를 호출하는 구문이다. 위 즉시실행함수 코드는 클로저로 저장만 해두었고, 여기서 호출을 해준다.
     global = global;
     $(function() {
         factory(); // 돔의 로드가 끝나면 실행이 된다.
@@ -226,45 +163,8 @@ console.log(layerComponent); // 즉시 실행되고 반환값은 layerComponent 
         };
         return new layerComponent(); // new로 객체 생성을 하면서 직접 함수를 실행하는 구문으로 함수를 리턴해준다.
     });
-    // return layerArea;
+    return layerComponent;
 }));
-</script>
-<script>
-// 접근성 = 키보드와 마우스가 동일한 역할을 하는 것.
-// 이동했을 때 포커스를 잃는데 포커스가 그 안에 있어야 함. 
-// 보통 팝업은 바디 밑에 모여있는 경우가 있다 이때 포커스를 강제로 오도록 만들어야 함. 어케 만듦? 다음 포커스는 팝업 컨텐츠로 가다가 팝업안에서 돌다가 닫기를 누르지 않을 경우 포터스가 계속 돌아야 함. 이것을 구현해보세요.
-// 쉬프트 탭으로 이전으로 가는 것도 있다. 정방향 역방향도 고려해서 짜야함.
-// 1. 팝업 테두리로 보낼 것 div (포터스 안감 tabidnex로 강제로 준다)
-// 2. span으로 앞뒤로 포커스를 받을 애를 주고. - 얘로 왔다깠다가 확인이 됨 이벤트를 추가한다.
-// 3. 쉬프트를 줫을 때 닫기 버튼으로 가서 왔따갔다 해야함.
-// 4. 닫히고 나서 눌렀던 부분에 포커스가 남아야 한다. (함수 추가)
-
-//////////////////////////////////////////////////////
-
-// 1. 바깥 영역 누를 때 잘 닫히는 지.
-// 2. 포커스 제대로 도는지 확인
-// 3. 버튼을 어디서 눌렀는지 해당 인덱스를 저장해서 기억하는 것을 만들자.
-
-//////////////////////////////////////////////////////
-// 컴포넌트를 플러그인 하는 방법을 설명해주셨어여..
-// input은 page에 수십개씩 있는데.. 기능은 비슷해유..
-// form이기에 change로 바꾸는거 (곰)
-// 셀릭트가 트루인지 폴스인지 감지할 수 있겠고
-// 셀렉트박스도 oustside 이용할 수 있곗져~~만드러보세유.. 여러개 넣어서 만드세유..
-
-
-
-//////////////////////////////////////////////////////
-// 과거에 ie8까지 대응했었따. 특징은 반응형이 안됨 pc뷰
-// 유효성 검사 넣을 때 반응형인지 아닌지 구분할 수 있는 방법은 뭐가 있을까여? -> css3로 구분한다 transform으로ㅇㅇ
-// ㅑ녀ㅔㅔㅐㄱㅅㅆㄱ물래그 dmfh 으로 리턴이 트루이거나 폴스인데 이걸로 구분한다.
-// isSupportTransform
-
-// if (isSupportTransform && this.winWidth > Responseibe.MOBILE.WIDTH) {
-//     // PC 일 때 이프문에 두 조건을 추가한다.  
-//     // isSupportTransform가 없다면 ie8에서 열었을 때 반응형 안먹힘.
-
-// }
 </script>
 </body>
 </html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS 7_2</title>
+<p>return : 함수를 호출한 곳에 그 값을 반환</p>
+<p>스코프와 실행 컨텍스트, 왜 return을 해서 객체를 저장하는지..</p>
+</head>
+<body>
+<script>
+// https://chanhuiseok.github.io/posts/js-5/
+// https://webzz.tistory.com/637
+</script>
+<script>
+(function(g, fac) {
+    g = g;
+    g.a = fac();
+    console.log(g)
+}(window, function() {
+    var a = (function() {
+        function b() {
+            console.log('ㅎㅇ');
+            console.log(this) // window
+        }
+        console.log(b); // function b를 출력한다.
+        return b; // function b를 var a에 담는다. // 즉시 실행함수는 실행되고 끝나버리니까 return으로 저장하는건가?
+    })();
+    console.log(a); // 얘도 function b이다.
+    return a; // function b와 마찬가지로, var a에 즉시실행함수가 담겨있으니 그걸 저장해두는건가?
+}));
+
+
+
+
+// 클로저 찾아보면 나오는 예시가
+function outerFunc(){
+    // 자유변수 입니다.
+    var x = '야호';
+
+    // 익명함수가 클로저입니다.
+    return function() {
+        console.log(x); // 야호 
+    }
+}
+var inner1 = outerFunc();
+// outerFunc의 실행 컨텍스트는 종료 //
+
+inner1(); // 야호
+console.dir(inner1); // 출력> f anonymous() inner1의 스코프는 [0] Closure (outerFunc) {x: 야호}, [1] Global {window}
+
+// 이런 코드이다.
+
+    // 코드설명
+        // outerFunc 함수는 변수 inner에 대입되고 이후 종료되었으니 실행컨텍스트는 사라짐.
+        // 그러나  outerFunc가 '반환'한 내부 함수에서는 x를 여전히 참조한다 그래서 1이 출력됨.
+
+// 그렇다면 즉시실행함수에서 return하여 변수 a나 함수 b를 하는 이유도 
+// 예시코드의 inner변수에 담아서 재실행? 시키는 것과 유사하다고 생각하면 될까?
+// 코드를 바꿔봅시다...
+var inner2 = (function outerFunc(){
+    var x = '하이';
+    return function() {
+        console.log(x); // 하이
+    }
+}());
+inner2();
+console.dir(inner2); // 출력> f anonymous() inner2의 스코프는 [0] Closure (outerFunc) {x: 하이}, [1] Global {window}
+
+// 회사에서 쓰는 코드 구조와 비슷하게 바꿔보자.
+var inner3 = (function outerFunc(){
+    var x = '호잇';
+    function 내부함수() {
+        console.log(x); // 호잇
+    }
+    return 내부함수;
+}());
+inner3();
+console.dir(inner3); //  출력> f 내부함수() inner3의 스코프는 [0] Closure (outerFunc) {x: 하이}, [1] Global {window}
+
+// 이 세 코드를 동일하다고 생각할 수 있을까요?
+
+// 이미 생명주기가 끝난 외부 함수의 변수를 참조하는 내부 함수를 클로저라고 부른다.
+// 그리고 그 외부 함수에 있던 변수를 '자유 변수'라고 부른다.
+
+
+// 클로저 활용
+// - 함수의 캡슐화
+// 클로저를 통해 함수의 캡슐화, 은닉성을 구현할 수 있다.
+// 변수와 함수의 중복을 피하기 위해서 클로저나 즉시실행함수 패턴을 적극 활용한다.
+function outerFunc1(age) {
+    var _age = age;
+    return function() {
+        console.log(_age);
+    }
+}
+var innerFunc1 = outerFunc1(20);
+console.dir(outerFunc1)
+innerFunc1(); // 20
+// 요러케하면 외부에서 _age에 접근을 할 수가 없다.. 오직 클로저에서만 _age를 쓸 수 있다..
+
+// 클로저 안에서는 자유 변수 값을 자유롭게 사용할 수 있고, 변경도 가능합니다.
+// 외부 함수의 실행 컨텍스트를 없어졌지만 클로저는 그 자유 변수 값을 자유롭게 쓸 수 있다.
+var toggle = (function() {
+    var isShow = false;
+
+    // 클로저를 반환
+    return function() {
+        box.style.display = isShow ? 'block' : 'none';
+        // 상태 변경
+        isShow = !isShow;
+    };
+}());
+// 즉시실행함수는 함수가 정의되는 동시에 실행. 함수만의 유효 범위를 가지게 된다. 최초 한 번의 실행만 필요로 하는 초기화 코드나 변수 중복, 임의 접근 문제를 피하기 위함.
+
+
+
+</script>
+</body>
+</html>
