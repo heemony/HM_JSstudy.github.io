@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>js closure</title>
+</head>
+<body>
+<script>
+    /**
+     * 정리 순서
+     * [1] 실행 컨텍스트와 스코프, 스코프 체인에 대해서 먼저 이해.
+     * [2] 클로저
+     */
+
+    /**
+     * [1] 자바스크립트의 실행 컨텍스트, 스코프, 스코프 체인
+     * 1. 자바스크립트의 실행 컨텍스트 (EC)
+     *      : 실행 가능한 코드가 실행되는 환경이다. 
+     *      
+     * 🚀 실행 컨텍스트 = '변수 객체(V.O)', 'Scope Chain(S.C)', 'this'
+     * [*] 변수 객체 
+     *      실행 컨텍스트가 생설될 떄는, 자바스크립트 엔진이 해당 컨텍스트에 필요한 정보를 저장할 '변수 객체'를 만든다.
+     *      (객체에서 사용할 매개변수, 사용자가 정의한 변수나 객체 등등~)
+     *      실행 가능한 코드들이 실행되는 환경인데, 그 코드들이 실행될 때 필요한 각종 정보를 담아 두는 곳이다.
+     *          [*] argument 프로퍼티는 함수 호출시 암묵적으로 전달된 arguments 객체를 참조한다. 
+     *              arguments 객체는 함수 호출 시 넘긴 '인자'들이 배열로 저장된 객체이다.
+     * 
+     * [*] 스코프 체인
+     *      [[scope]] 프로퍼티에 추가되는 연결리스트 형태의 스코프 정보가 만들어진다. 
+     *      스코프란? 현재 실행 중인 컨텍스트의 "유효한 범위"를 나타낸다.
+     * 
+     * [*] this 
+     *      동적으로 결정되며, this에 바인딩할 객체를 저장한다. 
+     * 
+     * [**] 현재 실행 컨텍스트 내부에서 사용하는 지역 변수 생성
+     *      함수 안에 정의된 변수들이나, 내부 함수들이 변수 객체에서 생성된다. 
+     *      변수나, 함수 표현식으로 만들어진 함수는 생성만되고 초기화는 이루어지지 않는다. (undefined)
+     * 
+     * function foo (p1, p2, p3) {
+     *      var a;
+     *      function bar() {
+     *             return a*a;
+     *      }
+     *      return p1 + p2 + p3 + a + bar();
+     * }
+     * foo(3, 4, 5);
+     * 
+     * foo() 실행 컨텍스트에서는..
+     * [=================변수객체===================]
+     *      arguments --> [p1, p2, p3] // 인자를 배열의 형태로 담아 저장.
+     *      [[scope]] --> [List]
+     *      p1:3, p2:4, p3:5 // 함수 인자에 대한 값들.
+     *      a: undefined // 지역변수 
+     *      bar() --> Function Object // 내부함수 
+     *      this --> Object // this binding
+     *
+     * 
+     * foo()를 실행함으로써 새롭게 만들어진 foo 실행 컨텍스트는 자신의 스코프 체인을 다음과 같은 규칙으로 갖는다.
+     * - 현재 실행중인 함수 객체(foo함수객체)의 [[scope]] 프로퍼티를 복사한다 (여기에는 전역변수객체가 담겨있다.)
+     * - 새롭게 생성된 foo 실행 컨텍스트의 변수 객체에 있는 [[scope]] 프로퍼티에 방금 복사한 [[scope]]값을 둔 다음,
+     * - 제일 앞에 새롭게 생성된 변수 객체를 추가한다. 여기서 새롭게 생성된 변수 객체란 
+     *      (foo 함수를 실행함으로써 새롭게 만들어진 foo 실행 컨텍스트의 변수 객체이다.)
+     * 
+     */
+
+    /**
+     * [2] 자바스크립트에서의 클로저란? 
+     * 1- 자신을 포함하고 있는 외부 함수보다 내부함수(자신)의 생명주기가 더 오래 유지되는 경우, 
+     *    외부 함수 밖에서 내부 함수가 호출되더라도 외부 함수의 지역변수에 접근할 수 있는 함수.
+     * 
+     * 2- 클로저 = 함수 +  함수가 생성(선언)됐을 때의 환경(렉시컬환경)의 조합.
+     *    자신이 생성되었을 때의 환경(lexical environment)을 기억하는 함수다.
+     *    반환된 내부 함수가 자신이 '선언'됐을 때의 환경인 스코프를 기억하여 자신이 선언됐을 때의 환경 밖에서 호출되어도 그 환경에 접근할 수 있는 함수.
+     */
+
+    /**
+     * 스코프
+     * 🚀 예시1) 외부함수 outerFunc 안에서 선언한 innerFunc
+        function outerFunc() {
+            var x = 10;
+            var innerFunc = function() {
+                console.log(x);
+            }
+            innerFunc();  // innerFunc가 호출이 되면 이때 스코프 체인은 자기 자신(innerFunc) -> outerFunc -> 전역 스코프
+        }
+        outerFunc();
+     * 
+     */
+
+    /** 
+     * [*] 렉시컬 스코핑 = 스코프는 함수를 호출할 때가 아니라, 함수를 '어디에 선언'하였는지에 따라 결정된다. '어디서 생성되었는지!'
+     * 위 예제의 함수 innerFunc는 함수 outerFunc 내부에 선언되었기 떄문에 
+     * 함수 innerFunc의 상위 스코프는 함수 outerFunc이다. 
+     * 함수 innerFunc가 전역에 선언되었다면 함수 innerFunc의 상위 스코프는 전역 스코프가 된다.
+     */
+
+    /**
+     * 스코프
+     * 🚀 예시2) 내부함수 innerFunc를 함수 ouerFunc내에서 호출하는 것이 아니라 반환하도록 해보자.
+    function outerFunc2() {
+        var x = 10;
+        var innerFunc2 = function() {
+            console.log(x)
+        };
+        return innerFunc2;
+    }
+    /**
+     * 함수 outerFunc2를 호출하면 내부 함수 innerFunc2가 반환이 된다. 
+     * 그리고 함수 outerFunc2의 실행 컨텍스트는 소멸한다. 그러나 실행 컨텍스트의 '활성 객체'는 유효하다.
+     * 활성 객체(Activatin Object): 선언된 변수, 함수의 정보.
+     */
+    // var inner2 = outerFunc2(); // 여기서 호출했다. innerFunc2를 반환하고 OuterFunc2는 생을 마감했다...
+        
+    // inner2(); // 그렇다면 outerFunc2에 있는 x도 생을 마감했어야 하는데, x에 접근하여 10을 가지고 왔다.
+    // 왜냐믄,
+    // 이처럼 자신을 포함하고 있는 외부함수보다 내부함수가 더 오래 유지되는 경우,
+    // 외부 함수 밖에서 내부 함수가 호출되더라도 외부 함수의 지역변수에 접근할 수 있는데 이를 클로저라고 한다. 
+    // 클로저 = 함수 + 함수가 선언됐을 때의 렉시컬 환경
+        // 여기서 함수는 반환된 내부 함수
+        // 그 함수가 선언될 떄의 렉시컬 환경이란 내부 함수가 선언됐을 때의 스코프를 의미한다.
+
+    // 자신이 생성되었을 때의 환경(lexical environment)을 기억하는 함수다.
+    // 반환된 내부 함수가 자신이 선언됐을 때의 환경인 스코프를 기억하여 자신이 선언됐을 때의 환경 밖에서 호출되어도 그 환경에 접근할 수 있는 함수.
+
+</script>
+    <button class="toggle">toggle</button>
+    <div class="box" style="width: 100px; height: 100px; background: red;"></div>
+    <script>
+    
+        // 클로저 예제 1.
+        var box = document.querySelector('.box');
+        var toggleBtn = document.querySelector('.toggle');
+
+        var toggle = (function() {
+            var isShow = false;
+            // (1) 클로저를 반환한다.
+            /** 즉시 실행 함수는 함수를 반환하고 즉시 소멸한다.
+             * 즉시실행함수가 반환한 함수는 자신이 생성됐을 때의 렉시컬 환경에 속한 변수 isShow를 기억하는 클로저다.
+             * 클로저가 기억하는 변수 isShow는 box 요소의 표시 상태를 나타낸다.
+             */
+            return function() {
+                box.style.display = isShow? 'block' : 'none';
+                // (3) 상태 변경
+                /**
+                 * 버튼을 클릭하면 이벤트 프로퍼티에 할당한 이벤트 핸들러인 클로저가 호출된다.
+                 * 이때 .box 요소의 표시 상태를 나태내는 변수의 값이 변경된다.
+                 * 변수 isShow는 클로저에 의해 참조되고 있기 때문에 유효하며 자신의 변경된 최신 상태를 유지한다.
+                 */
+                isShow = !isShow;
+            };
+        })();
+
+        // (2) 이벤트 프로퍼티에 클로저를 할당
+        /**
+         * 클로저를 이벤트 핸들러로써 이벤트 프로퍼티에 할당했다.
+         * 이벤트 프로퍼티에서 이벤트 핸들러인 클로저를 제거하지 않는 한 클로저가 기억하는 렉시컬 환경의 변수 isSHow는 소멸하지 않는다.
+         * 다시 말해 현재 상태를 기억한다.
+         */
+        toggleBtn.onclick = toggle;
+    </script>
+
+    <h1>counting</h1>
+    <h3>전역 변수를 이용한 Counting</h3>
+    <p>1) 전역 변수를 사용하는 경우 : 언제든지 누구나 쉽게 접근 가능. 의도치 않게 변경될 수 있음. </p>
+    <button id="increase1">+</button>
+    <p id="count1">0</p>
+    <script>
+        let increaseBtn1 = document.getElementById('increase1');
+        let count1 = document.getElementById('count1');
+
+        // 1) 카운트 상태를 유지하기 위한 전역 변수
+        let counter1 = 0;
+
+        function increase1() {
+            return ++counter1;
+        };
+        
+        increaseBtn1.onclick = function() {
+            count1.innerHTML = increase1();
+        }
+    </script>
+
+    <h3>지역 변수를 이용한 Counting</h3>
+    <p>2) 지역 변수를 사용하는 경우 : 변경된 이전의 상태를 기억하지 못 함.</p>
+    <button id="increase2">+</button>
+    <p id="count2">0</p>
+    <script>
+        let increaseBtn2 = document.getElementById('increase2');
+        let count2 = document.getElementById('count2');
+
+        function increase2() {
+            // 2) 카운트 상태를 유지하기 위한 지역 변수
+            let counter2 = 0;
+            return ++ counter2;
+        }
+
+        increaseBtn2.onclick = function() {
+            count2.innerHTML = increase2();
+        }
+    </script>
+
+    <h3>클로저 이용한 Counting</h3>        
+    <p>3) 클로저 : 이를 해결하기 위하여 이전 상태를 기억하도록 클로저를 사용</p>
+    <button id="increase3">+</button>
+    <p id="count3">0</p>
+    <script>
+        // 3) 클로저를 이용한 방법
+        let increaseBtn3 = document.getElementById('increase3');
+        let count3 = document.getElementById('count3');
+        
+        let increase3 = (function() {
+            // 카운트 상태를 유지하기 위한 자유 변수 
+            let counter = 0; 
+            // 클로저를 리턴한다. 클로저는 자신의 렉시컬 환경을 기억한다.
+            return function() { 
+                return ++counter;
+            };
+        })();
+
+        increaseBtn3.onclick = function() {
+            count3.innerHTML = increase3();
+        }
+    </script>
+    <div>
+        스크립트가 실행되면 즉시실행함수가 호출되고 변수 increase3에는 함수 function() {return ++counter};가 할당됨. <br>
+        이 함수는 자신이 생성됐을 때의 렉시컬 환경을 기억하는 클로저임. <br>
+        IIFE는 호출된 이후 소멸되지만, IIFE가 반환한 함수는 변수 increase3에 할당되어서 버튼이 눌릴 때 마다 클릭 이벤트내에서 호출 됨.<br>
+        이때 클로저인 이 함수는 자신이 선언됐을 떄의 렉시컬 환경인 IIFE의 스코프에 속한 지역변수 counter를 기억한다. <br>
+        따라서 즉시실행함수의 변수 counter에 접근할 수 있고, 변수 counter는 자신을 참조하는 함수가 소멸될 때까지 유지된다. <br>
+    </div>
+    
+    <h3>함수형 프로그래밍에서 클로저를 활용한 예제</h3>    
+    <p>script 참고</p>   
+    <script>
+        // 함수를 인자로 전달받고 함수를 반환하는 고차 함수
+        // 이 함수가 반환하는 함수는 클로저로써 카운트 상태를 유지하기 위한 자유 변수 counter를 기억한다.
+        function makeCounter(predicate) {
+            // 카운트 상태를 유지하기 위한 자유 변수
+            var counter = 0;
+            // 클로저 반환
+            return function() {
+                counter = predicate(counter);
+                return counter;
+            };
+        }
+
+        // 보조 함수
+        function increase(n) {
+            return ++n;
+        }
+        
+        // 보조 함수
+        function decrease(n) {
+            return --n;
+        }
+
+        // 함수로 함수를 생성한다.
+        // makeCounter 함수는 보조함수를 인자로 전달받아 함수를 반환한다.
+        const increaser = makeCounter(increase);
+        console.log(increaser());
+        console.log(increaser());
+
+        // increaser 함수와는 별개의 독립된 렉시컬 환경을 갖기 떄문에 카운터 상태가 연동되지 않음.
+        const decreaser = makeCounter(decrease);
+        console.log(decreaser());
+        console.log(decreaser());
+        // -> 증감이 가능한 카운터를 만들려면 렉시컬 환경을 공유하는 클로저를 만들어줘야 한다.
+        // 아래 코드를 보자.
+    </script>
+
+       
+    <h3>정보의 은닉</h3>    
+    <p>script 참고 / 생성자 함수 Counter를 생성하고 이를 통해 counter 객체를 만들어보자.</p>  
+    <div>
+        생성자 함수 Counter는 increase decrease 메소드를 갖는 인스턴스 counter4를 생성한다. <br>
+        이 메소드들은 모두 자신이 생성됐을 때의 렉시컬 환경인 생성자 함수 Counter의 스코프에 속한 변수 counter를 기억하는 클로저들이며, 렉시컬 환경을 공유한다. <br>
+        생성자 함수가 생성한 객체의 메소드는 객체의 프로퍼티에만 접근할 수 있는 것이 아니며 <br>
+        자신이 기억하는 렉시컬 환경의 변수에도 접근할 수 있다. <br>
+
+    </div>
+    <script>
+        function Counter() {
+            // 카운트를 유지하기 위한 자유 변수
+            // 얘를 this.counter로 하게 된다면 Counter가 생성한 인스턴스를 통해 외부에서 접근이 가능한 public 프로퍼티가 된다.
+            // 그러나 Counter 생성자 함수 내에서 선언된 변수 counter는 생성자 함수 Counter 외부에서 접근할 수 없다.  --> 이어서..
+            var counter = 0;
+
+            // 클로저 --> .. 하지만 생성자 함수 Counter가 생성한 인스턴스의 메소드인 in~ de~는 클로저이기 떄문에
+            // 자신이 생성됐을 때의 렉시컬 환경인 생성자 함수 Counter의 변수 counter에 접근할 수 있다. 
+            // 클로저의 특성으로 private 키워드를 흉내낼 수 있다.
+            this.increase = function() {
+                return ++counter;
+            }
+            // 클로저
+            this.decrease = function() {
+                return --counter;
+            }
+        }
+
+        const counter4 = new Counter();
+        console.log(counter4.increase()); // 1
+        console.log(counter4.increase()); // 2
+        console.log(counter4.increase()); // 3
+        console.log(counter4.decrease()); // 4
+        // 증감이 가능해졌다.
+    </script>
+</body>
+</html>
