@@ -54,11 +54,27 @@ p{margin-bottom:30px;padding-bottom:10px;border-bottom:2px solid #da0707;font-si
     <div id="container">
         <div class="box box1">
             <p>1. 체크박스</p>
-            <div class="check_box chk_active">
-                <input type="checkbox" id="agree_v1" class="ipt_chk">
-                <span class="chk_box"></span>
+            <div class="js-checkbox-wrap">
+                <div class="check_box">
+                    <input type="checkbox" id="agree_v1" class="ipt_chk">
+                    <span class="chk_box"></span>
+                </div>
+                <label for="agree_v1" class="sp">개인정보 수집·이용 및 SMS수신에 동의합니다.</label>
             </div>
-            <label for="agree_v1" class="sp">개인정보 수집·이용 및 SMS수신에 동의합니다.</label>
+            <div class="js-checkbox-wrap">
+                <div class="check_box">
+                    <input type="checkbox" id="agree_v2" class="ipt_chk">
+                    <span class="chk_box"></span>
+                </div>
+                <label for="agree_v2" class="sp">개인정보 수집·이용 및 SMS수신에 동의합니다.</label>
+            </div>
+            <div class="js-checkbox-wrap">
+                <div class="check_box">
+                    <input type="checkbox" id="agree_v3" class="ipt_chk">
+                    <span class="chk_box"></span>
+                </div>
+                <label for="agree_v3" class="sp">개인정보 수집·이용 및 SMS수신에 동의합니다.</label>
+            </div>
         </div>
         <div class="box box2">
             <p>2. 라디오버튼</p>
@@ -71,6 +87,11 @@ p{margin-bottom:30px;padding-bottom:10px;border-bottom:2px solid #da0707;font-si
                 <input type="radio" id="radio2" name="radio1" class="ipt_rdo">
                 <span class="rdo_box"></span>
                 <label for="radio2">라디오2</label>
+            </span>
+            <span class="radio_box">
+                <input type="radio" id="radio3" name="radio1" class="ipt_rdo">
+                <span class="rdo_box"></span>
+                <label for="radio3">라디오3</label>
             </span>
         </div>
         <div class="box box3">
@@ -94,6 +115,249 @@ p{margin-bottom:30px;padding-bottom:10px;border-bottom:2px solid #da0707;font-si
 <!-- [ Javascript Area ] -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="../js/apps/util.js"></script>
+<script>
+// 1. Checkbox
+(function (global, factory) {
+    global = global;
+    global.checkboxComponent = factory();
+}(window, function() {
+    'use strict';
+    var checkboxComponent = (function (isUndefined) {
+        var win = window,
+            Util = win.Common.util;
+        function checkboxComponent (container, args) {
+            var defParams = {
+                obj: container,
+                chkBox: '.ipt_chk',
+                addActive: 'chk_active',
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        checkboxComponent.prototype = {
+            init: function() {
+                console.log('chkbox init');
+                this.setElements();
+                this.bindEvents();
+            },
+            setElements: function() {
+                this.chkBox = this.obj.find(this.opts.chkBox);
+            },
+            bindEvents: function() {
+                this.chkBox.on('change', this.onChangeFunc.bind(this));
+            },
+            onChangeFunc: function(e) {   
+                var target = $(e.delegateTarget);
+                console.log(target)
+                target.parent().toggleClass(this.opts.addActive, $(this).prop('checked'));
+                console.log($(this));
+                // target.toggleClass(this.opts.addActive, $(this).is(':checked'));
+                /**
+                 * attr() 과 prop(), is()
+                 * .attr() 은 element가 가지는 속성값이나 정보를 조회하거나 셋팅하는 형식의 일을 한다.
+                 * .prop() 은 실제적인 상태 (활성화, 체크, 선택 여부 등) 을 제어하는 일을 한다. (is도 여기선 비슷한 역할을 해줄 수 있다.)
+                 */
+            },
+        }
+        return checkboxComponent;
+    })();
+    return checkboxComponent;
+}));
+(function (global, factory) {
+    global = global;
+    $(function() {
+        factory();
+    })
+}(window, function() {
+    'use strict';
+    var checkboxComponent = (function() {
+        var win = window,
+            Util = win.Common.util;
+        function checkboxComponent(args) {
+            var defParams = {
+                obj: '.js-checkbox-wrap'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        checkboxComponent.prototype = {
+            init : function () {
+                this.callComponent();
+            },
+            callComponent : function () {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function (index) {
+                        var instance = new win.checkboxComponent(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new checkboxComponent();
+    })();
+    return checkboxComponent;
+}));
+</script>
+<script>
+// 2. Radio Button
+(function (global, factory) {
+    global = global;
+    global.radioBtnComponent = factory();
+}(window, function() {
+    'use strict';
+    var radioBtnComponent = (function (isUndefined) {
+        var win = window,
+            Util = win.Common.util;
+        function radioBtnComponent (container, args) {
+            var defParams = {
+                obj: container,
+                radioBox: '.radio_box',
+                addActive: 'chk_active',
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        radioBtnComponent.prototype = {
+            init: function() {
+                console.log('radio init');
+                this.setElements();
+                this.initLayout();
+                this.bindEvents();
+            },
+            setElements: function() {
+                this.radioBox = this.obj.find(this.opts.radioBox);
+            },
+            initLayout: function() {
+                this.radioBox.removeClass(this.opts.addActive);
+            },
+            bindEvents: function() {
+                this.radioBox.on('click', this.onClickFunc.bind(this));
+            },
+            onClickFunc: function(e) {   
+                var target = $(e.currentTarget);
+                target.find('radio_box input').toggleClass(this.opts.addActive);
+            },
+        }
+        return radioBtnComponent;
+    })();
+    return radioBtnComponent;
+}));
+(function (global, factory) {
+    global = global;
+    $(function() {
+        factory();
+    })
+}(window, function() {
+    'use strict';
+    var radioBtnComponent = (function() {
+        var win = window,
+            Util = win.Common.util;
+        function radioBtnComponent(args) {
+            var defParams = {
+                obj: '.radio_box'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        radioBtnComponent.prototype = {
+            init : function () {
+                this.callComponent();
+            },
+            callComponent : function () {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function (index) {
+                        var instance = new win.radioBtnComponent(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new radioBtnComponent();
+    })();
+    return radioBtnComponent;
+}));
+</script>
+<script>
+// 3. Select Box
+(function (global, factory) {
+    global = global;
+    global.selectBoxComponent = factory();
+}(window, function() {
+    'use strict';
+    var selectBoxComponent = (function (isUndefined) {
+        var win = window,
+            Util = win.Common.util;
+        function selectBoxComponent (container, args) {
+            var defParams = {
+                obj: container,
+                chkBox: '.check_box',
+                addActive: 'chk_active',
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        selectBoxComponent.prototype = {
+            init: function() {
+                console.log('select init');
+                this.setElements();
+                this.bindEvents();
+            },
+            setElements: function() {
+                this.chkBox = this.obj.find(this.opts.chkBox);
+            },
+            bindEvents: function() {
+                this.chkBox.on('click', this.onClickFunc.bind(this));
+            },
+            onClickFunc: function(e) {   
+                var target = $(e.currentTarget);
+                target.find('check_box input').toggleClass(this.opts.addActive);
+            },
+        }
+        return selectBoxComponent;
+    })();
+    return selectBoxComponent;
+}));
+(function (global, factory) {
+    global = global;
+    $(function() {
+        factory();
+    })
+}(window, function() {
+    'use strict';
+    var selectBoxComponent = (function() {
+        var win = window,
+            Util = win.Common.util;
+        function selectBoxComponent(args) {
+            var defParams = {
+                obj: '.box'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if ( !(this.obj = $(this.opts.obj)).length ) return;
+            this.init();
+        };
+        selectBoxComponent.prototype = {
+            init : function () {
+                this.callComponent();
+            },
+            callComponent : function () {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function (index) {
+                        var instance = new win.selectBoxComponent(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new selectBoxComponent();
+    })();
+    return selectBoxComponent;
+}));
+</script>
 </div>
 </body>
 </html>

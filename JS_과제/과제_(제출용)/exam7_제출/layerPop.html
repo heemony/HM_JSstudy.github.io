@@ -104,8 +104,8 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.layerNextFocus = this.layerPos.next();
             },
             bindEvents: function() {
-                this.layerClose.on('click', '> button', this.onClickCloseFunc.bind(this));
-                this.btnPos.on('click', '> button', this.onClickOpenFunc.bind(this));
+                this.layerClose.on('click', '>button', this.onClickCloseFunc.bind(this));
+                this.btnPos.on('click', '>button', this.onClickOpenFunc.bind(this));
                 this.btnPos.on('focusin', this.onBtnFocusFunc.bind(this));
                 this.layerPrevFocus.on('focusin', this.onPrevFocusFunc.bind(this));
                 this.layerNextFocus.on('focusin', this.onNextFocusFunc.bind(this));
@@ -129,7 +129,7 @@ button::-moz-focus-inner{padding:0;border:0}
                     _this.outsideFunc(true);
                 }, 150);
             },
-            onClickCloseFunc: function() {
+            onClickCloseFunc: function(e) {
                 this.layerArea.hide();
                 this.outsideFunc(false);
                 this.lastEl.children().focus();
@@ -139,15 +139,12 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.layerClose.focus();
             },
             onNextFocusFunc: function() {
-                this.layerClose.focus();
                 this.layerPrevFocus.next().focus();
+                this.layerClose.focus();
             },
             onBtnFocusFunc: function() {
                 var lastEl = $(':focus').parent();
                 this.lastEl =  lastEl;
-                
-                // var idx = this.lastEl.index();
-                // console.log(idx)
             }
         };
         return gnbComponent;
@@ -190,6 +187,36 @@ button::-moz-focus-inner{padding:0;border:0}
     })();
     return gnbComponent;
 }));
+</script>
+<script>
+    // find() 와 filter()
+    // -> find는 전체에서 검색한다.
+    // -> filter는 자기 자신의 레벨에서 검색한다.
+    /** 
+     * <div id=fruits>
+     *      <div id=apple>apple</div>
+     *      <div id=kiwi>kiwi</div>
+     *      <div id=pineapple>pineapple</div>
+     * </div>
+     * 
+     * find()
+     * -> 검색, 
+     *  : fruits 하위 div중 아이디가 apple
+     *    $('#fruits').find('[id=apple');
+     * 
+     * filter()
+     * -> 필터링,
+     *  : fruits 하위 div중 아이디가 kiwi
+     *    $('#fruits div').filter(function() { return this.id === 'kiwi'}; )
+     * 
+     *  fruits가 아니라 fruits div라고 써줘야 fruits 하위의 div를 검색함!
+     */
+    
+    // first()와 last()
+    // -> 첫 번째 index 요소와 마지막 index 요소를 선택한다.
+
+    // next()와 prev()
+    // -> index상의 다음(이전) 요소가 아닌 DOM구조에서 형제관계 중 내 다음(이전)에 오는 요소이다.
 </script>
 </body>
 </html>
