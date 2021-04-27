@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS 8</title>
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="./js/apps/util.js"></script>
+<script>
+(function(global, factory) {
+    global = global; 
+    global._Component = factory();
+}(window, function() {  
+    'use strict';
+    var win = window,
+        Util = win.Common.util;
+
+    var _Component = (function (isUndefined) {
+
+        function _Component(container, args) {
+            var defParams = {
+                obj: container,
+
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        };
+        _Component.prototype = { 
+            init: function() {
+
+            },
+            setElement: function() {
+                this.layerArea = this.obj.find(this.opts.layerArea);
+
+            },
+            initLayout: function() {
+                
+            }, 
+            fnc1: function() {
+                
+            },
+        };
+        return _Component;  
+    })();
+    return _Component;
+}));
+(function (global, factory) { 
+    global = global;
+    $(function() {
+        factory(); 
+    })
+}(window, function() {
+    'use strict'
+    var _Component = (function() {
+        var win = window,
+            Util = win.Common.util;
+
+        function _Component(args) {
+            var defParams = {
+                obj: '.',
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        };
+        _Component.prototype = { 
+            init: function() {
+                this.callComponent();
+            },
+            callComponent: function() {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function (index) {
+                        var instance = new win._Component(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new _Component(); 
+    });
+    return _Component;
+}));
+</script>
+</body>
+</html>
