@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>thema test</title>
+<title>hash prac</title>
 <style>
 /* temporary css */
 *{margin:0;padding:0}
@@ -91,36 +91,6 @@ button::-moz-focus-inner{padding:0;border:0}
                 <div class="cast_num"><span class="current">1</span> / <span class="total">8</span></div>
             </div>
         </div>
-
-        <div class="slide_box">
-            <div class="slide_tab">
-                <ul>
-                    <li class="active"><a href="#slide1">테마1</a></li>
-                    <li><a href="#slide2">테마2</a></li>
-                    <li><a href="#slide3">테마3</a></li>
-                    <li><a href="#slide4">테마4</a></li>
-                    <li><a href="#slide5">테마5</a></li>
-                    <li><a href="#slide6">테마6</a></li>
-                    <li><a href="#slide7">테마7</a></li>
-                    <li><a href="#slide8">테마8</a></li>
-                </ul>
-            </div>
-            <div class="slide_cont">
-                <div id="slide1" class="slide_article active">컨텐츠1</div>
-                <div id="slide2" class="slide_article">컨텐츠2</div>
-                <div id="slide3" class="slide_article">컨텐츠3</div>
-                <div id="slide4" class="slide_article">컨텐츠4</div>
-                <div id="slide5" class="slide_article">컨텐츠5</div>
-                <div id="slide6" class="slide_article">컨텐츠6</div>
-                <div id="slide7" class="slide_article">컨텐츠7</div>
-                <div id="slide8" class="slide_article">컨텐츠8</div>
-            </div>
-            <div class="slide_setting">
-                <div class="slide_btn">
-                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- container [e] -->
     <hr />
@@ -155,7 +125,6 @@ button::-moz-focus-inner{padding:0;border:0}
                 castControls : '.cast_btn',
                 castPrev : '.prev',
                 castNext : '.next',
-                customEvent : '.TabComponent' + (new Date()).getTime() + Math.random()
             };
             this.opts = $.extend(defParams, (args || {}));
             if(!this.opts.init) return;
@@ -166,7 +135,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 if(!(this.obj = $(this.opts.obj)).length) return;
                 this.setElements();
                 this.initLayout();
-                // this.bindEvents(true);
+                this.bindEvents(true);
             },
             setElements: function() {
                 this.castTab = this.obj.find(this.opts.castTab);
@@ -184,21 +153,23 @@ button::-moz-focus-inner{padding:0;border:0}
             initTotalText: function() {
                 var tabTotal = this.castTabChild.length;
                 this.castNumTotal.text(tabTotal);
-                console.log(tabTotal)
+                // console.log(tabTotal)
             },
             initLayout : function() {
                 this.castTabChild.removeClass(this.opts.activeClass);
                 this.castArticle.removeClass(this.opts.activeClass);
-                // this.getHash();
-                // this.hachChangeFunc();
+                this.getHash();
+                this.hachChangeFunc();
                 this.initTotalText();
             },
             changeEvents: function(event) {
                 var events = [],
                     eventNames = event.split(' ');
                 for (var key in eventNames) {
-                    events.push(eventNames[key] + this.opts.customEvent);
+                    events.push(eventNames[key]);
+                    // console.log(events);
                 }
+                return events.join(' ');
             },
             bindEvents: function(type) {
                 if (type) {
@@ -212,6 +183,57 @@ button::-moz-focus-inner{padding:0;border:0}
                     this.castNext.off(this.changeEvents('click'));
                     $(win).off(this.changeEvents('hashchange'));
                 }
+            },onPrevFunc : function (e) {
+                e.preventDefault();
+                this.currentIndex--;
+                if (this.currentIndex < 0) {
+                    this.currentIndex = this.castTabChild.length - 1;
+                }
+                this.hashUpdate();
+            },
+            onNextFunc : function (e) {
+                e.preventDefault();
+                this.currentIndex++;
+                if (this.currentIndex >= this.castTabChild.length) {
+                    this.currentIndex = 0;
+                }
+                this.hashUpdate();
+            },
+            // 인덱스로 뷰를 변화x
+            onTabClickFunc : function (e) {
+                e.preventDefault();
+                var target = $(e.delegateTarget),
+                    targetIndex = target.index();
+                this.currentIndex = targetIndex;
+                this.hashUpdate();
+            },
+            // 해쉬 체인지 때문에 뷰가 변함.
+            hachChangeFunc : function () {
+                if (this.oldIndex === this.currentIndex) return;
+                this.getHash();
+                this.activeTabFunc();
+            },
+            getHash : function () {
+                var getHash = win.location.hash.replace('_', ''),
+                    hashTarget = this.castArticle.filter(getHash);
+                // console.log(getHash)
+                this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0;
+                this.textUpdate();
+            },
+            hashUpdate : function () {
+                var hashName = this.castArticle.eq(this.currentIndex).attr('id');
+                win.location.hash = '#' + hashName + '_';
+                // id와 링크가 연결되어있는데, 그 id를 가져와서 해쉬 넘버를 업데이트 함.
+            },
+            textUpdate : function () {
+                this.castNumCurrent.text(this.currentIndex + 1);
+            },
+            activeTabFunc : function () {
+                this.castTabChild.eq(this.currentIndex).addClass(this.opts.activeClass);
+                this.castArticle.eq(this.currentIndex).show();
+                this.castTabChild.eq(this.oldIndex).removeClass(this.opts.activeClass);
+                this.castArticle.eq(this.oldIndex).hide();
+                this.oldIndex = this.currentIndex;
             }
         };
         return TabComponent;
@@ -222,7 +244,7 @@ button::-moz-focus-inner{padding:0;border:0}
     $(function () {
         factory();
     })
-}(window, function () 
+}(window, function () {
     var Component = (function (isUndefined) {
         var win = window;
 
