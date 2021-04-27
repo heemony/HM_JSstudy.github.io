@@ -246,6 +246,7 @@ button::-moz-focus-inner{padding:0;border:0}
         initLayout: function() {
             this.castArticle.removeClass(this.opts.activeClass);
             this.contViewFunc();
+            this.getHash();
         },
         bindEvents: function() {
             this.castTabChild.on('click', '> a', this.onTabClickFunc.bind(this));
@@ -260,23 +261,18 @@ button::-moz-focus-inner{padding:0;border:0}
             this.stateBar();
             this.contViewFunc();
             this.hashUpdate();
-
+        },
+        getHash: function() {
+            var gethash = win.location.hash.replace('_', ''),
+                hashTarget = this.castArticle.filter(gethash);
+              
+            console.log(gethash)
+            this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0; 
+            this.stateBar();
         },
         hashUpdate: function() {
             var hashName = this.castArticle.eq(this.currentIndex).attr('id');
             win.location.hash = '#' + hashName + '_';
-        },
-        getHash: function() {
-            var hash = win.location.hash.replace('_', ''),
-                hashTarget = this.castArticle.filter(getHash);
-              
-            console.log(hash)
-            this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0;
-            // 0으로 하는 것은 사용자가 url 링크를 잘못 입력하여 넣을 경우를 대비하여 유효성 검증을 위해 0을 넣음.
-            this.textUpdate();
-        },
-        textUpdate : function () {
-                this.castNumCurrent.text(this.currentIndex + 1);
         },
         onBtnClickFunc: function(e) {
             var target =  $(e.currentTarget),
@@ -284,21 +280,23 @@ button::-moz-focus-inner{padding:0;border:0}
                 btnDirection = prevBtn ? 1 : -1;
             if ( btnDirection < 0) { //prev
                 this.currentIndex--;
+                this.hashUpdate();
                 this.stateBar();
                 this.contViewFunc();
-                this.hashUpdate();
                 if(this.currentIndex < 0) {
                     this.currentIndex = this.maxLength - 1;
+                    this.hashUpdate();
                     this.stateBar();
                     this.contViewFunc(); 
                 }
             } else { // next
                 this.currentIndex++;
+                this.hashUpdate();
                 this.stateBar();
                 this.contViewFunc(); 
-                this.hashUpdate();
                 if(this.currentIndex > this.maxLength - 1) {
                     this.currentIndex = 0;
+                    this.hashUpdate();
                     this.stateBar();
                     this.contViewFunc(); 
                 }
