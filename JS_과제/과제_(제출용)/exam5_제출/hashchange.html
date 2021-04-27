@@ -61,6 +61,35 @@ button::-moz-focus-inner{padding:0;border:0}
     <hr />
     <!-- container [s] -->
     <div id="container">
+        <div class="slide_box">
+            <div class="slide_tab">
+                <ul>
+                    <li class="active"><a href="#slide1">테마1</a></li>
+                    <li><a href="#slide2">테마2</a></li>
+                    <li><a href="#slide3">테마3</a></li>
+                    <li><a href="#slide4">테마4</a></li>
+                    <li><a href="#slide5">테마5</a></li>
+                    <li><a href="#slide6">테마6</a></li>
+                    <li><a href="#slide7">테마7</a></li>
+                    <li><a href="#slide8">테마8</a></li>
+                </ul>
+            </div>
+            <div class="slide_cont">
+                <div id="slide1" class="slide_article active">컨텐츠1</div>
+                <div id="slide2" class="slide_article">컨텐츠2</div>
+                <div id="slide3" class="slide_article">컨텐츠3</div>
+                <div id="slide4" class="slide_article">컨텐츠4</div>
+                <div id="slide5" class="slide_article">컨텐츠5</div>
+                <div id="slide6" class="slide_article">컨텐츠6</div>
+                <div id="slide7" class="slide_article">컨텐츠7</div>
+                <div id="slide8" class="slide_article">컨텐츠8</div>
+            </div>
+            <div class="slide_setting">
+                <div class="slide_btn">
+                    <button type="button" class="prev">이전</button><button type="button" class="next">다음</button>
+                </div>
+            </div>
+        </div>
         <div class="cast_box">
             <div class="cast_tab">
                 <ul>
@@ -215,15 +244,16 @@ button::-moz-focus-inner{padding:0;border:0}
             },
             getHash : function () {
                 var getHash = win.location.hash.replace('_', ''),
+                // var getHash = win.location.hash,
                     hashTarget = this.castArticle.filter(getHash);
-                // console.log(getHash)
+
                 this.currentIndex = (hashTarget.length) ? hashTarget.index() : 0;
                 this.textUpdate();
             },
             hashUpdate : function () {
                 var hashName = this.castArticle.eq(this.currentIndex).attr('id');
+                // win.location.hash = '#' + hashName; // 클릭시 올라가버림.
                 win.location.hash = '#' + hashName + '_';
-                // id와 링크가 연결되어있는데, 그 id를 가져와서 해쉬 넘버를 업데이트 함.
             },
             textUpdate : function () {
                 this.castNumCurrent.text(this.currentIndex + 1);
