@@ -162,14 +162,14 @@ JS 6 mouseenter, mouseleave
             if (this.winWidth > Responsive_Mobile) { 
                 if (this.opts.viewType != 'PC') {
                     this.opts.viewType = 'PC';
-                    this.menuBox.css({'display': ''}); // 초기화
+                    // this.menuBox.css({'display': ''}); // 초기화
                     this.bindPcEvents(true);
                     this.bindMoEvents(false);
                 }
             } else {
                 if (this.opts.viewType != 'MO') {
                     this.opts.viewType = 'MO';
-                    this.menuBox.css({'display': ''}); // 초기화
+                    // this.menuBox.css({'display': ''}); // 초기화
                     this.bindPcEvents(false);
                     this.bindMoEvents(true);
                 }
@@ -187,9 +187,11 @@ JS 6 mouseenter, mouseleave
             var target = $(e.delegateTarget),
                 targetBox = target.find(this.menuBox);
             if( e.type === 'mouseenter' || e.type === 'focusin') {
-                targetBox.show();
+                // targetBox.show();
+                targetBox.css({'display': 'block'});
             } else if(e.type === 'mouseleave' || e.type === 'focusout'){
-                targetBox.hide();
+                // targetBox.hide();
+                targetBox.css({'display': ''});
             }
         },  
         bindMoEvents: function(type) {
