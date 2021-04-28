@@ -745,14 +745,16 @@ ins{text-decoration:none}
                 this.scrollFunc();
             },
             initLayout: function() {
-                this.objTop = this.obj.offset().top;
+                this.objTop = this.obj.offset().top; // 절대위치 기준값.
 
-                var objHeight = this.obj.outerHeight(true),
-                    jsClass = 'js-' + this.obj.attr('class');
+                // 스티키바가 픽스되면 공간이 뜨게되므로 해결하기 위한 장치.
+                var objHeight = this.obj.outerHeight(true), // 전체 outerHeight
+                    jsClass = 'js-' + this.obj.attr('class'); 
 
-                this.obj.wrap('<div class="' + jsClass + '" />');
-                this.objWrap = this.obj.parent();
-                this.objWrap.css('height', objHeight);
+                this.obj.wrap('<div class="' + jsClass + '" />'); // ㅇㅇ.wrap() ㅇㅇ을 감싸는 부모 태그를 생성할 수 있다. 
+                console.log(this.obj)
+                // this.objWrap = this.obj.parent(); 
+                // this.objWrap.css('height', objHeight);
             },
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));
