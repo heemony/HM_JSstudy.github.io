@@ -5,8 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JS 8</title>
 </head>
+<style>
+    .d {height: 1000px; background-color: grey;}
+</style>
 <body>
+    <div class="d">
+        스티키바 : 컨디션이 맞으면 고정적으로 붙어서 있는 애가 스티키바이다. <br>
+        
+        처음엔 아무것도 활성화되지 않아있음.
+        첫번째 메뉴를 지나면 1번 메뉴 활성
+        2번쨰 ~ 2번 메뉴 활성
+        ..
 
+        누르면 해당되는 곳으로 옮겨지는 앵커기능도 구현 scroll.top 몇으로 animate를 할 수 이따
+
+        li가 4개인데 마지막은 걍 페이지 이동임 
+        스크롤이 시작할 때 체크할 수 있고, 끝날 때 할 수 있꼬 (setTime 어쩌구해서..) 시점을 잘 체크해야 함.
+
+        짜면서 설계를 구체적으로 만들어오기 (얘의 무슨 특성을 이용해서 어떻게 하겠다는 수준으로 설계해오기ㅇㅇ)
+
+        앵커는 매치 href와 id로 매치함. 이걸 활용해서 하삼..
+
+
+        반응형도 고려해서 체크해오기 (고려해야할 값이 뭔지..)
+    </div>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="./js/apps/util.js"></script>
 <script>
@@ -19,11 +41,10 @@
         Util = win.Common.util;
 
     var _Component = (function (isUndefined) {
-
         function _Component(container, args) {
             var defParams = {
-                obj: container,
-
+                obj:'.filter_sort_wrap',
+                fixedClass: '.sticky'
             };
             this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -31,18 +52,43 @@
         };
         _Component.prototype = { 
             init: function() {
-
-            },
-            setElement: function() {
-                this.layerArea = this.obj.find(this.opts.layerArea);
-
+                this.initLayout();
+                this.scrollFunc();
+                this.bindEvents();
             },
             initLayout: function() {
+                this.objTop = this.obj.offset().top; 
+                // offset과 position 찾아서 공부해보기
+                // offset top(은 불변)이 아니라 윈도우 탑은 계속 변함. 
+                var objHeight = this.obj.outerHeight(true); // 이것도 알아오시오. 매개벼수랑 디폴트랑ㅇㅇ
+                // 얘가 트루이면 마진박스값을 설정한다 만다 이런걸 줄 수 있음.
                 
+                // js로 디브를 하나 감싼다 얘는 속성이 디폴트라서 그냥 높이값만 갖고 있음. 
+                // 부드럽게 스티키가 가능하다.
+                var jsClass = 'js-' + this.obj.attr('class');
+                this.obj.wrap('<div class="' + jsClass + '" />');
+                this.objWrap = this.obj.parent();
+                this.objWrap.css('height', objHeight);
             }, 
-            fnc1: function() {
-                
+            bindEvents: function() {
+                $(win).on('scroll', this.scrollFunc.bind(this));
             },
+            scrollFunc: function() { // 애를 그냥 실행하면 뚝뚝 떨어지는 현상이 일어난다.
+                var winTop = $(win).scrollTop();
+                if (winTop >= objTop) {
+                    if (!this.obj.hasClass(this.opts.fixedClass)) { // 유효성검사 
+                        this.obj.addClass(this.opts.fixedClass); 
+                    }
+                } else {
+                    if (this.obj.hasClass(this.opts.fixedClass)) { // 유효성검사 
+                        this.obj.removeClass(this.opts.fixedClass)
+                    }
+                }
+            },
+            setElement: function() {
+
+            },
+           
         };
         return _Component;  
     })();
