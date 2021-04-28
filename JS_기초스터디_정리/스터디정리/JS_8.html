@@ -10,7 +10,7 @@
 </style>
 <body>
     <div class="d">
-        스티키바 : 컨디션이 맞으면 고정적으로 붙어서 있는 애가 스티키바이다. <br>
+        스티키바 : 컨디션이 맞으면 고정적으로 붙어서 있는 애가 스티키바이다. 
         
         처음엔 아무것도 활성화되지 않아있음.
         첫번째 메뉴를 지나면 1번 메뉴 활성
@@ -57,9 +57,10 @@
                 this.bindEvents();
             },
             initLayout: function() {
-                this.objTop = this.obj.offset().top; 
+                var objTop = this.obj.offset().top; 
                 // offset과 position 찾아서 공부해보기
-                // offset top(은 불변)이 아니라 윈도우 탑은 계속 변함. 
+                // offset top은 불변 
+                // 윈도우 탑은 계속 변함. 
                 var objHeight = this.obj.outerHeight(true); // 이것도 알아오시오. 매개벼수랑 디폴트랑ㅇㅇ
                 // 얘가 트루이면 마진박스값을 설정한다 만다 이런걸 줄 수 있음.
                 
@@ -85,10 +86,6 @@
                     }
                 }
             },
-            setElement: function() {
-
-            },
-           
         };
         return _Component;  
     })();

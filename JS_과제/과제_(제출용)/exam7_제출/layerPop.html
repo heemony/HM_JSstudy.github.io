@@ -143,8 +143,7 @@ button::-moz-focus-inner{padding:0;border:0}
                 this.layerClose.focus();
             },
             onBtnFocusFunc: function() {
-                var lastEl = $(':focus').parent();
-                this.lastEl =  lastEl;
+                this.lastEl = $(':focus').parent();
             },
         };
         return gnbComponent;
