@@ -67,7 +67,17 @@ ins{text-decoration:none}
 .quick_menu .apply.active:active .sp{background-position:-224px -19px}
 .quick_menu .apply:hover .sp,
 .quick_menu .apply:active .sp{background-position:-224px -38px}
+.quick_menu.sticky {position: fixed; top: 35px; right:5px;}
 /* //temporary css */
+@media all and (max-width: 768px) {
+    body, #wrapper{min-width: 100%;}
+    .quick_menu{top:250px;}
+    .section{height:100px;background-size:cover;}
+    .section.type2{height:1000px;background:grey;}
+    .section.type3{height:1200px;background:greenyellow;}
+    .section.type4{height:1400px;background:beige;}
+    .section.type5{height:500px;background:cornflowerblue;}
+}
 </style>
 </head>
 <body>
@@ -93,7 +103,7 @@ ins{text-decoration:none}
             <div class="section type2"></div>
             <div class="section type3"></div>
             <div class="section type4"></div>
-            <div class="section type5"></div>
+            <div class="section type6"></div>
         </div>
     </div>
     <!-- container [e] -->
@@ -155,12 +165,12 @@ ins{text-decoration:none}
         function scrollBannerComponent(container, args) {
             var defParams = {
                 obj: container,
-                quickWrap: '#content',
                 quickMenu : '.quick_menu',
-                quickList : '.quick_list',
+                quickList : 'li > a',
                 activeClass : 'active',
                 section : '.section',
-                topBtn: '.btn_top'
+                // topBtn: '.btn_top',
+                fixedClass: 'sticky'
             };
             this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -169,60 +179,77 @@ ins{text-decoration:none}
         scrollBannerComponent.prototype = {
             init: function() {
                 this.setElements();
-                // this.initLayout();
+                this.initLayout();
                 this.bindEvents();
-                console.log(this.section[1])
             },
             setElements: function() {
-                this.quickWrap = this.obj.find(this.opts.quickWrap);
                 this.quickMenu = this.obj.find(this.opts.quickMenu);
-                // this.quickList = this.obj.find(this.opts.quickList).children().find('a');
-                this.quickList = this.obj.find(this.opts.quickList).children();
+                this.quickList = this.quickMenu.find(this.opts.quickList);
                 this.section = this.obj.find(this.opts.section);
+                // this.topBtn = this.obj.find(this.opts.topBtn);
             },
+            // 초기화하기.
+            // 1) 퀵메뉴 절대값 구하기
+            // 2) '.active' 붙은 애들 모두 비활성화, 혹시라도 fixed가 붙을 가능성이 있을까 싶어서 그것도 추가
+            // 3) a href 속성 값을 #none에서 해당 #class 값으로 초기화
+            // 4) 타겟 a의 class값 과 section의 id 값 연결하기
             initLayout: function() {
+                // 1) 퀵메뉴 절대값 구하기
+                this.objQuickMenu = this.quickList.offset().top;
                 var _this = this,
-                rmvClass = this.quickList.filter(function(i, item) {
-                    if ($(item).hasClass(_this.opts.activeClass)) {
-                        $(item).removeClass(_this.opts.activeClass);
-                    }
+                    // 2) '.active' 붙은 애들 모두 비활성화, 혹시라도 fixed가 붙을 가능성이 있을까 싶어서 그것도 추가
+                    rmvClass = this.quickList.filter(function(i, item) {
+                        if ($(item).hasClass(_this.opts.activeClass) || $(item).hasClass(_this.opts.fixedClass)  ) {
+                            $(item).removeClass(_this.opts.activeClass);
+                            $(item).removeClass(_this.opts.fixedClass);
+                        }
+                    });
+                // 3) a href 속성 값을 #none에서 해당 #class 값으로 초기화
+                var goto = this.quickList.filter(function(i, item) {
+                    var href = this.classList;
+                    this.addHref = '#' + href;
+                    $(item).attr('href', this.addHref);
                 });
             },
+            // 5) resize 이벤트로 mo일 때에도 고려해야 함...
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));
                 this.quickList.on('click', this.gotoFunc.bind(this));
             },
+            // 스크롤하면 navbar따라오기
             scrollFunc: function() {
-                // 스크롤하면 navbar따라오기
-                this.currentTop = $(win).scrollTop();
-                this.sectionTop = $(this.section[1]).position().top;
-                this.fixedPosition = this.quickList.position().top;
-                if (this.currentTop >= this.sectionTop) {
-                    console.log(this.currentTop)
-                    this.quickMenu.css({
-                        'top': this.currentTop + 35
-                    })
-                }
+                var winTop = $(win).scrollTop();
+                this.secStartPoint = $(this.section[1]).position().top;
+                if (winTop >= this.secStartPoint) {
+                    if (!this.quickMenu.hasClass(this.opts.fixedClass)) {
+                        this.quickMenu.addClass(this.opts.fixedClass);
+                    }
+                } else {
+                    if (this.quickMenu.hasClass(this.opts.fixedClass)) {
+                        this.quickMenu.removeClass(this.opts.fixedClass);;
+                    }
+                }  
             },
             gotoFunc: function(e) {
-                // 클릭해서 해당 버튼의 id값을
-                /** 
-                 * section.type2 (section index : 1) - li[0]
-                 * section.type3 (section index : 2) - li[1]
-                 * section.type4 (section index : 3) - li[2]
-                 */
+                // 해당 버튼의 id값을 section에 저장
                 e.stopPropagation();
                 var target = $(e.currentTarget),
-                    targetA = target.find('a')[0],
-                    targetIndex = target.index();
+                    targetIndex = target.parent().index(),
+                    getId = $(target[0]).attr('class');
+  
                 this.showSection = this.section.eq(targetIndex + 1);
-                var isActive = target.find('a').hasClass(this.opts.activeClass) !== true;
+                // 4) 타겟 a의 class값 과 section의 id 값 연결하기
+                this.showSection.attr('id', getId); 
+                /**
+                 * 문제점.
+                 * a의 class 값을 가져다가 쓰게되서 이 값이 변경되면 관련된 다른 부분들도 변하게 됨..
+                 * id값 말고 다른 값으로 생각해 봐야함. 
+                 * 
+                 * id길이값을 체크해보려고 시도하였으나 실패!
+                 */
 
-                if (isActive) {
-                    this.addActiveFunc(targetA);
-
-                } else {
-                    this.rmvActiveFunc(targetA);
+                if ( getId === 'btn_top') {
+                    $('html, body').stop().animate({scrollTop: '0px'}, 500);
                 }
             },
             addActiveFunc: function(target) {

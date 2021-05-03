@@ -752,9 +752,8 @@ ins{text-decoration:none}
                     jsClass = 'js-' + this.obj.attr('class'); 
 
                 this.obj.wrap('<div class="' + jsClass + '" />'); // ㅇㅇ.wrap() ㅇㅇ을 감싸는 부모 태그를 생성할 수 있다. 
-                console.log(this.obj)
-                // this.objWrap = this.obj.parent(); 
-                // this.objWrap.css('height', objHeight);
+                this.objWrap = this.obj.parent(); 
+                this.objWrap.css('height', objHeight);
             },
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));

@@ -117,7 +117,7 @@ ins{text-decoration:none}
  *  - scroll.top ~으로 animate 해 줄 수 있다.
  * 
  * [ 설계 구상하기 ]
- *  - 설계 구체적으로 짜기 (어떤 함수의 어떤 성질을 어떻게 이용해서 짜겠다는 수준으로 상세히 디자인하기)
+ *  - 설계 구체적으로 짜기
  *  - 반응형 고려해서 체크하기 (고려해야 할 값이 무엇인지)
  */
 
@@ -135,9 +135,6 @@ ins{text-decoration:none}
  *      section.type3 - li[1]
  *      section.type4 - li[2]
  *      section.type5 - top으로 앵커
- * 
- * 3. 애니메이션
- * 
  * 
  */
 </script>
@@ -188,14 +185,6 @@ ins{text-decoration:none}
                     }
                 })
             },
-            // 구간별로 top 값을 재고싶다. 간단하게 짤 수 있는 방법은?
-            // initLayout에 높이값을 담은 변수를 같이 선언해도 좋을지 아니면 이렇게 따로 해둘지..
-            initVar: function() {
-                // 이 친구는 어떻게 해야할까!
-                // this.section_require = $(this.section[1]).position().top;
-                // this.section_benefit = $(this.section[2]).position().top;
-                // this.section_apply = $(this.section[3]).position().top;
-            },
             // Event Binding
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));
@@ -206,11 +195,9 @@ ins{text-decoration:none}
                 this.currentTop = $(win).scrollTop(); // 현재 스크롤 top 위치, 기준값
                 var startPoint = $(this.section[1]).position().top, // section의 top 값
                     endPoint = $(this.section[4]).position().top, // section의 마지막값
-                    endHiehgt = $(this.section[3]).outerHeight(),
                     moveRangeStart = $(this.section[1]).position().top, // 스티키바가 움직이는 범위 명시
                     moveRangeMiddle = $(this.section[2]).position().top,
                     moveRangeEnd = $(this.section[3]).position().top;
-                    // 값 다시 체크하기
                 
                 if (this.quickList.hasClass(this.opts.activeClass)) {
                     this.quickList.removeClass(this.opts.activeClass)
@@ -232,7 +219,6 @@ ins{text-decoration:none}
                         this.addActiveFunc($(this.quickList[1]));
                         this.rmvActiveFunc($(this.quickList[2]));
                     } else if (this.currentTop >= moveRangeEnd) {
-                        console.log('끗')
                         this.rmvActiveFunc($(this.quickList[0]));
                         this.rmvActiveFunc($(this.quickList[1]));
                         this.addActiveFunc($(this.quickList[2]));
@@ -241,22 +227,13 @@ ins{text-decoration:none}
             },
             followNavFunc: function() {
                 this.floatPosition = $(this.quickMenu).position().top;
-                this.quickMenu.css('top', this.currentTop + 20);
+                this.quickMenu.css({ 'top': (this.currentTop + 35) + 'px', 'right': '3px'});
             },
             gotoFunc: function(e) {
-                /**
-                 * 메뉴 버튼을 눌렀을 때 앵커처럼 동작하기.
-                 * 첫 번쨰 방법- 해당 영역의 높이값을 주어서 변경
-                 * 두 번째 방법- 섹션 부분에 해쉬값을 붙여주어서 변경
-                 * = initlayout으로 #id값 설정하기
-                 */
-                console.log(e.currentTarget);
                 var target = e.currentTarget, // 해당 버튼은 target으로 찾았다.
                     classn = target.classList[0],
                     className = '#' + target.classList[0]; // 버튼의 클래스 이름을 찾아따. 
-
                 $(target).attr('href', className);
-                console.log($(target))
                 switch (classn) {
                     case 'btn_top':
                         var position = 0;

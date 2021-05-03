@@ -212,7 +212,8 @@ button::-moz-focus-inner{padding:0;border:0}
                     this.castNext.off(this.changeEvents('click'));
                     $(win).off(this.changeEvents('hashchange'));
                 }
-            },onPrevFunc : function (e) {
+            },
+            onPrevFunc : function (e) {
                 e.preventDefault();
                 this.currentIndex--;
                 if (this.currentIndex < 0) {
