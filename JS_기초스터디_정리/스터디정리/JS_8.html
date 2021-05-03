@@ -6,10 +6,10 @@
 <title>JS 8</title>
 </head>
 <style>
-    .d {height: 1000px; background-color: grey;}
+    .wrap {height: 1000px; background-color: grey;}
 </style>
 <body>
-    <div class="d">
+    <div class="wrap">
         스티키바 : 컨디션이 맞으면 고정적으로 붙어서 있는 애가 스티키바이다. 
         
         처음엔 아무것도 활성화되지 않아있음.
@@ -43,7 +43,8 @@
     var _Component = (function (isUndefined) {
         function _Component(container, args) {
             var defParams = {
-                obj:'.filter_sort_wrap',
+                // obj:'.filter_sort_wrap',
+                obj: '.wrap',
                 fixedClass: '.sticky'
             };
             this.opts = Util.def(defParams, (args || {}));
@@ -52,12 +53,13 @@
         };
         _Component.prototype = { 
             init: function() {
+                console.log('init')
                 this.initLayout();
                 this.scrollFunc();
                 this.bindEvents();
             },
             initLayout: function() {
-                var objTop = this.obj.offset().top; 
+                this.objTop = this.obj.offset().top; 
                 // offset과 position 찾아서 공부해보기
                 // offset top은 불변 
                 // 윈도우 탑은 계속 변함. 
@@ -73,10 +75,17 @@
             }, 
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));
+                /**
+                 * $(win).on('scroll', function() {
+                 *      이런식으로 메서드 내부의 콜백함수는 '일반 함수'로써  호출된다.
+                 *      이상의 설명은 생략한다. >.*
+                 * });
+                 */
             },
             scrollFunc: function() { // 애를 그냥 실행하면 뚝뚝 떨어지는 현상이 일어난다.
                 var winTop = $(win).scrollTop();
-                if (winTop >= objTop) {
+                console.log(this) // 바인드 해주지 않으면 window, 바인드하면 해당 객체
+                if (winTop >= this.objTopß) {
                     if (!this.obj.hasClass(this.opts.fixedClass)) { // 유효성검사 
                         this.obj.addClass(this.opts.fixedClass); 
                     }
@@ -104,7 +113,7 @@
 
         function _Component(args) {
             var defParams = {
-                obj: '.',
+                obj: '.wrap',
             };
             this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -124,7 +133,7 @@
             }
         };
         return new _Component(); 
-    });
+    })();
     return _Component;
 }));
 </script>

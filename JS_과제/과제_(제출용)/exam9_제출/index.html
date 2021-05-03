@@ -104,6 +104,237 @@ ins{text-decoration:none}
 <!-- [ Javascript Area ] -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="../js/apps/util.js"></script>
+<script>
+/** 조건
+ * [ 스티키바 조건 '.quick_list' ]
+ *  - 맨 처음 : 모두 비활성화
+ *  - 섹션에 맞춰서 해당 메뉴가 활성화 되어야 함.
+ *  - li 마지막은 그냥 페이지 이동. 
+ * 
+ * 주의) 스크롤이 시작할 때 체크할 수 있고, 끝날 때 해줄 수 있으니 시점 체크를 잘 해야함. (setTimeout 해가지고..)
+ * 
+ * [ 누르면 해당 섹션으로 앵커되어야 함. ]
+ *  - scroll.top ~으로 animate 해 줄 수 있다.
+ * 
+ * [ 설계 구상하기 ]
+ *  - 설계 구체적으로 짜기 (어떤 함수의 어떤 성질을 어떻게 이용해서 짜겠다는 수준으로 상세히 디자인하기)
+ *  - 반응형 고려해서 체크하기 (고려해야 할 값이 무엇인지)
+ */
+
+/** 계획
+ * 1. 스티키바
+ * 1-1. active된 메뉴 모두 비활성화 상태.
+ * 1-2. 스티키바가 특정 섹션의 위치에 들어서면 add '.active' class하여 활성화로 바꿔줌 
+ * 1-3. 마지막 btn_top은 최상단으로
+ * 
+ * 2. 스크롤 이벤트
+ * - 스티키바 비활성화 : 배너부분
+ *      section 
+ * - 스티키바 활성화 : 섹션 시작 부분
+ *      section.type2 - li[0]
+ *      section.type3 - li[1]
+ *      section.type4 - li[2]
+ *      section.type5 - top으로 앵커
+ * 
+ * 3. 애니메이션
+ * 
+ * 
+ */
+</script>
+<script>
+(function(global, factory) {
+    global = global;
+    global.scrollBannerComponent = factory();
+}(window, function() {
+    'use strict'
+
+    var scrollBannerComponent = (function(isUndefined) {
+        var win = window,
+            Util = win.Common.util;
+
+        function scrollBannerComponent(container, args) {
+            var defParams = {
+                obj: container,
+                quickWrap: '#content',
+                quickMenu : '.quick_menu',
+                quickList : '.quick_list',
+                activeClass : 'active',
+                section : '.section',
+                topBtn: '.btn_top',
+                initHeight: 400,
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        }
+        scrollBannerComponent.prototype = {
+            init: function() {
+                this.setElements();
+                this.initLayout();
+                this.bindEvents();
+                console.log('init', this.topBtn);
+            },
+            setElements: function() {
+                this.quickWrap = this.obj.find(this.opts.quickWrap);
+                this.quickMenu = this.obj.find(this.opts.quickMenu);
+                this.quickList = this.obj.find(this.opts.quickList).children().find('a');
+                this.section = this.obj.find(this.opts.section);
+            },
+            initLayout: function() {
+                // active된 class를 다 떼준다.
+                var _this = this,
+                    rmvClass = this.quickList.filter(function(i, item) {
+                        if ($(item).hasClass(_this.opts.activeClass)) {
+                            $(item).removeClass(_this.opts.activeClass);
+                        }
+                    })
+            },
+            // 구간별로 top 값을 재고싶다. 간단하게 짤 수 있는 방법은?
+            // initLayout에 높이값을 담은 변수를 같이 선언해도 좋을지 아니면 이렇게 따로 해둘지..
+            initVar: function() {
+                // 이 친구는 어떻게 해야할까!
+                // this.section_require = $(this.section[1]).position().top;
+                // this.section_benefit = $(this.section[2]).position().top;
+                // this.section_apply = $(this.section[3]).position().top;
+            },
+            // Event Binding
+            bindEvents: function() {
+                $(win).on('scroll', this.scrollFunc.bind(this));
+                this.quickList.on('click', this.gotoFunc.bind(this));
+            },
+            // Scroll event
+            scrollFunc: function() {
+                this.currentTop = $(win).scrollTop(); // 현재 스크롤 top 위치, 기준값
+                var startPoint = $(this.section[1]).position().top, // section의 top 값
+                    endPoint = $(this.section[4]).position().top, // section의 마지막값
+                    endHiehgt = $(this.section[3]).outerHeight(),
+                    moveRangeStart = $(this.section[1]).position().top, // 스티키바가 움직이는 범위 명시
+                    moveRangeMiddle = $(this.section[2]).position().top,
+                    moveRangeEnd = $(this.section[3]).position().top;
+                    // 값 다시 체크하기
+                
+                if (this.quickList.hasClass(this.opts.activeClass)) {
+                    this.quickList.removeClass(this.opts.activeClass)
+                }
+
+                if (this.currentTop >= startPoint && this.currentTop <= endPoint) { 
+                    this.addActiveFunc($(this.quickList[0]));
+                    this.followNavFunc();
+                    if (this.currentTop > moveRangeStart && this.currentTop < moveRangeMiddle) {
+                        this.addActiveFunc($(this.quickList[0]));
+                        this.rmvActiveFunc($(this.quickList[1]));
+                        this.rmvActiveFunc($(this.quickList[2]));
+                    } else if (this.currentTop >= moveRangeMiddle && this.currentTop < moveRangeEnd) {
+                        this.rmvActiveFunc($(this.quickList[0]));
+                        this.addActiveFunc($(this.quickList[1]));
+                        this.rmvActiveFunc($(this.quickList[2]));
+                    } else if (this.currentTop >= moveRangeEnd) {
+                        console.log('끗')
+                        this.rmvActiveFunc($(this.quickList[0]));
+                        this.rmvActiveFunc($(this.quickList[1]));
+                        this.addActiveFunc($(this.quickList[2]));
+                    }
+                }   
+            },
+            followNavFunc: function() {
+                var qm = $(this.quickMenu).position().top;
+                if ( !this.currentTop > qm) {
+                    this.quickMenu.css('top', qm);
+                } 
+                this.quickMenu.css('top', this.currentTop);
+            },
+            gotoFunc: function(e) {
+                /**
+                 * 메뉴 버튼을 눌렀을 때 앵커처럼 동작하기.
+                 * 첫 번쨰 방법- 해당 영역의 높이값을 주어서 변경
+                 * 두 번째 방법- 섹션 부분에 해쉬값을 붙여주어서 변경
+                 * 세 번쨰 방법- initlayout으로 #id값 설정하기
+                 */
+                console.log(e.currentTarget);
+                var target = e.currentTarget, // 해당 버튼은 target으로 찾았다.
+                    classn = target.classList[0],
+                    className = '#' + target.classList[0]; // 버튼의 클래스 이름을 찾아따. 
+
+                console.log($('html, body'))
+                console.log($(win))
+                // $(target).attr('href', className);
+                switch (classn) {
+                    case 'btn_top':
+                        console.log('btn_top 케이스문')
+                        var position = 0;
+                        console.log(position)
+                        $('html, body').stop().animate({scrollTop: `${position.top}`}, 500);
+                        break;
+                    case 'requirements':
+                        console.log('requirements 케이스문')
+                        var position = $(this.section[1]).position();
+                        console.log(position)
+                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
+                        break;
+                    case 'benefits':
+                        console.log('benefits 케이스문')
+                        var position = $(this.section[2]).position();
+                        console.log(position)
+                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
+                        break;
+                    case 'apply':
+                        console.log('apply 케이스문')
+                        var position = $(this.section[3]).position();
+                        console.log(position)
+                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
+                        break;
+                }
+            },
+            addActiveFunc: function(target) {
+                target.addClass(this.opts.activeClass);
+            },
+            rmvActiveFunc: function(target) {
+                target.removeClass(this.opts.activeClass);
+            }
+        }
+        return scrollBannerComponent;
+    })();
+    return scrollBannerComponent;
+}));
+
+(function(global, factory) {
+    global = global;
+    $(function() {
+        factory();
+    })
+}(window, function() {
+    'use strict'
+    
+    var scrollBannerComponent = (function() {
+        var win = window,
+            Util = win.Common.util;
+
+        function scrollBannerComponent(args) {
+            var defParams = {
+                obj: '#container'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        }
+        scrollBannerComponent.prototype = {
+            init: function() {
+                this.callComponent();
+            },
+            callComponent: function() {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function(index) {
+                        var instace = new win.scrollBannerComponent(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new scrollBannerComponent();
+    })();
+    return scrollBannerComponent;
+}))
+</script>
 </div>
 </body>
 </html>

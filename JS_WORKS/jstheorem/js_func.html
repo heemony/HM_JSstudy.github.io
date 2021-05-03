@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>js func</title>
+</head>
+<body>
+<script>
+    
+    /** ES6 함수의 구분
+     * 일반 함수 : constructor, prototype, arguments
+     * 메서드 : super, arguments
+     * 화살표 함수 : 위 4가지 다 해당안됨.
+     */
+    
+    // 콜백 함수도 constructor이며 프로토타입을 생성한다.
+    // 일반적으로 메서드는 객체에 바인딩된 함수를 일컫는 의미였으나 ES6에서는 명확히 설명한다. 
+
+    const obj = {
+        x: 1, 
+        // foo는 메서드이다
+        foo() { return this.x; },
+        
+        // bar에 바인딩된 함수는 메서드가 아닌 일반 함수다.
+        bar: function() { return this.x; }
+    };
+    console.log(obj.foo())
+    console.log(obj.bar())
+</script>
+</body>
+</html>
