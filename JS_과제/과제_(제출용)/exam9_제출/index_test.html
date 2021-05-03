@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>exam - anchor Nav</title>
+<title>exam2 - anchor Nav</title>
 <style>
 /* temporary css */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,p,table,th,td,form,fieldset,legend,textarea,input,select,textarea,button,pre{margin:0;padding:0}
@@ -160,7 +160,7 @@ ins{text-decoration:none}
                 quickList : '.quick_list',
                 activeClass : 'active',
                 section : '.section',
-                topBtn: '.btn_top',
+                topBtn: '.btn_top'
             };
             this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -169,120 +169,71 @@ ins{text-decoration:none}
         scrollBannerComponent.prototype = {
             init: function() {
                 this.setElements();
-                this.initLayout();
+                // this.initLayout();
                 this.bindEvents();
-                console.log('init', this.topBtn);
+                console.log(this.section[1])
             },
             setElements: function() {
                 this.quickWrap = this.obj.find(this.opts.quickWrap);
                 this.quickMenu = this.obj.find(this.opts.quickMenu);
-                this.quickList = this.obj.find(this.opts.quickList).children().find('a');
+                // this.quickList = this.obj.find(this.opts.quickList).children().find('a');
+                this.quickList = this.obj.find(this.opts.quickList).children();
                 this.section = this.obj.find(this.opts.section);
             },
             initLayout: function() {
-                // active된 class를 다 떼준다.
                 var _this = this,
-                    rmvClass = this.quickList.filter(function(i, item) {
+                rmvClass = this.quickList.filter(function(i, item) {
                     if ($(item).hasClass(_this.opts.activeClass)) {
                         $(item).removeClass(_this.opts.activeClass);
                     }
-                })
+                });
             },
-            // 구간별로 top 값을 재고싶다. 간단하게 짤 수 있는 방법은?
-            // initLayout에 높이값을 담은 변수를 같이 선언해도 좋을지 아니면 이렇게 따로 해둘지..
-            initVar: function() {
-                // 이 친구는 어떻게 해야할까!
-                // this.section_require = $(this.section[1]).position().top;
-                // this.section_benefit = $(this.section[2]).position().top;
-                // this.section_apply = $(this.section[3]).position().top;
-            },
-            // Event Binding
             bindEvents: function() {
                 $(win).on('scroll', this.scrollFunc.bind(this));
                 this.quickList.on('click', this.gotoFunc.bind(this));
             },
-            // Scroll event
             scrollFunc: function() {
-                this.currentTop = $(win).scrollTop(); // 현재 스크롤 top 위치, 기준값
-                var startPoint = $(this.section[1]).position().top, // section의 top 값
-                    endPoint = $(this.section[4]).position().top, // section의 마지막값
-                    endHiehgt = $(this.section[3]).outerHeight(),
-                    moveRangeStart = $(this.section[1]).position().top, // 스티키바가 움직이는 범위 명시
-                    moveRangeMiddle = $(this.section[2]).position().top,
-                    moveRangeEnd = $(this.section[3]).position().top;
-                    // 값 다시 체크하기
-                
-                if (this.quickList.hasClass(this.opts.activeClass)) {
-                    this.quickList.removeClass(this.opts.activeClass)
+                // 스크롤하면 navbar따라오기
+                this.currentTop = $(win).scrollTop();
+                this.sectionTop = $(this.section[1]).position().top;
+                this.fixedPosition = this.quickList.position().top;
+                if (this.currentTop >= this.sectionTop) {
+                    console.log(this.currentTop)
+                    this.quickMenu.css({
+                        'top': this.currentTop + 35
+                    })
                 }
-
-                if ($('html, body').css('top', 0)) {
-                    this.quickMenu.css('top', this.floatPosition);
-                }
-
-                if (this.currentTop >= startPoint && this.currentTop <= endPoint) { 
-                    this.addActiveFunc($(this.quickList[0]));
-                    this.followNavFunc();
-                    if (this.currentTop > moveRangeStart && this.currentTop < moveRangeMiddle) {
-                        this.addActiveFunc($(this.quickList[0]));
-                        this.rmvActiveFunc($(this.quickList[1]));
-                        this.rmvActiveFunc($(this.quickList[2]));
-                    } else if (this.currentTop >= moveRangeMiddle && this.currentTop < moveRangeEnd) {
-                        this.rmvActiveFunc($(this.quickList[0]));
-                        this.addActiveFunc($(this.quickList[1]));
-                        this.rmvActiveFunc($(this.quickList[2]));
-                    } else if (this.currentTop >= moveRangeEnd) {
-                        console.log('끗')
-                        this.rmvActiveFunc($(this.quickList[0]));
-                        this.rmvActiveFunc($(this.quickList[1]));
-                        this.addActiveFunc($(this.quickList[2]));
-                    }
-                }   
-            },
-            followNavFunc: function() {
-                this.floatPosition = $(this.quickMenu).position().top;
-                this.quickMenu.css('top', this.currentTop + 20);
             },
             gotoFunc: function(e) {
-                /**
-                 * 메뉴 버튼을 눌렀을 때 앵커처럼 동작하기.
-                 * 첫 번쨰 방법- 해당 영역의 높이값을 주어서 변경
-                 * 두 번째 방법- 섹션 부분에 해쉬값을 붙여주어서 변경
-                 * = initlayout으로 #id값 설정하기
+                // 클릭해서 해당 버튼의 id값을
+                /** 
+                 * section.type2 (section index : 1) - li[0]
+                 * section.type3 (section index : 2) - li[1]
+                 * section.type4 (section index : 3) - li[2]
                  */
-                console.log(e.currentTarget);
-                var target = e.currentTarget, // 해당 버튼은 target으로 찾았다.
-                    classn = target.classList[0],
-                    className = '#' + target.classList[0]; // 버튼의 클래스 이름을 찾아따. 
+                e.stopPropagation();
+                var target = $(e.currentTarget),
+                    targetA = target.find('a')[0],
+                    targetIndex = target.index();
+                this.showSection = this.section.eq(targetIndex + 1);
+                var isActive = target.find('a').hasClass(this.opts.activeClass) !== true;
 
-                $(target).attr('href', className);
-                console.log($(target))
-                switch (classn) {
-                    case 'btn_top':
-                        var position = 0;
-                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
-                        break;
-                    case 'requirements':
-                        var position = $(this.section[1]).position();
-                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
-                        break;
-                    case 'benefits':
-                        var position = $(this.section[2]).position();
-                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
-                        break;
-                    case 'apply':
-                        var position = $(this.section[3]).position();
-                        $('html, body').stop().animate({scrollTop: `${position.top}px`}, 500);
-                        break;
+                if (isActive) {
+                    this.addActiveFunc(targetA);
+
+                } else {
+                    this.rmvActiveFunc(targetA);
                 }
             },
             addActiveFunc: function(target) {
-                target.addClass(this.opts.activeClass);
+                console.log('add')
+                $(target).addClass(this.opts.activeClass);
             },
             rmvActiveFunc: function(target) {
-                target.removeClass(this.opts.activeClass);
+                console.log('rmv')
+                $(target).removeClass(this.opts.activeClass);
             }
-        }
+        } 
         return scrollBannerComponent;
     })();
     return scrollBannerComponent;
