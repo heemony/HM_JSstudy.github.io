@@ -237,20 +237,24 @@ ins{text-decoration:none}
                     targetIndex = target.parent().index(),
                     getId = $(target[0]).attr('class');
   
-                this.showSection = this.section.eq(targetIndex + 1);
                 // 4) 타겟 a의 class값 과 section의 id 값 연결하기
-                this.showSection.attr('id', getId); 
+                this.showSection = this.section.eq(targetIndex + 1);
+                if (!($(this.showSection).attr('id'))) {
+                    this.showSection.attr('id', getId); 
+                }   
+
+                if ( getId === 'btn_top') {
+                    $('html, body').stop().animate({scrollTop: '0px'}, 500);
+                } else {
+                    $('html, body').stop().animate({scrollTop: $('#'+getId).offset().top}, 500);
+                }
+
                 /**
                  * 문제점.
                  * a의 class 값을 가져다가 쓰게되서 이 값이 변경되면 관련된 다른 부분들도 변하게 됨..
                  * id값 말고 다른 값으로 생각해 봐야함. 
-                 * 
-                 * id길이값을 체크해보려고 시도하였으나 실패!
                  */
-
-                if ( getId === 'btn_top') {
-                    $('html, body').stop().animate({scrollTop: '0px'}, 500);
-                }
+               
             },
             addActiveFunc: function(target) {
                 console.log('add')

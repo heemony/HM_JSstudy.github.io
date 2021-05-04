@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>test</title>
+<style>
+    #test01, #test02, #test03, #test04, #test05 { height: 1000px;}
+    #test01 {background-color: cadetblue;}
+    #test03 {background-color: coral;}
+    #test05 {background-color: crimson;}
+</style>
+</head>
+<body>
+<ul>
+    <li><a href="#test01" class="scroll_move">test01</a></li>
+    <li><a href="#test02" class="scroll_move">test02</a></li>
+    <li><a href="#test03" class="scroll_move">test03</a></li>
+    <li><a href="#test04" class="scroll_move">test04</a></li>
+    <li><a href="#test05" class="scroll_move">test05</a></li>
+</ul>
+<section id="test01">
+    <div>내용</div>
+</section>
+<section id="test02">
+    <div>내용</div>
+</section>
+<section id="test03">
+    <div>내용</div>
+</section>
+<section id="test04">
+    <div>내용</div>
+</section>
+<section id="test05">
+    <div>내용</div>
+</section>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $(".scroll_move").click(function(e) {
+            e.preventDefault();
+            console.log(this.hash)
+            $('html, body').animate({scrollTop: $(this.hash).offset().top}, 500)
+        })
+    })
+</script>
+</body>
+</html>
