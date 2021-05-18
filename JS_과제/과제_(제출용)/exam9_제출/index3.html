@@ -167,6 +167,13 @@ ins{text-decoration:none}
                     $(item).attr('href', this.addHref);
                 });
             },
+            bindGlobalEvents: function(type) {
+                if (type) { 
+                    $(win).on('resize', this.resizeFunc.bind(this));
+                } else { 
+                    $(win).off('resize');
+                }
+            },
             // 5) resize 이벤트로 mo일 때에도 고려해야 함...
             bindEvents: function(type) {
                 if (type) {
@@ -175,6 +182,30 @@ ins{text-decoration:none}
                 } else {
                     $(win).off('scroll', this.scrollFunc.bind(this));
                     this.quickList.off('click', this.gotoFunc.bind(this));
+                }
+            },
+            resizeFunc: function() {
+                this.winWidth = Util.winSize().w;
+
+                win.clearTimeout(this.resizeEndFunc);
+                this.resizeEndFunc = win.setTimeout(this.onResizeEndFunc.bind(this), 150);
+            },
+            onResizeEndFunc: function() {
+                this.setLayout();
+            },
+            setLayout: function() { 
+                if (this.winWidth > Responsive_Mobile) { 
+                    if (this.opts.viewType != 'PC') {
+                        this.opts.viewType = 'PC';
+                        this.bindPcEvents(true);
+                        this.bindMoEvents(false);
+                    }
+                } else {
+                    if (this.opts.viewType != 'MO') {
+                        this.opts.viewType = 'MO';
+                        this.bindPcEvents(false);
+                        this.bindMoEvents(true);
+                    }
                 }
             },
             // 스크롤하면 navbar따라오기
