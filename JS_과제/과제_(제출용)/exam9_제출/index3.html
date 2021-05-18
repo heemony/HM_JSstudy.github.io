@@ -123,7 +123,8 @@ ins{text-decoration:none}
 
     var scrollBannerComponent = (function(isUndefined) {
         var win = window,
-            Util = win.Common.util;
+            Util = win.Common.util,
+            Responsive_Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH;
 
         function scrollBannerComponent(container, args) {
             var defParams = {
@@ -198,14 +199,12 @@ ins{text-decoration:none}
                 if (this.winWidth > Responsive_Mobile) { 
                     if (this.opts.viewType != 'PC') {
                         this.opts.viewType = 'PC';
-                        this.bindPcEvents(true);
-                        this.bindMoEvents(false);
+                        this.bindEvents(true);
                     }
                 } else {
                     if (this.opts.viewType != 'MO') {
                         this.opts.viewType = 'MO';
-                        this.bindPcEvents(false);
-                        this.bindMoEvents(true);
+                        this.bindEvents(true);
                     }
                 }
             },
@@ -235,14 +234,16 @@ ins{text-decoration:none}
                 if (!($(this.showSection).attr('id'))) {
                     this.showSection.attr('id', getId); 
                 }   
-
                 if ( getId === 'btn_top') {
                     $('html, body').stop().animate({scrollTop: '0px'}, 500);
                 } else if (getId === 'active') {
                     this.showSection.attr('id', ''); 
+                    $(target).removeClass('active');
                 } else {
                     $('html, body').stop().animate({scrollTop: $('#'+getId).offset().top}, 500);
+                    this.addActiveFunc(target)
                 }
+
             },
             addActiveFunc: function(target) {
                 console.log('add')
