@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>exam2 - anchor Nav</title>
+<style>
+/* temporary css */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,p,table,th,td,form,fieldset,legend,textarea,input,select,textarea,button,pre{margin:0;padding:0}
+html,body{width:100%;height:100%}
+body{position:relative;min-width:1280px}
+body,input,select,textarea,button,th,td{font-family:'돋움','Dotum',sans-serif,'Apple SD Gothic Neo';font-size:11px;color:#555}
+fieldset,img{border:0 none}
+ul,ol,dl,li{list-style:none}
+li{vertical-align:top}
+hr{display:none}
+input,select,textarea,button{vertical-align:top}
+button,input[type=button]{overflow:visible;border:0;background-color:transparent;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+input[type="text"],input[type="password"],button{-webkit-appearance:none;border:0 none;border-radius:0;background:none}
+button span{position:relative}
+address,caption,em{font-style:normal}
+a{color:#555;cursor:pointer}
+a,a:active,a:hover{text-decoration:none}
+table{border-collapse:collapse;border-spacing:0}
+ins{text-decoration:none}
+.blind,legend,caption span{overflow:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:0;line-height:999px;white-space:nowrap}
+.sp{display:inline-block;overflow:hidden;width:10px;height:10px;background:url(img/sp.png) no-repeat;line-height:999px;vertical-align:top}
+
+#wrapper{position:relative;min-width:1320px;min-height:100%;margin:0 auto;background:#f4f4f4}
+#header{position:relative;height:130px;background:#191919}
+#container{min-height:100%;margin:-100px 0 -80px;padding:100px 0 80px;box-sizing:border-box}
+#content{width:940px;margin:0 auto;padding:30px 0}
+#footer{height:80px;border-top:1px solid #dfdfdf;background:#191919}
+
+.anchor_nav_wrap #content{width:auto;padding:0}
+.section{height:229px;background-image:url(img/bg_visual.jpg);background-position:50% 0;background-repeat:no-repeat}
+.section.type2{height:835px;background-image:url(img/bg_section01.jpg)}
+.section.type3{height:792px;background-image:url(img/bg_section02.jpg)}
+.section.type4{height:1813px;background-image:url(img/bg_section03.jpg)}
+.section.type5{height:355px;background-image:url(img/bg_section04.jpg)}
+
+.quick_menu{position:absolute;top:400px;right:5px;z-index:10;padding:62px 2px 2px;background:#000}
+.quick_list{padding:13px 0 9px;background:url(img/bg_quick_menu.jpg) no-repeat; background-size:cover}
+.quick_list a{display:block;padding:12px 11px 11px 16px}
+.quick_menu .sp{height:17px}
+.quick_menu .btn_top{position:absolute;top:2px;left:2px;padding:0}
+.quick_menu .btn_top .sp{display:block;width:157px;height:60px;background-position:0 -57px}
+.quick_menu .btn_top:hover .sp,
+.quick_menu .btn_top:active .sp,
+.quick_menu .btn_top.active .sp {background-position:-159px -57px}
+.quick_menu .requirements .sp{width:130px;background-position:0 0}
+.quick_menu .requirements.active .sp,
+.quick_menu .requirements.active:hover .sp,
+.quick_menu .requirements.active:active .sp{background-position:0 -19px}
+.quick_menu .requirements:hover .sp,
+.quick_menu .requirements:active .sp{background-position:0 -38px}
+.quick_menu .benefits .sp{width:90px;background-position:-132px 0}
+.quick_menu .benefits.active .sp,
+.quick_menu .benefits.active:hover .sp,
+.quick_menu .benefits.active:active .sp{background-position:-132px -19px}
+.quick_menu .benefits:hover .sp,
+.quick_menu .benefits:active .sp{background-position:-132px -38px}
+.quick_menu .apply .sp{width:70px;background-position:-224px 0}
+.quick_menu .apply.active .sp,
+.quick_menu .apply.active:hover .sp,
+.quick_menu .apply.active:active .sp{background-position:-224px -19px}
+.quick_menu .apply:hover .sp,
+.quick_menu .apply:active .sp{background-position:-224px -38px}
+.quick_menu.sticky {position: fixed; top: 35px; right:5px;}
+/* //temporary css */
+@media all and (max-width: 768px) {
+    body, #wrapper{min-width: 100%;}
+    .quick_menu{top:250px;}
+    .section{height:100px;background-size:cover;}
+    .section.type2{height:1000px;background:grey;}
+    .section.type3{height:1200px;background:greenyellow;}
+    .section.type4{height:1400px;background:beige;}
+    .section.type5{height:500px;background:cornflowerblue;}
+}
+</style>
+</head>
+<body>
+<!-- wrapper [s] -->
+<div id="wrapper" class="anchor_nav_wrap">
+    <!-- header [s] -->
+    <div id="header" role="banner"></div>
+    <!-- header [e] -->
+    <hr />
+    <!-- container [s] -->
+    <div id="container">
+        <div id="content" role="main">
+            <div class="quick_menu">
+                <strong class="blind">quick menu</strong>
+                <ul class="quick_list">
+                <li><a href="#none" class="requirements active"><span class="sp">01 REQUIREMENTS</span></a></li>
+                <li><a href="#none" class="benefits"><span class="sp">02 BENEFITS</span></a></li>
+                <li><a href="#none" class="apply"><span class="sp">03 APPLY</span></a></li>
+                <li><a href="#none" class="btn_top"><span class="sp">Go to top</span></a></li>
+                </ul>
+            </div>
+            <div class="section"></div>
+            <div class="section type2"></div>
+            <div class="section type3"></div>
+            <div class="section type4"></div>
+            <div class="section type6"></div>
+        </div>
+    </div>
+    <!-- container [e] -->
+    <hr />
+    <!-- footer [s] -->
+    <div id="footer" role="contentinfo"></div>
+    <!-- footer [e] -->
+<!-- [ Javascript Area ] -->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="../js/apps/util.js"></script>
+<script>
+(function(global, factory) {
+    global = global;
+    global.scrollBannerComponent = factory();
+}(window, function() {
+    'use strict'
+
+    var scrollBannerComponent = (function(isUndefined) {
+        var win = window,
+            Util = win.Common.util;
+
+        function scrollBannerComponent(container, args) {
+            var defParams = {
+                obj: container,
+                quickMenu : '.quick_menu',
+                quickList : 'li > a',
+                activeClass : 'active',
+                section : '.section',
+                fixedClass: 'sticky'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        }
+        scrollBannerComponent.prototype = {
+            init: function() {
+                this.setElements();
+                this.initLayout();
+                this.bindEvents(true);
+            },
+            setElements: function() {
+                this.quickMenu = this.obj.find(this.opts.quickMenu);
+                this.quickList = this.quickMenu.find(this.opts.quickList);
+                this.section = this.obj.find(this.opts.section);
+            },
+            initLayout: function() {
+                this.objQuickMenu = this.quickList.offset().top;
+                var _this = this,
+                    rmvClass = this.quickList.filter(function(i, item) {
+                        if ($(item).hasClass(_this.opts.activeClass) || $(item).hasClass(_this.opts.fixedClass)  ) {
+                            $(item).removeClass(_this.opts.activeClass);
+                            $(item).removeClass(_this.opts.fixedClass);
+                        }
+                    });
+                // 3) a href 속성 값을 #none에서 해당 inner텍스트값으로 href 값 초기화
+                this.quickList.filter(function(i, item) {
+                    // var href = this.classList;
+                    // this.addHref = '#' + href;
+                    var name = $(item).children()[0].innerHTML.split(' ')[1];
+                    this.addHref = '#' + name;
+                    $(item).attr('href', this.addHref);
+                });
+            },
+            // 5) resize 이벤트로 mo일 때에도 고려해야 함...
+            bindEvents: function(type) {
+                if (type) {
+                    $(win).on('scroll', this.scrollFunc.bind(this));
+                    this.quickList.on('click', this.gotoFunc.bind(this));
+                } else {
+                    $(win).off('scroll', this.scrollFunc.bind(this));
+                    this.quickList.off('click', this.gotoFunc.bind(this));
+                }
+            },
+            // 스크롤하면 navbar따라오기
+            scrollFunc: function() {
+                var winTop = $(win).scrollTop();
+                this.secStartPoint = $(this.section[1]).position().top;
+                if (winTop >= this.secStartPoint) {
+                    if (!this.quickMenu.hasClass(this.opts.fixedClass)) {
+                        this.quickMenu.addClass(this.opts.fixedClass);
+                    }
+                } else {
+                    if (this.quickMenu.hasClass(this.opts.fixedClass)) {
+                        this.quickMenu.removeClass(this.opts.fixedClass);;
+                    }
+                }  
+            },
+            gotoFunc: function(e) {
+                // 해당 버튼의 id값을 section에 저장
+                e.stopPropagation();
+                var target = $(e.currentTarget),
+                    targetIndex = target.parent().index(),
+                    getId = $(target[0]).attr('class');
+                console.log(getId)
+                // 4) 타겟 a의 class값 과 section의 id 값 연결하기
+                this.showSection = this.section.eq(targetIndex + 1);
+                if (!($(this.showSection).attr('id'))) {
+                    this.showSection.attr('id', getId); 
+                }   
+
+                if ( getId === 'btn_top') {
+                    $('html, body').stop().animate({scrollTop: '0px'}, 500);
+                } else if (getId === 'active') {
+                    this.showSection.attr('id', ''); 
+                } else {
+                    $('html, body').stop().animate({scrollTop: $('#'+getId).offset().top}, 500);
+                }
+            },
+            addActiveFunc: function(target) {
+                console.log('add')
+                $(target).addClass(this.opts.activeClass);
+            },
+            rmvActiveFunc: function(target) {
+                console.log('rmv')
+                $(target).removeClass(this.opts.activeClass);
+            }
+        } 
+        return scrollBannerComponent;    
+    })();
+    return scrollBannerComponent;
+}));
+
+(function(global, factory) {
+    global = global;
+    $(function() {
+        factory();
+    })
+}(window, function() {
+    'use strict'
+    
+    var scrollBannerComponent = (function() {
+        var win = window,
+            Util = win.Common.util;
+
+        function scrollBannerComponent(args) {
+            var defParams = {
+                obj: '#container'
+            };
+            this.opts = Util.def(defParams, (args || {}));
+            if (!(this.obj = $(this.opts.obj)).length) return;
+            this.init();
+        }
+        scrollBannerComponent.prototype = {
+            init: function() {
+                this.callComponent();
+            },
+            callComponent: function() {
+                var _this = this;
+                for (var i = 0, max = this.obj.length; i < max; i++) {
+                    (function(index) {
+                        var instace = new win.scrollBannerComponent(_this.obj.eq(index));
+                    })(i);
+                }
+            }
+        };
+        return new scrollBannerComponent();
+    })();
+    return scrollBannerComponent;
+}))
+</script>
+</div>
+</body>
+</html>
