@@ -143,6 +143,7 @@ ins{text-decoration:none}
                 this.setElements();
                 this.initLayout();
                 this.bindEvents(true);
+                this.bindGlobalEvents(true);
             },
             setElements: function() {
                 this.quickMenu = this.obj.find(this.opts.quickMenu);
