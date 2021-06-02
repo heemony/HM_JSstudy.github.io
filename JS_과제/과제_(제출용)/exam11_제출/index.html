@@ -154,7 +154,9 @@
                 this.parallaxImgRight = this.parallaxInner.find(this.opts.parallaxImgRight);
             },
             initOpts : function () {
-                this.opts.smagicOpts['triggerElement'] = this.parallaxSection.get(0);
+                // [0] 제어할 대상을 찾는다.
+                // 문자열로 찾기도하고, get()이런식으로 찾기도 한다. 불러오는 경우는 2가지가 존재함. (호출 방식의 차이)
+                this.opts.smagicOpts['triggerElement'] = this.parallaxSection.get(0); 
                 var minHeight = this.parallaxInner.outerHeight(true);
                 this.parallaxWrap.css('min-height', minHeight);
             },
@@ -167,22 +169,36 @@
                 return events.join(' ');
             },
             buildController : function () {
+                // [1] ScrollMagic 컨트롤러 인스턴스 생성.
                 this.controller = new ScrollMagic.Controller();
             },
             buildScene : function () {
+                // 걍 짧게 쓰려고
                 var parallaxTxt = this.parallaxTxt,
                     parallaxImgLeft = this.parallaxImgLeft,
                     parallaxImgRight = this.parallaxImgRight,
                     smagicOpts = this.opts.smagicOpts;
-
+                console.log(this.parallaxSection.get(0))
+                
+                // [2] Animation Object 생성.
+                // [2-1] 인스턴스 생성하고
                 var sectionBox = new TimelineMax();
+                // [2-2] 속성 설정한다.
                 sectionBox.to(parallaxTxt.get(0), 0, {
-                    y : "0%"
+                    y : "0%",
+                    backgroundColor: "blue",
                 });
-                new ScrollMagic.Scene(Util.def(smagicOpts, {
-                    duration: '125%'
-                })).addTo(this.controller).setPin(this.parallaxSection.get(0)).setTween(sectionBox);
 
+                // [3] Scene Object 생성.
+                // 하나하나 추가하기 귀찮으니 머지시킨다.
+                new ScrollMagic.Scene(Util.def(smagicOpts, {
+                    duration: '125%',
+                })).addTo(this.controller).setPin(this.parallaxSection.get(0)).setTween(sectionBox); 
+                    // addTo() : 내가 작성한 컨트롤러 지정. [Scene Object를 ScrollMagic Controller에 추가.]
+                    // setTween() : 메서드를 사용하여 내가 만든 애니메이션을 인자로 넘겨줌. [Animation Object를 Scene Object에 추가.]
+                        // (setPin() : 장면이 지속되는 동안 요소 고정.)
+
+                // 위와 동일.
                 var leftBox = new TimelineMax();
                 leftBox.fromTo(parallaxImgLeft.get(0), 1, {
                     y : "0%"
@@ -195,6 +211,7 @@
                     duration: '150%'
                 })).addTo(this.controller).setTween(leftBox);
 
+                // 위와 동일.
                 var rightBox = new TimelineMax();
                 rightBox.fromTo(parallaxImgRight.get(0), 1, {
                     y : "0%"
