@@ -431,7 +431,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>2
     </div>
     <!-- //component -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -445,29 +445,50 @@
     'use strict';
     var swiperComponent = (function (isUndefined) {
         var win = window,
-            Util = win.Common.util;
+            Util = win.Common.util,
+            Responsive = win.Common.RESPONSIVE;
+
 
         function swiperComponent (container, args) {
             var defParams = {
                 obj : container,
+                carouselList: '.build-result-recommended__list',
+                carouselItem: '.build-result-recommended__item',
+                resizeStart: null,
+                viewType: null,
                 swiperOpts : {
+                    // loop: true,
                     slidesPerView: 1,
                     spaceBetween: 10,
                     breakpoints: {
                         320: {
-                            slidesPerView: 1,
-                            spaceBetween: 20
+                            slidesPerView: 1, // 동시에 보여줄 슬라이드 갯수
+                            slidesPerGroup : 1, // 그룹으로 묶을 수
+                            spaceBetween: 20, // 슬라이드 간 간격
+                            loopFillGroupWithBlank : true, // 그룹 갯수가 맞지않을 경우, 빈칸 채울 여부
                         },
                         1024: {
                             slidesPerView: 2,
-                            spaceBetween: 30
+                            slidesPerGroup : 2,
+                            spaceBetween: 30,
+                            loopFillGroupWithBlank : true,
                         },
                         1280: {
                             slidesPerView: 3,
-                            spaceBetween: 40
+                            slidesPerGroup : 3,
+                            spaceBetween: 40,
+                            loopFillGroupWithBlank : true,
                         }
+                    },
+                    navigation: {
+                        prevEl: '.swiper-button-prev',
+                        nextEl: '.swiper-button-next'
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
                     }
-                }
+                },
             };
             this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -475,11 +496,52 @@
         };
         swiperComponent.prototype = {
             init : function () {
+                this.test();
                 this.buildSwiper();
+                this.bindEvents(true);
+            },
+            test: function() {
+                this.carouselWrap = this.obj;
+                this.carouselList = this.carouselWrap.find(this.opts.carouselList);
+                this.carouselItem = this.carouselList.find(this.opts.carouselItem);
+
             },
             buildSwiper : function () {
                 var swiper = new Swiper(this.obj, this.opts.swiperOpts);
-            }
+                this.swiperCurrentIndex = this.swiper.realIndex;
+
+
+            },
+            bindEvents: function(type) {
+                if (type) {
+                    $(win).on('resize', this.resizeFunc.bind(this));
+                } else {
+                    $(win).off('resize');
+                }
+            },
+            resizeFunc: function() {
+                this.winWidth = Util.winSize().w;
+
+                win.clearTimeout(this.resizeEndFunc);
+                this.resizeEndFunc = win.setTimeout(this.resizeEndFunc.bind(this), 150);
+            },
+            resizeEndFunc: function() {
+                this.opts.resizeStart = null;
+                this.setLayout();
+            },
+            setLayout: function() { 
+                if (this.winWidth > MOBILE) { 
+                    if (this.opts.viewType != 'PC') {
+                        this.opts.viewType = 'PC';
+                        this.bindPcEvents(true);
+                    }
+                } else {
+                    if (this.opts.viewType != 'MO') {
+                        this.opts.viewType = 'MO';
+                        this.bindPcEvents(false);
+                    }
+                }
+            },
         };
         return swiperComponent;
     })();
