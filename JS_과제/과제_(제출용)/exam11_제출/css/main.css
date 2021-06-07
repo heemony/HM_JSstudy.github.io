@@ -5849,6 +5849,36 @@
 .cp-bigquote__img-left .js-picture img {
   width: 100%;
 }
+/* s custom */
+.cp-bigquote__img-top {
+  position: absolute;
+  left: 0;
+  top: -50%;
+  z-index: 1;
+  width: 22%;
+  margin-top: 40px;
+  margin-top: 4rem;
+}
+
+.cp-bigquote__img-top .js-picture img {
+  width: 100%;
+}
+
+
+.cp-bigquote__img-bottom {
+  position: absolute;
+  right: 0px;
+  top: 60%;
+  z-index: 1;
+  width: 30%;
+  margin-top: 40px;
+  margin-top: 4rem;
+}
+
+.cp-bigquote__img-bottom .js-picture img {
+  width: 100%;
+}
+/* e custom */
 
 .cp-bigquote__textarea {
   width: 70%;

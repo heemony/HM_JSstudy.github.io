@@ -100,6 +100,51 @@
         </div>
     </div>
     <!-- //component -->
+    
+      <!-- component -->
+    <!--/* 기본 - PC 이미지 2개 노출 & 태블릿/모바일 이미지 1개 노출
+           [D] PC,TB,MO에서 이미지 미노출일 경우 : is-no-image 클래스 추가 */-->
+           <div class="type-light">
+            <div class="cp-bigquote">
+                <div class="cp-bigquote__inner">
+                    <div class="cp-bigquote__parallax">
+                        <div class="cp-bigquote__parallax-wrap">
+                            <div class="cp-bigquote__parallax-space">
+                                <div class="cp-bigquote__parallax-inner">
+                                    <div class="cp-bigquote__contents">
+                                        <div class="cp-bigquote__textarea parallax-text">
+                                            <div class="cp-bigquote__eyebrow">
+                                                <p class="el-eyebrow">Genesis global text</p>
+                                            </div>
+                                            <div class="cp-bigquote__desc">
+                                                <p class="el-desc">We strive to create the finest automobiles and related products and services for connoisseurs around the globe</p>
+                                            </div>
+                                            <div class="cp-bigquote__cta">
+                                                <a href="#" class="cm-btn type2 type-white">
+                                                    <span class="text">Primary Button</span>
+                                                    <span class="masker"><span>Primary Button</span></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cp-bigquote__img-top parallax-img-top">
+                                        <div class="js-picture">
+                                            <img src="http://via.placeholder.com/568x718" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="cp-bigquote__img-bottom parallax-img-bottom">
+                                        <div class="js-picture">
+                                            <img src="http://via.placeholder.com/660x330" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //component -->
 </div>
 <div style="height: 100vh;background:orange"></div>
 <!--/* component js */-->
@@ -128,6 +173,8 @@
                 parallaxTxt : '.parallax-text',
                 parallaxImgLeft : '.parallax-img-left',
                 parallaxImgRight : '.parallax-img-right',
+                parallaxImgTop : '.parallax-img-top',
+                parallaxImgBottom : '.parallax-img-bottom',
                 smagicOpts : {
                     triggerHook : 0
                 },
@@ -152,12 +199,15 @@
                 this.parallaxTxt = this.parallaxInner.find(this.opts.parallaxTxt);
                 this.parallaxImgLeft = this.parallaxInner.find(this.opts.parallaxImgLeft);
                 this.parallaxImgRight = this.parallaxInner.find(this.opts.parallaxImgRight);
+                this.parallaxImgTop = this.parallaxInner.find(this.opts.parallaxImgTop);
+                this.parallaxImgBottom = this.parallaxInner.find(this.opts.parallaxImgBottom);
             },
             initOpts : function () {
                 // [0] 제어할 대상을 찾는다.
                 // 문자열로 찾기도하고, get()이런식으로 찾기도 한다. 불러오는 경우는 2가지가 존재함. (호출 방식의 차이)
                 this.opts.smagicOpts['triggerElement'] = this.parallaxSection.get(0); 
                 var minHeight = this.parallaxInner.outerHeight(true);
+                // console.log(minHeight)
                 this.parallaxWrap.css('min-height', minHeight);
             },
             changeEvents : function (event) {
@@ -177,6 +227,8 @@
                 var parallaxTxt = this.parallaxTxt,
                     parallaxImgLeft = this.parallaxImgLeft,
                     parallaxImgRight = this.parallaxImgRight,
+                    parallaxImgTop = this.parallaxImgTop,
+                    parallaxImgBottom = this.parallaxImgBottom,
                     smagicOpts = this.opts.smagicOpts;
                 console.log(this.parallaxSection.get(0))
                 
@@ -223,6 +275,32 @@
                 new ScrollMagic.Scene(Util.def(smagicOpts, {
                     duration: '125%'
                 })).addTo(this.controller).setTween(rightBox);
+
+                // topBox
+                var topBox = new TimelineMax();
+                topBox.fromTo(parallaxImgTop.get(0), 1, {
+                    y : "0%"
+                }, {
+                    ease : Linear.easeNone,
+                    opacity: 0,
+                    y: "-100%"
+                })
+                new ScrollMagic.Scene(Util.def(smagicOpts, {
+                    duration: "90%"
+                })).addTo(this.controller).setTween(topBox);
+
+                // bottomBox
+                var bottomBox = new TimelineMax();
+                bottomBox.fromTo(parallaxImgBottom.get(0), 1, {
+                    x : "0%"
+                }, {
+                    ease : Linear.easeNone,
+                    opacity: 0,
+                    x: "10%"
+                })
+                new ScrollMagic.Scene(Util.def(smagicOpts, {
+                    duration: "90%"
+                })).addTo(this.controller).setTween(bottomBox);
             }
         };
         return scrollComponent;
