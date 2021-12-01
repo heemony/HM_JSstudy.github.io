@@ -3,6 +3,7 @@
     global;
     global.HM_Component = global.HM_Component || {};
     global.HM_Component.Layer = factory();
+    console.log(global.HM_Component)
 }(this, function () {
     'use strict';
     var Component = (function () {
@@ -14,7 +15,7 @@
             TrapFoucss = win.TrapFocus;
 
         // RESPONSIVE = Util.RESPONSIVE; <- 이게 안되는 이유는?
-        var ComponentInner = function (container, args) {
+        var LComponentInner = function (container, args) {
             var defParams = {
                 obj: container, // 이 컨테이너는 Layer 인스턴스 생성한 Component.js보면 됨. '.btn_item'
                 layerOpener: '.layer_btn',
@@ -30,12 +31,11 @@
             if (!(this.obj = $(this.opts.obj)).length) return;
             this.init();
         }
-        ComponentInner.prototype = {
+        LComponentInner.prototype = {
             init: function () {
                 this.setElements();
                 this.buildTrapFocus();
                 this.bindEvent();
-                this.bindOutsideEvents(true);
             },
             setElements: function () {
                 this.layerOpener = this.obj.find(this.opts.layerOpener);
@@ -48,18 +48,15 @@
                 this.layerOpener.on('click', this.layerOpenFunc.bind(this));
                 this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
                 this.layerConfirm.on('click', this.layerCloseFunc.bind(this));
-                // [D] 레이어 이외의 영역 누를 때도 팝업 창 닫히게 해야함.
+                this.layerWrap.on('click', this.exceptArea.bind(this));
             },
-            bindOutsideEvents: function (type) {
-                if (type) {
-                    this.layerObj.on('clickoutside touchendoutside', this.layerClickOutside.bind(this));
-                } else {
-                    this.layerObj.off('clickoutside touchendoutside');
+            exceptArea: function(e) {
+                e.stopPropagation();
+                if ($(e.target).hasClass('dimmed')) {
+                    this.layerCloseFunc();
+                    return;
                 }
-            },
-            layerClickOutside: function (e) {
-                console.log(e)
-            },
+            },    
             layerOpenFunc: function (e) {
                 e.preventDefault();
                 this.TrapFocus.build();
@@ -105,7 +102,7 @@
             },
 
         }
-        return ComponentInner;
+        return LComponentInner;
     })();
     return Component;
 }));

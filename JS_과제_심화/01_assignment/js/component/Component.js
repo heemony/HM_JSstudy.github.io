@@ -47,14 +47,17 @@
               if (!(_this.layerItem.length > 0)) return;
               // 인스턴스가 여러개가 생긴다. 여러개를 저장하려면 빈 배열이 맞겟쥬? -> instance: []로 저장.
               for (var i = 0; i < _this.layerItem.length; i++) {
+                console.log(i)
                 this.instance = new win.HM_Component.Layer(_this.layerItem.eq(i));
                 // layerItem의 갯수만큼 인스턴스 생성.
               }
-              // console.log(this.instance); // 이 인스턴스 안에 TrapFocus .. 내가 정의해둔게 다 있음.
-
+              console.log(this.instance); 
+              console.log(this); 
+              console.log(win); 
             },
           }
         });
+        console.log(this.layer)
         this.layer.build(); // 여기서 '함수의 의미'를 갖게 됨.
       }
     }
@@ -97,3 +100,4 @@
   })();
   return Component
 }));
+
