@@ -1,0 +1,216 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+ul,
+ol,
+li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+#container {
+  height: 300vh;
+  background-color: #eee;
+}
+
+.btn_list {
+  font-size: 0;
+}
+.btn_item {
+  width: 150px;
+  margin: 0 auto;
+  font-size: 1rem;
+  padding-top: 20px;
+}
+.btn_item .layer_btn {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgb(197, 197, 197);
+  box-sizing: border-box;
+}
+
+.btn_item .layer_btn:hover {
+  background-color: rgb(147, 147, 147);
+}
+
+.layer_popup {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+.layer_popup.is-show {
+  display: block;
+}
+
+.layer_inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  z-index: 50;
+}
+.layer_content {
+  width: 400px;
+  height: 500px;
+  border-radius: 25px;
+  background-color: #fff;
+}
+.contents {
+  width: 100%;
+  height: 100%;
+  padding: 50px 45px 95px 45px;
+  box-sizing: border-box;
+}
+.inner {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.close_btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  background-color: rgb(255, 187, 0);
+}
+.close_btn::before {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  content: "";
+}
+.close_btn span {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  text-align: center;
+}
+.confirm_btn {
+  position: absolute;
+  left: 45px;
+  right: 45px;
+  bottom: 35px;
+}
+.confirm_btn span {
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  color: #fff;
+  box-sizing: border-box;
+  background-color: rgb(255, 187, 0);
+}
+.layer_popup .dimmed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (max-width: 768px) {
+  #container {
+    height: 300vh;
+    background-color: rgb(255, 253, 253);
+  }
+
+  .btn_list {
+    text-align: left;
+  }
+
+  .btn_item {
+    display: inline-block;
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .layer_inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    z-index: 50;
+  }
+
+  .layer_content {
+    width: 300px;
+    height: 380px;
+    border-radius: 25px;
+    background-color: #fff;
+  }
+  .contents {
+    width: 100%;
+    height: 100%;
+    padding: 40px 35px 70px 35px;
+    box-sizing: border-box;
+  }
+  .inner {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .close_btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 25px;
+    height: 25px;
+    background-color: rgb(255, 187, 0);
+  }
+  .close_btn::before {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    content: "";
+  }
+  .close_btn span {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    color: #fff;
+    text-align: center;
+  }
+  .confirm_btn {
+    position: absolute;
+    left: 35px;
+    right: 35px;
+    bottom: 20px;
+  }
+  .confirm_btn span {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 15px;
+    text-align: center;
+    color: #fff;
+    box-sizing: border-box;
+    background-color: rgb(255, 187, 0);
+  }
+  .layer_popup .dimmed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+}
