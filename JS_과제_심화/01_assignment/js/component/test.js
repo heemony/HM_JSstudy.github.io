@@ -3,6 +3,7 @@
     global;
     global.HM_Component = global.HM_Component || {};
     global.HM_Component.Layer = factory();
+    console.log(global.HM_Component)
 }(this, function () {
     'use strict';
     var Component = (function () {
@@ -11,8 +12,7 @@
             $ = win.jQuery,
             Util = win.Common.util,
             Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH,
-            TrapFocus = win.TrapFocus;
-            
+            TrapFoucs = win.TrapFocus;
         var LComponentInner = function (container, args) {
             var defParams = {
                 obj: container, // 이 컨테이너는 Layer 인스턴스 생성한 Component.js보면 됨. '.btn_item'
@@ -35,7 +35,6 @@
                 this.setElements();
                 this.buildTrapFocus();
                 this.resizeFunc();
-                this.bindEvent();
                 this.bindGlobalEvent(true);
             },
             setElements: function () {
@@ -49,12 +48,12 @@
                 if (type) {
                     $(win).on('resize', this.resizeFunc.bind(this));
                 } else {
-                    $(win).off('resize');
+                    $(win).off('resize')
                 }
             },
-            resizeFunc: function() {
+             resizeFunc: function() {
                 this.winWidth = $(win).width();
-                console.log(this.winWidth);
+                
                 // win.clearTimeout(this.resizeEndFunc);
                 this.resizeEndFunc = win.setTimeout($.proxy(this.resizeEndFunc, this), 150);   
             },
@@ -67,21 +66,45 @@
                     if (this.opts.viewType != 'PC') {
                         console.log('PC')
                         this.opts.viewType = 'PC';
+                        this.bindPcEvent(true);
+                        this.bindMoEvent(false);
                     } 
                 } else {
                     if (this.opts.viewType != 'MO') {
                         console.log('MO')
                         this.opts.viewType = 'MO';
+                        this.bindPcEvent(false);
+                        this.bindMoEvent(true);
                     }
                 }
             },
-            // pc, mo나눌 땐 html구조가 다르거나 누르는 애들이 다를 경우에 나누고,
-            // 바인드된 이벤트가 같은 경우에는, 해당 이벤트에서 pc와 mo로 나누면됨!
-            bindEvent: function (type) {
-                this.layerOpener.on('click', this.layerOpenFunc.bind(this));
-                this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
-                this.layerConfirm.on('click', this.layerCloseFunc.bind(this));
-                this.layerWrap.on('click', this.exceptArea.bind(this));
+            bindPcEvent: function (type) {
+                if (type) {
+                    this.layerOpener.on('click', this.layerOpenFunc.bind(this));
+                    this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
+                    this.layerConfirm.on('click', this.layerCloseFunc.bind(this));
+                    this.layerWrap.on('click', this.exceptArea.bind(this));
+                } else {
+                    this.layerOpener.off('click');
+                    this.layerCloseBtn.off('click');
+                    this.layerConfirm.off('click');
+                    this.layerWrap.off('click');
+                }
+            },
+            bindMoEvent: function (type) {
+                if (type) {
+                    this.layerOpener.on('click', this.layerOpenFunc.bind(this));
+                    this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
+                    this.layerConfirm.on('click', this.layerCloseFunc.bind(this));
+                    this.layerWrap.on('click', this.exceptArea.bind(this));
+                    this.setScrollLock(true);
+                } else {
+                    this.layerOpener.off('click');
+                    this.layerCloseBtn.off('click');
+                    this.layerConfirm.off('click');
+                    this.layerWrap.off('click');
+                    this.setScrollLock(false);
+                }
             },
             exceptArea: function(e) {
                 e.stopPropagation();
@@ -108,7 +131,7 @@
                             console.log('Layer.js: TrapFocus destroy')
                         },
                         build: function () {
-                            this.instance = new TrapFocus(_this.layerObj);
+                            this.instance = new TrapFoucs(_this.layerObj);
                             _this.setScrollLock(true);
                             console.log('Layer.js: TrapFocus build');
                         }

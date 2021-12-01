@@ -47,17 +47,13 @@
               if (!(_this.layerItem.length > 0)) return;
               // 인스턴스가 여러개가 생긴다. 여러개를 저장하려면 빈 배열이 맞겟쥬? -> instance: []로 저장.
               for (var i = 0; i < _this.layerItem.length; i++) {
-                console.log(i)
                 this.instance = new win.HM_Component.Layer(_this.layerItem.eq(i));
-                // layerItem의 갯수만큼 인스턴스 생성.
+                // layerItem으로 해줘야 트랩포커스가 먹힘
+                // 각각이 다섯개씩 찍히길래 왜 이럴까 싶어서 _this.obj로 바꿔봤는데(레이으들의 상위박스) 빌드가안됨 ㅠ
               }
-              console.log(this.instance); 
-              console.log(this); 
-              console.log(win); 
             },
           }
         });
-        console.log(this.layer)
         this.layer.build(); // 여기서 '함수의 의미'를 갖게 됨.
       }
     }
@@ -85,6 +81,7 @@
       if (!(this.obj = $(this.opts.obj)).length) return;
       this.init();
     }
+
     ComponentInner.prototype = {
       init: function () {
         this.callComponent();
@@ -95,6 +92,7 @@
         }
       }
     }
+
     return new ComponentInner();
     // -> 원하는 클래스나 아이디명이 있을 경우 ()에 넣고, 인자값을 받아서 defParams의 obj에 인자값을 받을 파라미터변수를 써주면 됨.
   })();
