@@ -35,8 +35,8 @@
                 this.setElements();
                 this.buildTrapFocus();
                 this.resizeFunc();
-                this.bindEvent();
                 this.bindGlobalEvent(true);
+                this.bindEvent();
             },
             setElements: function () {
                 this.layerOpener = this.obj.find(this.opts.layerOpener);
@@ -55,7 +55,7 @@
             resizeFunc: function() {
                 this.winWidth = $(win).width();
                 console.log(this.winWidth);
-                // win.clearTimeout(this.resizeEndFunc);
+                win.clearTimeout(this.resizeEndFunc);
                 this.resizeEndFunc = win.setTimeout($.proxy(this.resizeEndFunc, this), 150);   
             },
             resizeEndFunc: function() {
@@ -75,8 +75,8 @@
                     }
                 }
             },
-            // pc, mo나눌 땐 html구조가 다르거나 누르는 애들이 다를 경우에 나누고,
-            // 바인드된 이벤트가 같은 경우에는, 해당 이벤트에서 pc와 mo로 나누면됨!
+            // bindPcEvent, bindMoEvent 나눌 땐 html구조가 다르거나 누르는 애들이 다를 경우에 나누고,
+            // 바인드된 이벤트가 같은 경우에는 해당 이벤트에서 pc와 mo로 나누면됨!
             bindEvent: function (type) {
                 this.layerOpener.on('click', this.layerOpenFunc.bind(this));
                 this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
@@ -117,7 +117,9 @@
             },
             setScrollLock: function (type) {
                 if (!this.opts.useScrollLock) return;
-                Util.scrollLock(type);
+                if (this.opts.viewType = 'MO') {
+                    Util.scrollLock(type);
+                }
                 this.setWidth(type);
             },
             layerCloseFunc: function () {
