@@ -1,0 +1,22 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+ul,
+ol,
+li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+#container {
+  height: 300vh;
+  background-color: #eee;
+}
