@@ -36,7 +36,7 @@
                 this.buildTrapFocus();
                 this.bindEvent();
                 this.bindGlobalEvent(true);
-                this.setLayout();
+                this.resizeFunc();
             },
             setElements: function () {
                 this.layerOpener = this.obj.find(this.opts.layerOpener);
@@ -77,18 +77,16 @@
                 this.layerWrap.on("click", this.exceptArea.bind(this));
             },
             resizeFunc: function () {
+                this.winWidth = $(win).width();
+
                 win.clearTimeout(this.resizeEndTime);
-                this.resizeEndTime = win.setTimeout(
-                    $.proxy(this.resizeEndFunc, this),
-                    150
-                );
+                this.resizeEndTime = win.setTimeout($.proxy(this.resizeEndFunc, this), 150);
             },
             resizeEndFunc: function () {
                 console.log("resize end");
                 this.setLayout();
             },
             setLayout: function () {
-                this.winWidth = $(win).width();
                 if (this.winWidth > Mobile) {
                     if (this.opts.viewType != "PC") {
                         this.opts.viewType = "PC";
@@ -143,15 +141,21 @@
                 }
             },
             setScrollLock: function (type) {
-                Util.scrollLock(type); //mo 일때 true
+                Util.scrollLock(type);
                 console.log("setScrollLock TYPE", type);
             },
             setWidth: function (type) {
                 console.log("setWidth TYPE", type);
                 if (type) {
-                    $("html, body").css({ height: "auto" });
-                    $("html").css({ overflow: "hidden" });
-                    $("body").css({ "overflow-y": "scroll" });
+                    $("html, body").css({
+                        height: "auto"
+                    });
+                    $("html").css({
+                        overflow: "hidden"
+                    });
+                    $("body").css({
+                        "overflow-y": "scroll"
+                    });
                 } else {
                     $("html, body").removeAttr("style");
                 }
