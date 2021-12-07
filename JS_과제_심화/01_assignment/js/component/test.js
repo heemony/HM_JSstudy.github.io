@@ -12,7 +12,7 @@
             $ = win.jQuery,
             Util = win.Common.util,
             Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH,
-            TrapFoucs = win.TrapFocus;
+            TrapFocus = win.TrapFocus;
         var LComponentInner = function (container, args) {
             var defParams = {
                 obj: container, // 이 컨테이너는 Layer 인스턴스 생성한 Component.js보면 됨. '.btn_item'
@@ -91,16 +91,16 @@
                     if (this.opts.viewType != 'PC') {
                         this.opts.viewType = 'PC';
                         if (this.opts.isLayerOpened) {
-                            this.setScrollLock(false);
                             this.setWidth(true);
+                            this.setScrollLock(false);
                         }
                     }
                 } else {
                     if (this.opts.viewType != 'MO') {
                         this.opts.viewType = 'MO';
                         if (this.opts.isLayerOpened) {
-                            this.setScrollLock(true);
                             this.setWidth(false);
+                            this.setScrollLock(true);
                         }
                     }
                 }
