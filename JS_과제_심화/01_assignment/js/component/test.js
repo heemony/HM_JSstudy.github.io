@@ -13,6 +13,7 @@
             Util = win.Common.util,
             Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH,
             TrapFocus = win.TrapFocus;
+
         var LComponentInner = function (container, args) {
             var defParams = {
                 obj: container, // 이 컨테이너는 Layer 인스턴스 생성한 Component.js보면 됨. '.btn_item'
@@ -36,7 +37,7 @@
                 this.buildTrapFocus();
                 this.bindEvent();
                 this.bindGlobalEvent(true);
-                this.resizeFunc();
+                this.setLayout();
             },
             setElements: function () {
                 this.layerOpener = this.obj.find(this.opts.layerOpener);
@@ -53,12 +54,10 @@
                         destroy: function () {
                             if (this.instance === null) return;
                             this.instance.destroy();
-                            // _this.setScrollLock(false);
                             this.instance = null;
                         },
                         build: function () {
-                            this.instance = new TrapFoucs(_this.layerObj);
-                            // _this.setScrollLock(true);
+                            this.instance = new TrapFocus(_this.layerObj);
                         }
                     }
                 })
@@ -77,14 +76,24 @@
                 this.layerWrap.on('click', this.exceptArea.bind(this));
             },
             resizeFunc: function () {
-                this.winWidth = $(win).width();
+                this.winWidth = Util.winSize().w;
+
+                if (this.opts.resizeStart == null) {
+                    this.opts.resizeStart = this.winWidth;
+                    this.resizeAnimateFunc();
+                }
 
                 win.clearTimeout(this.resizeEndTime);
-                this.resizeEndTime = win.setTimeout($.proxy(this.resizeEndFunc, this), 150);
+                this.resizeEndTime = win.setTimeout(this.resizeEndFunc.bind(this), 150);
             },
             resizeEndFunc: function () {
-                console.log('resize end');
+                this.opts.resizeStart == null;
                 this.setLayout();
+                Util.cancelAFrame.call(win, this.resizeRequestFrame);
+            },
+            resizeAnimateFunc: function () {
+                this.setLayout();
+                this.resizeRequestFrame = Util.requestAFrame.call(win, this.resizeAnimateFunc.bind(this));
             },
             setLayout: function () {
                 if (this.winWidth > Mobile) {
@@ -142,7 +151,6 @@
             setScrollLock: function (type) {
                 Util.scrollLock(type);
             },
-
             setWidth: function (type) {
                 if (type) {
                     $("html, body").css({
@@ -158,7 +166,6 @@
                     $("html, body").removeAttr("style");
                 }
             },
-
         }
         return LComponentInner;
     })();
