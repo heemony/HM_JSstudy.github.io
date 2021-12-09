@@ -3,7 +3,6 @@
     global;
     global.HM_Component = global.HM_Component || {};
     global.HM_Component.Layer = factory();
-    console.log(global.HM_Component)
 }(this, function () {
     'use strict';
     var Component = (function () {
@@ -11,6 +10,8 @@
             doc = win.document,
             $ = win.jQuery,
             Util = win.Common.util,
+            RESPONSIVE = win.Common.RESPONSIVE,
+            // Mobile = RESPONSIVE.MOBILE.WIDTH,
             Mobile = win.Common.RESPONSIVE.MOBILE.WIDTH,
             TrapFocus = win.TrapFocus;
 
@@ -37,7 +38,7 @@
                 this.buildTrapFocus();
                 this.bindEvent();
                 this.bindGlobalEvent(true);
-                this.setLayout();
+                this.resizeFunc();
             },
             setElements: function () {
                 this.layerOpener = this.obj.find(this.opts.layerOpener);
@@ -69,7 +70,7 @@
                     $(win).off('resize');
                 }
             },
-            bindEvent: function (type) {
+            bindEvent: function () {
                 this.layerOpener.on('click', this.layerOpenFunc.bind(this));
                 this.layerCloseBtn.on('click', this.layerCloseFunc.bind(this));
                 this.layerConfirm.on('click', this.layerCloseFunc.bind(this));
@@ -87,6 +88,7 @@
                 this.resizeEndTime = win.setTimeout(this.resizeEndFunc.bind(this), 150);
             },
             resizeEndFunc: function () {
+                console.log('end')
                 this.opts.resizeStart == null;
                 this.setLayout();
                 Util.cancelAFrame.call(win, this.resizeRequestFrame);
@@ -100,6 +102,7 @@
                     if (this.opts.viewType != 'PC') {
                         this.opts.viewType = 'PC';
                         if (this.opts.isLayerOpened) {
+                            console.log(this.opts.isLayerOpened)
                             this.setWidth(true);
                             this.setScrollLock(false);
                         }
@@ -125,33 +128,40 @@
                 e.preventDefault();
                 this.TrapFocus.build();
                 this.opts.isLayerOpened = true;
-                this.scrollLockActiveFunc(this.opts.viewType);
+
+                if (this.opts.viewType == "PC") {
+                    if (!this.opts.isLayerOpened) return;
+                    this.setWidth(this.opts.isLayerOpened);
+                } else if (this.opts.viewType == "MO") {
+                    if (!this.opts.isLayerOpened) return;
+                    this.setScrollLock(this.opts.isLayerOpened);
+                }
 
                 this.layerWrap.addClass(this.opts.isShow);
             },
             layerCloseFunc: function () {
                 this.layerWrap.removeClass(this.opts.isShow);
                 this.opts.isLayerOpened = false;
-                this.scrollLockActiveFunc(this.opts.viewType, "close");
+
+                if (this.opts.viewType == "PC") {
+                    if (!this.opts.isLayerOpened) {
+                        this.setWidth(this.opts.isLayerOpened);
+                    }
+                } else if (this.opts.viewType == "MO") {
+                    if (!this.opts.isLayerOpened) {
+                        this.setScrollLock(this.opts.isLayerOpened);
+                    }
+                }
+
+                $("html, body").removeAttr("style");
 
                 this.TrapFocus.destroy();
-            },
-            scrollLockActiveFunc: function (viewType, type) {
-                var bool = true;
-                if (type == 'close') {
-                    bool = !bool;
-                }
-
-                if (viewType == "MO") {
-                    this.setScrollLock(bool);
-                } else if (viewType == "PC") {
-                    this.setWidth(bool);
-                }
             },
             setScrollLock: function (type) {
                 Util.scrollLock(type);
             },
             setWidth: function (type) {
+                console.log('setWidth 넘어오는값', type);
                 if (type) {
                     $("html, body").css({
                         "height": "auto"

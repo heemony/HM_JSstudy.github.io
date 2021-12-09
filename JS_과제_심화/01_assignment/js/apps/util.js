@@ -150,7 +150,7 @@
                     },
                 },
                 scrollLock: function (type) {
-                    console.log(type);
+                    console.log('scrollLock 넘어오는값', type);
                     var scrollParams = this.scrollParams,
                         scrollMethods = this.scrollMethods;
                     if (!scrollParams.scrollLockType) return;

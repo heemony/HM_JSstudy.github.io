@@ -19,8 +19,7 @@
                 layerItem: '.btn_item',
                 customEvent: '.Component' + (new Date()).getTime() + Math.random()
             }
-            this.opts = Util.def(defParams, (args || {})); // 방지를 해준다. args || {}
-            // 위에 정의해둔 defParams를 opts에 복사
+            this.opts = Util.def(defParams, (args || {}));
             if (!(this.obj = $(this.opts.obj)).length) return;
             this.init();
         }
@@ -38,11 +37,10 @@
                     layer: {
                         instance: [],
                         build: function () {
-                            if (!(_this.layerItem.length > 0)) return;
+                            if (!(_this.layerItem.length)) return;
                             for (var i = 0; i < _this.layerItem.length; i++) {
                                 this.instance.push(new win.HM_Component.Layer(_this.layerItem.eq(i)))
                             }
-                            console.log(this.instance)
                         },
                     }
                 });
@@ -80,7 +78,7 @@
                 this.callComponent();
             },
             callComponent: function () {
-                new win.HM_Component.Main.ComponentInner(this.obj);
+                var instance = new win.HM_Component.Main.ComponentInner(this.obj);
             }
         }
 

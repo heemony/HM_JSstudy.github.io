@@ -68,8 +68,6 @@
                     $(win).off("resize");
                 }
             },
-            // bindPcEvent, bindMoEvent 나눌 땐 html구조가 다르거나 누르는 애들이 다를 경우에 나누고,
-            // 바인드된 이벤트가 같은 경우에는 해당 이벤트에서 pc와 mo로 나누면됨!
             bindEvent: function (type) {
                 this.layerOpener.on("click", this.layerOpenFunc.bind(this));
                 this.layerCloseBtn.on("click", this.layerCloseFunc.bind(this));
