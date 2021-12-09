@@ -13,71 +13,6 @@
             // util.def가 fn이라는 제이쿼리 함수가 있는데. '머지'시키는 것임.
             // 'Clone object' 임.
             util: {
-                winSize: (function () {
-                    var isWinSafari = (function () {
-                        var appNetscape = navigator.appName === "Netscape",
-                            appVersionMac =
-                                navigator.appVersion.indexOf("Mac") !== -1,
-                            userAgentSafari =
-                                navigator.userAgent.indexOf("Safari") !== -1,
-                            userAgentChrome =
-                                navigator.userAgent.indexOf("Chrome") !== -1;
-                        return (
-                            appNetscape &&
-                            !appVersionMac &&
-                            userAgentSafari &&
-                            !userAgentChrome
-                        );
-                    })();
-                    if (isWinSafari) {
-                        return function () {
-                            var win_wh = {
-                                w: $(win).width(),
-                                h: $(win).height(),
-                            };
-                            return win_wh;
-                        };
-                    } else {
-                        return function () {
-                            var win_wh = {
-                                w:
-                                    win.innerWidth ||
-                                    doc.documentElement.clientWidth ||
-                                    doc.body.clientWidth,
-                                h:
-                                    win.innerHeight ||
-                                    doc.documentElement.clientHeight ||
-                                    doc.body.clientHeight,
-                            };
-                            return win_wh;
-                        };
-                    }
-                })(),
-                requestAFrame: (function () {
-                    return (
-                        win.requestAnimationFrame ||
-                        win.webkitRequestAnimationFrame ||
-                        win.mozRequestAnimationFrame ||
-                        win.oRequestAnimationFrame ||
-                        win.msRequestAnimationFrame ||
-                        function (callback) {
-                            return win.setTimeout(callback, 1000 / 60);
-                        }
-                    );
-                })(),
-                cancelAFrame: (function () {
-                    return (
-                        win.cancelAnimationFrame ||
-                        win.webkitCancelAnimationFrame ||
-                        win.webkitCancelRequestAnimationFrame ||
-                        win.mozCancelAnimationFrame ||
-                        win.oCancelAnimationFrame ||
-                        win.msCancelAnimationFrame ||
-                        function (id) {
-                            win.clearTimeout(id);
-                        }
-                    );
-                })(),
                 isObject: function (o) {
                     return (
                         typeof o === "object" &&
@@ -96,9 +31,7 @@
                         if (nextSource !== undefined && nextSource !== null) {
                             var keysArray = Object.keys(Object(nextSource));
                             for (
-                                var nextIndex = 0, len = keysArray.length;
-                                nextIndex < len;
-                                nextIndex += 1
+                                var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex += 1
                             ) {
                                 var nextKey = keysArray[nextIndex];
                                 var desc = Object.getOwnPropertyDescriptor(
@@ -133,6 +66,44 @@
                     }
                     return to;
                 },
+                winSize: (function () {
+                    var isWinSafari = (function () {
+                        var appNetscape = (navigator.appName === "Netscape"),
+                            appVersionMac = (navigator.appVersion.indexOf("Mac") !== -1),
+                            userAgentSafari = (navigator.userAgent.indexOf("Safari") !== -1),
+                            userAgentChrome = (navigator.userAgent.indexOf("Chrome") !== -1);
+                        return (appNetscape && !appVersionMac && userAgentSafari && !userAgentChrome);
+                    })();
+                    if (isWinSafari) {
+                        return function () {
+                            var win_wh = {
+                                w: $(win).width(),
+                                h: $(win).height()
+                            };
+                            return win_wh;
+                        }
+                    } else {
+                        return function () {
+                            var win_wh = {
+                                w: win.innerWidth || doc.documentElement.clientWidth || doc.body.clientWidth,
+                                h: win.innerHeight || doc.documentElement.clientHeight || doc.body.clientHeight
+                            };
+                            return win_wh;
+                        }
+                    }
+                })(),
+                requestAFrame: (function () {
+                    return win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.oRequestAnimationFrame || win.msRequestAnimationFrame ||
+                        function (callback) {
+                            return win.setTimeout(callback, 1000 / 60);
+                        };
+                })(),
+                cancelAFrame: (function () {
+                    return win.cancelAnimationFrame || win.webkitCancelAnimationFrame || win.webkitCancelRequestAnimationFrame || win.mozCancelAnimationFrame || win.oCancelAnimationFrame || win.msCancelAnimationFrame ||
+                        function (id) {
+                            win.clearTimeout(id);
+                        };
+                })(),
                 scrollParams: {
                     scrollLockType: true,
                     scrollLockClass: "is-scroll-lock",
@@ -222,7 +193,7 @@
                         lockElements.attr(
                             "style",
                             $("<x>").css(lockOpts.prevStyles).attr("style") ||
-                                ""
+                            ""
                         );
                         lockElements.data("lockScroll", null);
                         $(win)
@@ -261,6 +232,7 @@
             $ = win.jQuery,
             hasTrap = null,
             Util = win.Common.util;
+
         function TrapFocus(container, args) {
             if (!(this instanceof TrapFocus)) {
                 return new TrapFocus(container, args);
@@ -281,8 +253,7 @@
                     tabIndex: "tabindex",
                     role: "role",
                 },
-                customEvent:
-                    ".TrapFocus" + new Date().getTime() + Math.random(),
+                customEvent: ".TrapFocus" + new Date().getTime() + Math.random(),
             };
             this.opts = Util.def(defParams, args || {});
             if (!(this.obj = $(this.opts.obj)).length) return;
@@ -335,9 +306,7 @@
 
                             // aria-hidden
                             for (
-                                var hMin = 0, hMax = hiddenEls.length;
-                                hMin < hMax;
-                                hMin++
+                                var hMin = 0, hMax = hiddenEls.length; hMin < hMax; hMin++
                             ) {
                                 (function (h_index) {
                                     var hiddenEl = hiddenEls.eq(h_index),
@@ -369,9 +338,7 @@
 
                             // aria-disabled
                             for (
-                                var fMin = 0, fMax = focusEls.length;
-                                fMin < fMax;
-                                fMin++
+                                var fMin = 0, fMax = focusEls.length; fMin < fMax; fMin++
                             ) {
                                 (function (f_index) {
                                     var focusEl = focusEls.eq(f_index),
@@ -394,9 +361,7 @@
 
                             // tabindex
                             for (
-                                var tMin = 0, tMax = tabindexEls.length;
-                                tMin < tMax;
-                                tMin++
+                                var tMin = 0, tMax = tabindexEls.length; tMin < tMax; tMin++
                             ) {
                                 (function (t_index) {
                                     var tabindexEl = tabindexEls.eq(t_index),
@@ -428,16 +393,14 @@
                             var focusEls = $("<x>");
                             var tabindexEls = $("<x>");
                             for (
-                                var i = 0, max = objParents.length;
-                                i < max;
-                                i++
+                                var i = 0, max = objParents.length; i < max; i++
                             ) {
                                 (function (index) {
                                     var _target = objParents.eq(index);
                                     hiddenEls = hiddenEls.add(
                                         _target
-                                            .siblings()
-                                            .not(_this.aria.notHidden.join(","))
+                                        .siblings()
+                                        .not(_this.aria.notHidden.join(","))
                                     );
                                 })(i);
                             }
@@ -447,9 +410,7 @@
 
                             // aria-hidden
                             for (
-                                var hMin = 0, hMax = hiddenEls.length;
-                                hMin < hMax;
-                                hMin++
+                                var hMin = 0, hMax = hiddenEls.length; hMin < hMax; hMin++
                             ) {
                                 (function (h_index) {
                                     var hiddenEl = hiddenEls.eq(h_index),
@@ -486,9 +447,7 @@
                                 )
                             );
                             for (
-                                var fMin = 0, fMax = focusEls.length;
-                                fMin < fMax;
-                                fMin++
+                                var fMin = 0, fMax = focusEls.length; fMin < fMax; fMin++
                             ) {
                                 (function (f_index) {
                                     var focusEl = focusEls.eq(f_index),
@@ -510,9 +469,7 @@
                                 hiddenEls.find("[" + elAttr.tabIndex + "]")
                             );
                             for (
-                                var tMin = 0, tMax = tabindexEls.length;
-                                tMin < tMax;
-                                tMin++
+                                var tMin = 0, tMax = tabindexEls.length; tMin < tMax; tMin++
                             ) {
                                 (function (t_index) {
                                     var tabindexEl = tabindexEls.eq(t_index),
@@ -558,8 +515,8 @@
                             };
                             var trapFocus = $(
                                 '<div class="' +
-                                    this.opts.classAttr.clone +
-                                    '" tabindex="0"></div>'
+                                this.opts.classAttr.clone +
+                                '" tabindex="0"></div>'
                             ).css(css);
                             this.obj.before(trapFocus.clone());
                             this.obj.after(trapFocus.clone());
