@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 매개변수를 통해 함수의 외부에서 콜백 함수를 전달받은 함수를 고차 함수라고 한다.
+        function repeat(n, f) {
+            for (var i = 0; i < n; i++) {
+                f(i)
+            }
+        }
+
+        // 함수의 매개변수를 통해 다른 함수의 내부로 전달되는 함수를 콜백 함수라고 한다.
+        // 콜백함수는 고차함수에 의해서 호출된다.
+        var logAll = function (i) {
+            console.log(i)
+        }
+
+        var logOdds = function (i) {
+            if (i % 2) console.log(i);
+        }
+        repeat(5, logAll);
+        repeat(5, logOdds);
+
+        // 콜백 함수를 사용하는 고차 함수 MAP
+        var res = [1, 2, 3].map(function (item) {
+            return item * 2;
+        });
+        console.log(res)
+
+        res = [1, 2, 3].filter(function (item) {
+            return item % 2;
+        })
+        console.log(res)
+
+        res = [1, 2, 3].reduce(function (acc, cur) {
+            return acc + cur;
+        }, 0)
+        console.log(res)
+
+    </script>
+    <script>
+        // 스코프 = 네임스페이스
+        // 식별자(변수 이름, 함수 이름, 클래스 이름 등)가 유효한 범위.
+        // 스코프 내에서 식별자는 유일해야 하지만 다른 스코프에는 같은 이름의 식별자를 사용할 수 있다.
+        var x = 'global';
+
+        function foo() {
+            var x = 'local';
+            console.log(x);
+        }
+        foo();
+        console.log(x);
+        // 두 개의 x중 어느것을 참조해야 할 것인지를 결정하는데 이를 '식별자 결정'이라 함.
+        // 식별자를 검색할 때 사용하는 규칙 'context'를 고려한다.
+
+
+        // 전역과 전역 스코프
+        var x = 'G x';
+        var y = 'G y';
+
+        function outer() {
+            var z = "outer's local z";
+
+            console.log(x)
+            console.log(y)
+            console.log(z)
+
+            function inner() {
+                var x = "inner's local x";
+
+                console.log(x)
+                console.log(y)
+                console.log(z)
+            }
+            inner();
+        }
+        outer();
+
+    </script>
+</body>
+
+</html>

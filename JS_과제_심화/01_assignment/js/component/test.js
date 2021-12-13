@@ -36,8 +36,8 @@
             init: function () {
                 this.setElements();
                 this.buildTrapFocus();
-                this.bindEvent();
                 this.bindGlobalEvent(true);
+                this.bindEvent();
                 this.resizeFunc();
             },
             setElements: function () {
@@ -85,17 +85,17 @@
                 }
 
                 win.clearTimeout(this.resizeEndTime);
-                this.resizeEndTime = win.setTimeout(this.resizeEndFunc.bind(this), 150);
+                this.resizeEndTime = win.setTimeout(this.resizeEndFunc.bind(this), 50);
             },
             resizeEndFunc: function () {
-                console.log('end')
-                this.opts.resizeStart == null;
+                this.opts.resizeStart = null;
                 this.setLayout();
                 Util.cancelAFrame.call(win, this.resizeRequestFrame);
             },
             resizeAnimateFunc: function () {
                 this.setLayout();
                 this.resizeRequestFrame = Util.requestAFrame.call(win, this.resizeAnimateFunc.bind(this));
+                console.log('rf: ', this.resizeRequestFrame)
             },
             setLayout: function () {
                 if (this.winWidth > Mobile) {
@@ -111,6 +111,7 @@
                     if (this.opts.viewType != 'MO') {
                         this.opts.viewType = 'MO';
                         if (this.opts.isLayerOpened) {
+                            console.log(this.opts.isLayerOpened)
                             this.setWidth(false);
                             this.setScrollLock(true);
                         }
