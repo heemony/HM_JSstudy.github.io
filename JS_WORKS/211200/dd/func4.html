@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        dt {
+            padding: 10px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>12.5.4 반환문</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>반환문이란?</dt>
+        <dd>: 함수는 [return 키워드]와 [표현식으로 이뤄진 반환문]을 사용하여 [실행 결과를 함수 외부로 반환]해준다.</dd>
+        <dt>반환문의 역할</dt>
+        <dd>: 1. 반환문은 함수의 실행을 중단하고 함수 몸체를 빠져나간다. 따라서 반환문 이후에 다른 문이 존재하면 그 문은 실행되지 않는다.</dd>
+        <dd>: 2. return 키워드 뒤에 오는 표현식을 평가해 반환한다. return뒤에 표현식이 지정되어 있지 않으면 undefined를 반환한다.</dd>
+    </dl>
+    <script>
+        // 함수는 return 키워드와 표현식으로 이뤄진 반환문을 사용해 실행 결과를 함수 외부로 반환한다.
+        // multiply함수는 두 개의 인수를 전달받아 결과값을 반환한다.
+        function multiply(x, y) {
+            return x * y; // 반환문
+        }
+        var res = multiply(2, 4); // 표현식의 평가 결과, 즉 반환값
+        console.log(res);
+
+
+
+        // 함수는 return 키워드 뒤에 따로 표현식이 없다면 undefined를 반환한다. 
+        // 반환문을 생략해도 암묵적으로 undefined를 반환한다.
+        function exam1() {
+            return;
+        }
+        console.log(exam1())
+        function exam2() {
+            // 반환문 생략
+        }
+        console.log(exam2())
+    </script>
+
+    <h2>12.6 참조에 의한 전달과 외부 상태의 변경</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>원시값</dt>
+        <dd>: 값에 의한 전달</dd>
+        <dd>: 원시값은 변경 불가능한 값으로 재할당을 통해 새로운 원시 값으로 교체한다.</dd>
+        <dt>객체</dt>
+        <dd>: 참조에 의한 전달</dd>
+        <dd>: 객체는 변경 가능한 값으로 직접 할당된 객체를 변경한다.</dd>
+        <dd>객체의 참조값에 의한 전달 방식은 언제든 참조하고 직접 변경할 수 있기 때문에 부수 효과가 발생한다.</dd>
+        <dt>객체의 부수효과 방지, '깊은 복사'</dt>
+        <dd>: 불변 객체로 만들어 사용한다. </dd>
+    </dl>
+    <script>
+        // 매개변수 primitive는 원시 값을 전달받고, 매개변수 obj는 객체를 전달받는다.
+        function changeVal(primitive, obj) {
+            primitive += 100;
+            obj.name = 'song';
+        }
+
+        // 외부 상태
+        var num = 100;
+        var person = {
+            name: 'myun'
+        };
+
+        console.log(num)
+        console.log(person)
+
+        // 원시 값은 값 자체가 복사되어 전달.
+        // 객체는 참조 값이 복사되어 전달.
+        changeVal(num, person)
+        console.log(num) // 원시 값의 경우 원본이 훼손되지 않는다.
+        console.log(person) // 객체의 경우 원본이 훼손된다.
+    </script>
+
+    <h2>12.7 다양한 함수의 형태</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>즉시 실행 함수 : IIFE</dt>
+        <dd>: 즉시 실행 함수는 단 한 번만 호출되며 다시 호출할 수 없다.</dd>
+    </dl>
+    <script>
+            // 익명 즉시 실행 함수
+            (function () {
+                var a = 3;
+                var b = 5;
+                return a * b;
+            }());
+
+        // 기명 즉시 실행 함수
+        (function foo() {
+            var a = 3;
+            var b = 5;
+            return a * b;
+        }());
+        // foo(); // foo is not defined
+
+        // 즉시 실행 함수도 일반 함수처럼 값을 반환하고, 인수를 전달할 수 있다.
+        var res = (function (a, b) {
+            return a * b;
+        }(5, 3));
+        console.log(res)
+    </script>
+
+    <h2>12.7.2 재귀 함수</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>재귀 함수</dt>
+        <dd>자기 자신을 호출하는 것을 재귀 호출이라 한다.</dd>
+        <dd>재귀 함수는 자기 자신을 호출하는 행위, 재귀 호출을 수행하는 함수를 말한다.</dd>
+    </dl>
+    <script>
+        // 반복문 없이 재귀함수를 통해서 반복처리 구현을 할 수 있다.
+        function countdownf(n) {
+            if (n < 0) return;
+            console.log(n);
+            countdownf(n - 1);
+        }
+        countdownf(10);
+
+        function factorial(n) {
+            if (n <= 1) return 1;
+            return factorial(n - 1) * n
+        }
+        console.log(factorial(5))
+
+        function whileFactorial(n) {
+            if (n <= 1) return 1;
+
+            var res = n;
+            while (--n) res *= n;
+            return res;
+        }
+        console.log(whileFactorial(5))
+    </script>
+
+    <h2>12.7.3 중첩 함수</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>중첩 함수</dt>
+        <dd>함수 내부에 정의된 함수를 중첩 함수, 내부 함수라 한다.</dd>
+        <dd>중첩 함수는 외부 함수 내부에서만 호출할 수 있다.</dd>
+    </dl>
+    <script>
+        function outer() {
+            var x = 1;
+
+            // 이 inner 함수가 중첩 함수이다.
+            function inner() {
+                var y = 2;
+                // 외부 함수의 변수를 참조할 수 있다. 
+                console.log(x + y);
+            }
+            inner();
+        }
+        outer();
+    </script>
+
+    <h2>12.7.4 콜백 함수</h2>
+    <h3>정리</h3>
+    <dl>
+        <dt>콜백 함수</dt>
+        <dd>함수의 매개변수를 통해서 다른 함수의 내부로 전달되는 함수를 콜백함수라 한다.</dd>
+        <dd>콜백함수는 고차 함수에 의해 호출 시점이 결정된다.</dd>
+    </dl>
+    <script>
+        // 외부에서 전달받은 f를 n번 만큼 반복 호출한다.
+        function repeat(func, n) {
+            for (let i = 0; i < n; i++) {
+                func(i);
+            }
+        }
+        // 콜백함수
+        function logAll(i) {
+            console.log(i)
+        }
+        // 콜백함수
+        function logOdds(i) {
+            if (i % 2) console.log(i)
+        }
+        repeat(logAll, 5)
+        repeat(logOdds, 5)
+    </script>
+</body>
+
+</html>

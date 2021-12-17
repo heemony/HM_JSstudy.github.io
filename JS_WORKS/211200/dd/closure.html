@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 중첩 함수 내부에서 자신을 포함하는 외부함수의 변수 x에 접근할 수 있다.
+        // const x = 1;
+        // function outerFunc() {
+        //     const x = 10;
+        //     function innerFunc() {
+        //         console.log(x); // 10
+        //     }
+        //     innerFunc();
+        // }
+        // outerFunc();
+
+        // // 그러나, innerFunc가 outerFunc의 내부에서 정의된 중첩 함수가 아니라면,
+        // // innerFunc를 outerFunc 내부에서 호출하더라도 outerFunc변수에 접근할 수 없다.
+        // const y = 1;
+        // function outerFuncY() {
+        //     const y = 10;
+        //     innerFuncY(); // [!] 함수의 호출 위치와 상위 스코프는 관련이 없다.
+        // }
+        // function innerFuncY() {
+        //     console.log(y); // 
+        // }
+        // outerFuncY();
+
+        // // -> 이러한 이유는 '정적 스코프'이기 때문.
+        // // 함수가 어디에서 정의됐냐에 따라 상위 스코프가 결정된다.
+
+
+        // // 클로저
+        // // 생명주기가 끝난 외부함수의 변수를 참조할 수 있는 중첩함수를 클로저라 부른다.
+        // // 함수와 그 함수가 선언된 렉시컬 환경의 조합.
+        // //
+        // // 클로저의 조건
+        // // 1) 중첩 함수가 외부 함수의 변수를 참조해야한다.
+        // // 2) 중첩 함수의 생명주기가 외부 함수보다 길어야 한다.
+        // const z = 1;
+        // // 1)
+        // function outer() {
+        //     const z = 10;
+        //     const inner = function () { console.log(z) }; // 2)
+        //     // -> 자신이 정의된 위치에 의해 결정된 상위 스코프를 기억한다.
+        //     return inner;
+        // }
+        // const innerFunc2 = outer(); // 3) 내부함수가 외부함수로 반환되었다. = 생명주기가 더 길다.
+        // innerFunc2(); // 4) 10
+
+
+        // function foo() {
+        //     const q = 1;
+
+        //     function bar() {
+        //         debugger;
+        //         console.log(q);
+        //     }
+        //     bar();
+        // }
+        // foo();
+    </script>
+    <script>
+        const increase = function () {
+            let num = 0;
+            return ++num;
+        };
+        console.log(increase())
+        console.log(increase())
+        console.log(increase())
+        // 호출할 때 마다 증가를 시키고 싶다.
+        // 상태가 변경되기 이전 상태를 유지하려면 클로저를 사용한다.
+
+
+        // const counter = (function () {
+        //     let num = 0;
+
+        //     // 클로저인 메서드를 갖는 객체를 반환한다.
+        //     // 객체 리터럴은 스코프를 만들지 않는다.
+        //     // 아래 메서드들의 상위 스코프는 즉시 실행 함수의 렉시컬 환경이다.
+        //     return {
+        //         increase() {
+        //             return ++num;
+        //         },
+        //         decrease() {
+        //             return num > 0 ? --num : 0;
+        //         }
+        //     };
+        // }());
+
+        // console.log(counter.increase());
+        // console.log(counter.increase());
+        // console.log(counter.increase());
+        // console.log(counter.decrease());
+        // console.log(counter.decrease());
+        // 클로저를 사용하는 이유
+        // 1) 의도치 않게 상태가 변경되지 않도록 은닉
+        // 2) 특정 함수에게만 상태 변경을 서용하여 상태를 안전하게 변경하고 유지하기 위함.
+
+        const Counter = (function () {
+            // 1) 카운트 상태 변수 
+            // 생성자 함수 Counter가 생성할 인스턴스의 프로퍼티가 아니라 즉시 실행 함수 내에서 선언된 변수.
+            let num = 11;
+
+            function Counter() {
+                // this.num = 0; // 2) 프로퍼티는 public하므로 은닉되지 않는다.
+            }
+            Counter.prototype.increase = function () {
+                return ++num;
+            }
+            Counter.prototype.decrease = function () {
+                return num > 0 ? --num : 0;
+            }
+            return Counter;
+        }());
+
+        const counter = new Counter();
+        console.log(counter.increase());
+        console.log(counter.increase());
+        console.log(counter.increase());
+        console.log(counter.decrease());
+        console.log(counter.decrease());
+    </script>
+    <script>
+        function makeCounter(aux) {
+            let counter = 0;
+
+            return function () {
+                counter = aux(counter);
+                return counter;
+            }
+        }
+        function increase2(n) {
+            return ++n;
+        }
+        function decrease2(n) {
+            return --n;
+        }
+        const increaser = makeCounter(increase2);
+        console.log(increaser())
+        console.log(increaser())
+    </script>
+    <script>
+        var funcs = [];
+        for (var i = 0; i < 3; i++) {
+            funcs[i] = function () { return i; }
+        }
+        for (var j = 0; j < funcs.length; j++) {
+            console.log(funcs[j]())
+        }
+        // 원하는 결과는 0 1 2 겠지만 그렇지 못하고, 3으로 출력된다.
+        // -> i가 전역변수이기 때문!
+        // 클로저를 제대로 사용하려면
+
+        var funcs = [];
+
+        for (var i = 0; i < 3; i++) {
+            funcs[i] = (function (index) {
+                return function () { return index };
+            }(i + 1));
+        }
+
+        for (var j = 0; j < funcs.length; j++) {
+            console.log(funcs[j]());
+        }
+    </script>
+</body>
+
+</html>

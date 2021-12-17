@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const obj = new Promise((resolve, reject) => { // 1. new Promise()를 실행한다.
+            resolve(100); // 아직 resolve()를 호출하지 않는다.
+            console.log("promise"); // 2. 실행한다.
+        });
+        // 3. obj 변수에 promise 인스턴스 할당
+        obj.then((value) => { // 5. resolve()를 실행하여 첫 번째 파라미터 함수를 실행한다.
+            return value + 50; // 6. 실행한다.
+            // 150은 [[PromiseValue]]에 설정되고,
+            // 인스턴스를 반환하게 된다. 
+        }).then((param) => {
+            console.log(param); // 7. param에 [[PromiseValue]] 값인 150이 설정된다.
+            // 출력결과 150
+        })
+        console.log('마지막') // 4. 실행한다.
+    </script>
+</body>
+
+</html>

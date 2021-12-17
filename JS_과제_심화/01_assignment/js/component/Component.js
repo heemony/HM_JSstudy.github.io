@@ -6,6 +6,7 @@
     global.HM_Component.Main.ComponentInner = factory();
 }(this, function () {
     'use strict';
+    // 즉시 실행 함수를 Component 변수에 담아서 정의.
     var Component = (function () {
         var win = window,
             doc = win.document,
